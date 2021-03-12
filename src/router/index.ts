@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router';
+import NotFound from '../components/NotFound.vue';
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -34,6 +35,7 @@ const routes: Array<RouteRecordRaw> = [
     //     component: () =>
     //         import(/* webpackChunkName: "About" */ '../views/Contact.vue')
     // }
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ];
 
 const router = createRouter({
