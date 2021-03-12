@@ -3,7 +3,7 @@ import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router';
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        redirect: '/home'
+        redirect: '/index/home'
     },
     {
         path: '/helloword',
@@ -14,12 +14,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../components/Layout.vue'),
         children: [
             {
-                path: '/home',
+                path: 'home',
                 component: () => import('../views/Home.vue'),
                 meta: { requiresAuth: true }
             },
             {
-                path: '/contact',
+                path: 'contact',
                 component: () =>
                     import(/* webpackChunkName: "About" */ '../views/Contact.vue')
             }

@@ -9,10 +9,10 @@
           :style="{ lineHeight: '64px' }"
       >
         <a-menu-item key="home">
-          <router-link to="/home">home</router-link>
+          <router-link to="home">home</router-link>
         </a-menu-item>
         <a-menu-item key="contact">
-          <router-link to="/contact">contact</router-link>
+          <router-link to="contact">contact</router-link>
         </a-menu-item>
         <a-menu-item key="3">nav 3</a-menu-item>
       </a-menu>
@@ -25,7 +25,6 @@
 
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
-import router from '../router';
 import {useRoute} from "vue-router";
 
 export default defineComponent({
@@ -33,7 +32,7 @@ export default defineComponent({
   setup() {
     const url = useRoute().path.split('/');
     return {
-      selectedKeys: ref([url[1]])
+      selectedKeys: ref([url[url.length - 1]])
     }
   }
 })
