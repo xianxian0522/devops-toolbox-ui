@@ -9,7 +9,7 @@
 <!--  <Layout/>-->
 </template>
 
-<script>
+<script lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import Layout from './components/Layout.vue';
 

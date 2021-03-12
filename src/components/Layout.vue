@@ -6,8 +6,7 @@
           theme="dark"
           mode="horizontal"
           v-model:selectedKeys="selectedKeys"
-          :style="{ lineHeight: '64px' }"
-      >
+          :style="{ lineHeight: '58px' }">
         <a-menu-item key="home">
           <router-link to="home">home</router-link>
         </a-menu-item>
@@ -38,12 +37,15 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .layout {
   width: 100vw;
   height: 100vh;
 }
 .common-content {
   background: #fff;
+}
+:global(.ant-layout-header) {
+  height: 58px;
 }
 </style>
