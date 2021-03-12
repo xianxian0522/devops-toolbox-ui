@@ -6,33 +6,39 @@ const routes: Array<RouteRecordRaw> = [
         redirect: '/home'
     },
     {
-        path: '/home',
-        component: () => import('../views/Home.vue'),
+        path: '/helloword',
+        component: () => import('../components/HelloWorld.vue'),
     },
     {
-        path: '/contact',
-        component: () =>
-            import(/* webpackChunkName: "About" */ '../views/Contact.vue')
-    }
+        path: '/index',
+        component: () => import('../components/Layout.vue'),
+        children: [
+            {
+                path: '/home',
+                component: () => import('../views/Home.vue'),
+                meta: { requiresAuth: true }
+            },
+            {
+                path: '/contact',
+                component: () =>
+                    import(/* webpackChunkName: "About" */ '../views/Contact.vue')
+            }
+        ],
+    },
+    // {
+    //     path: '/home',
+    //     component: () => import('../views/Home.vue'),
+    // },
+    // {
+    //     path: '/contact',
+    //     component: () =>
+    //         import(/* webpackChunkName: "About" */ '../views/Contact.vue')
+    // }
 ];
 
 const router = createRouter({
     history: createWebHistory(),
-    routes: [
-        {
-            path: '/',
-            redirect: '/home'
-        },
-        {
-            path: '/home',
-            component: () => import('../views/Home.vue'),
-        },
-        {
-            path: '/contact',
-            component: () =>
-                import(/* webpackChunkName: "About" */ '../views/Contact.vue')
-        }
-    ]
+    routes,
 });
 
 export default router;
