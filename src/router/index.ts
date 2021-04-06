@@ -4,11 +4,15 @@ import NotFound from '../views/NotFound.vue';
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        redirect: '/toolbox/home'
+        redirect: '/middle'
     },
     {
         path: '/login',
         component: () => import('../views/Login.vue'),
+    },
+    {
+        path: '/middle',
+        component: () => import('../views/Middle.vue'),
     },
     {
         path: '/toolbox',

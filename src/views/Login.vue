@@ -27,13 +27,19 @@ export default {
   setup() {
     const login = async () => {
       const data = await systemInfo.login;
-      console.log(data);
+      window.location.href = data.url;
     }
     onMounted(async () => {
     })
 
     return { login }
   },
+  methods: {
+    // login() {
+    //   const url = systemInfo.login;
+    //   console.log(url);
+    // }
+  }
 }
 </script>
 <style scoped lang="less">
