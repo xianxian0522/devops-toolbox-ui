@@ -145,6 +145,8 @@ export default defineComponent({
   float: left;
   color: #fff;
   margin-right: 30px;
+  text-align: left;
+  font-weight: 500;
 }
 .common-content {
   background: #fff;
