@@ -1,19 +1,18 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router';
-import NotFound from '../components/NotFound.vue';
+import NotFound from '../views/NotFound.vue';
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        redirect: '/index/home'
+        redirect: '/toolbox/home'
     },
     {
-        path: '/helloword',
-        component: () => import('../components/HelloWorld.vue'),
+        path: '/login',
+        component: () => import('../views/Login.vue'),
     },
     {
-        path: '/index',
+        path: '/toolbox',
         component: () => import('../components/Layout.vue'),
-        redirect: '/index/home',
         children: [
             {
                 path: 'home',

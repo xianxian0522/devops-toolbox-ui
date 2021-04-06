@@ -1,12 +1,9 @@
-import request from "@/utils/request";
+import request from "../utils/request";
+
+const APILogin = '/api/v1/sso/login';
+const API = '/devops-toolbox/api/v1';
 
 const systemInfo: any = {};
-systemInfo.login = function (data: any) {
-    return request({
-        url: '/api/v1/login',
-        data,
-        method: 'post'
-    })
-}
+systemInfo.login = request.get(APILogin)
 
 export default systemInfo

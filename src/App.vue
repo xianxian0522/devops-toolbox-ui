@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './views/Login.vue'
 import Layout from './components/Layout.vue';
 
 export default {

@@ -22,5 +22,5 @@ export default {
 </script>
 
 <style lang="less">
- @import './index.less';
+ @import '../components/index.less';
 </style>

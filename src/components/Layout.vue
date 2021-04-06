@@ -30,12 +30,15 @@
           :style="{ lineHeight: '58px' }"
       >
         <a-menu-item key="home">
-          <router-link to="home">home</router-link>
+          <router-link to="home">业务拓扑</router-link>
         </a-menu-item>
         <a-menu-item key="contact">
-          <router-link to="contact">contact</router-link>
+          <router-link to="contact">运维工具箱</router-link>
         </a-menu-item>
-        <a-menu-item key="3">nav 3</a-menu-item>
+        <a-menu-item key="3">CI</a-menu-item>
+        <a-menu-item key="4">CD</a-menu-item>
+        <a-menu-item key="5">监控中心</a-menu-item>
+        <a-menu-item key="6">日志中心</a-menu-item>
       </a-menu>
     </a-layout-header>
     <a-layout>
