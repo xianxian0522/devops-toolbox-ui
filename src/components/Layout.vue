@@ -26,14 +26,14 @@
       <a-menu
           theme="dark"
           mode="horizontal"
-          v-model:selectedKeys="selectedKeys"
+          v-model:selectedKeys="selectedKey"
           :style="{ lineHeight: '58px' }"
       >
-        <a-menu-item key="home">
-          <router-link to="home">业务拓扑</router-link>
+        <a-menu-item>
+          <a href="http://127.0.0.1:4200">业务拓扑</a>
         </a-menu-item>
-        <a-menu-item key="contact">
-          <router-link to="contact">运维工具箱</router-link>
+        <a-menu-item key="/">
+          <router-link to="/">运维工具箱</router-link>
         </a-menu-item>
         <a-menu-item key="3">CI</a-menu-item>
         <a-menu-item key="4">CD</a-menu-item>
@@ -44,53 +44,43 @@
     <a-layout>
       <a-layout-sider width="200" style="background: #fff">
         <a-menu
+            class="menu-sider"
             mode="inline"
-            v-model:selectedKeys="selectedKeys2"
+            @click="menuItem"
+            v-model:selectedKeys="selectedKeysMenu"
             v-model:openKeys="openKeys"
             :style="{ height: '100%', borderRight: 0 }"
         >
-          <a-menu-item key="sub0">
+          <a-menu-item :key="'/home'">
             <span>
               <user-outlined/>
-              subnav 0
+              <router-link to="home">首页</router-link>
             </span>
           </a-menu-item>
-          <a-sub-menu key="sub1">
-            <template #title>
-              <span>
-                <user-outlined />
-                subnav 1
-              </span>
-            </template>
-            <a-menu-item key="1">option1</a-menu-item>
-            <a-menu-item key="2">option2</a-menu-item>
-            <a-menu-item key="3">option3</a-menu-item>
-            <a-menu-item key="4">option4</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub2">
-            <template #title>
-              <span>
-                <laptop-outlined />
-                subnav 2
-              </span>
-            </template>
-            <a-menu-item key="5">option5</a-menu-item>
-            <a-menu-item key="6">option6</a-menu-item>
-            <a-menu-item key="7">option7</a-menu-item>
-            <a-menu-item key="8">option8</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub3">
-            <template #title>
-              <span>
-                <notification-outlined />
-                subnav 3
-              </span>
-            </template>
-            <a-menu-item key="9">option9</a-menu-item>
-            <a-menu-item key="10">option10</a-menu-item>
-            <a-menu-item key="11">option11</a-menu-item>
-            <a-menu-item key="12">option12</a-menu-item>
-          </a-sub-menu>
+          <a-menu-item :key="'/history'">
+            <span>
+              <history-outlined/>
+              <router-link to="history">历史记录</router-link>
+            </span>
+          </a-menu-item>
+          <a-menu-item :key="'/script'">
+            <span>
+              <profile-outlined/>
+              <router-link to="script">脚本管理</router-link>
+            </span>
+          </a-menu-item>
+<!--          <a-sub-menu key="sub1">-->
+<!--            <template #title>-->
+<!--              <span>-->
+<!--                <user-outlined />-->
+<!--                subnav 1-->
+<!--              </span>-->
+<!--            </template>-->
+<!--            <a-menu-item key="1">option1</a-menu-item>-->
+<!--            <a-menu-item key="2">option2</a-menu-item>-->
+<!--            <a-menu-item key="3">option3</a-menu-item>-->
+<!--            <a-menu-item key="4">option4</a-menu-item>-->
+<!--          </a-sub-menu>-->
         </a-menu>
       </a-layout-sider>
       <a-layout-content class="common-content">
@@ -101,23 +91,38 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
-import {useRoute} from "vue-router";
-import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons-vue';
+import {defineComponent, ref, reactive, toRefs, onMounted} from 'vue';
+import {useRoute} from 'vue-router';
+import {UserOutlined, NotificationOutlined, HistoryOutlined, ProfileOutlined} from '@ant-design/icons-vue';
 
 export default defineComponent({
   name: 'Layout',
   components: {
     UserOutlined,
-    LaptopOutlined,
     NotificationOutlined,
+    HistoryOutlined,
+    ProfileOutlined
   },
   setup() {
     const url = useRoute().path.split('/');
-    return {
-      selectedKeys: ref([url[url.length - 1]]),
-      selectedKeys2: ref(['1']),
+    console.log(url, url.length - 1)
+
+    const state = reactive({
+      selectedKey: ref(['/']),
+      selectedKeysMenu: ref([url[url.length - 1]]),
       openKeys: ref<string[]>(['sub1']),
+    })
+
+    const menuItem = ({item, key, keyPath}) => {
+      state.selectedKeysMenu = keyPath;
+    }
+
+    onMounted(async () => {
+      state.selectedKeysMenu = ['/' + url[url.length-1]];
+    })
+    return {
+      ...toRefs(state),
+      menuItem
     }
   }
 })
@@ -148,5 +153,25 @@ export default defineComponent({
 .layout ::v-deep .ant-layout-header {
   height: 58px;
   display: flex;
+}
+.menu-sider {
+  li {
+    text-align: left;
+  }
+  a::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: transparent;
+    content: '';
+  }
+  a {
+    color: rgba(0, 0, 0, 0.85);
+  }
+  .ant-menu-item-selected a, a:hover {
+    color: #1890ff;
+  }
 }
 </style>

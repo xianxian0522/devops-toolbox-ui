@@ -24,6 +24,14 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { requiresAuth: true }
             },
             {
+                path: 'history',
+                component: () => import('../views/History.vue'),
+            },
+            {
+                path: 'script',
+                component: () => import('../views/ScriptManagement.vue'),
+            },
+            {
                 path: 'contact',
                 component: () =>
                     import(/* webpackChunkName: "About" */ '../views/Contact.vue')
