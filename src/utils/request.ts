@@ -37,6 +37,7 @@ service.interceptors.response.use(response => {
     return response;
 }, error => {
     if(error.response.status=='401'){    //如果token 过期 则跳转到登录页面
+        localStorage.removeItem('token');
         router.push('/login').then();
     }
     message.error(error.message);

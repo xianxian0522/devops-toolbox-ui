@@ -34,6 +34,8 @@
 <script lang="ts">
 import {UnwrapRef, reactive, onMounted, watchEffect} from 'vue';
 import systemInfo from "../api/systemInfo";
+import _ from 'lodash';
+import {debounce} from "ant-design-vue/es/vc-table/src/utils";
 
 export default {
   name: "History",
@@ -53,7 +55,8 @@ export default {
     };
     onMounted(() => {
       watchEffect(() => {
-        refresh(formState);
+        debounce(refresh(formState), 200)
+        // _.debounce(refresh(formState), 200);
       })
     })
 
