@@ -23,7 +23,7 @@ export default {
   },
   setup() {
     const login = async () => {
-      const data = await systemInfo.login;
+      const data = await systemInfo.login();
       window.location.href = data.url;
     }
     onMounted(async () => {
@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     // login() {
-    //   const url = systemInfo.login;
+    //   const url = systemInfo.login();
     //   console.log(url);
     // }
   }

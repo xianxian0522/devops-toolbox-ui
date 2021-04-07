@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {message} from "ant-design-vue";
-import router from "@/router";
+import router from "../router";
 import qs from 'qs';
 
 const service = axios.create({
@@ -10,8 +10,9 @@ const service = axios.create({
 
 service.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
+    // console.log(token, 'token', config);
     if (token) {
-        config.headers.Authorization = 'Bearer' + token; //如果token 存在，就带上token
+        config.headers.Authorization = 'Bearer ' + token; //如果token 存在，就带上token
     } else {
         config.headers['token'] = ''; //return
     }
@@ -21,31 +22,38 @@ service.interceptors.request.use(config => {
 })
 
 service.interceptors.response.use(response => {
-    const { code, msg} = response.data;
-    if (code === 401) {
-        window.location.href = '/login';
-        // router.go();
-    } else {
-        message.error(msg);
-    }
+    const { status, statusText} = response;
+    // if (status === 200) {
+    //     return response;
+    // } else if (status === 401) {
+    //     localStorage.removeItem('token');
+    //     // window.location.href = '/login';
+    //     router.push('/login').then();
+    // } else {
+    //     message.error(statusText);
+    //     return Promise.reject(response);
+    // }
 
-    return  response;
+    return response;
 }, error => {
-    message.error(error);
+    if(error.response.status=='401'){    //如果token 过期 则跳转到登录页面
+        router.push('/login').then();
+    }
+    message.error(error.message);
     return Promise.reject(error);
 })
 
 export default {
     get(url: string, params = {}) {
         return new Promise((resolve, reject) => {
-            axios.get(url, {params})
+            service.get(url, {params})
                 .then(res => resolve(res.data))
                 .catch(err => reject(err))
         })
     },
     post: function (url: string, params = {}) {
         return new Promise((resolve, reject) => {
-            axios.post(url, qs.stringify(params))
+            service.post(url, qs.stringify(params))
                 .then(res => resolve(res.data))
                 .catch(err => reject(err))
         })

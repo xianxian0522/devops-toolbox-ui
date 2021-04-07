@@ -10,12 +10,21 @@ export default {
   name: "Middle",
   setup() {
     const token = localStorage.getItem('token');
-    if (token) {
-      router.push('/toolbox/home');
+
+    const login = async () => {
+      const data = await systemInfo.login();
+      await localStorage.setItem('token', data.token);
+      await router.push('/toolbox/home');
+    }
+
+    if (token === 'undefined' || !token) {
+      login()
     } else {
-      const token = systemInfo.login;
-      localStorage.setItem('token', token.token);
       router.push('/toolbox/home');
+    }
+
+    return {
+      login,
     }
   }
 }
