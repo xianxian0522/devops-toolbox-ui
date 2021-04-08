@@ -32,10 +32,9 @@
 </template>
 
 <script lang="ts">
-import {UnwrapRef, reactive, onMounted, watchEffect} from 'vue';
+import {UnwrapRef, reactive, onMounted, watchEffect, watch} from 'vue';
 import systemInfo from "../api/systemInfo";
 import _ from 'lodash';
-import {debounce} from "ant-design-vue/es/vc-table/src/utils";
 
 export default {
   name: "History",
@@ -49,21 +48,29 @@ export default {
       page: 1,
       size: 10,
     });
-    const refresh = async (query) => {
-      const data = await systemInfo.queryPageAll('getCommandHistories', query);
+    const refresh = async () => {
+      const data = await systemInfo.queryPageAll('getCommandHistories', formState);
       console.log(data, 'ddd');
     };
+    const formStateHandle = _.throttle(refresh, 300);
     onMounted(() => {
-      watchEffect(() => {
-        debounce(refresh(formState), 200)
-        // _.debounce(refresh(formState), 200);
-      })
+      refresh();
+      watch(formState, formStateHandle)
     })
 
     return {
       formState,
       refresh
     }
+  },
+  created() {
+    // this.refresh = _.debounce(this.click, 200)
+  },
+  methods: {
+    // async click() {
+    //   const data = await systemInfo.queryPageAll('getCommandHistories', this.formState);
+    //   console.log(data, 'xxx');
+    // }
   }
 }
 </script>
