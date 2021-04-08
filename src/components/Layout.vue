@@ -113,7 +113,7 @@ export default defineComponent({
       openKeys: ref<string[]>(['sub1']),
     })
 
-    const menuItem = ({item, key, keyPath}) => {
+    const menuItem = ({item, key, keyPath}: any) => {
       state.selectedKeysMenu = keyPath;
     }
 

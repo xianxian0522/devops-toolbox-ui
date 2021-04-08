@@ -2,7 +2,8 @@
   <div class="app-common-content">
     <a-breadcrumb separator=">" class="app-common-header">
       <a-breadcrumb-item>devops</a-breadcrumb-item>
-      <a-breadcrumb-item>devops</a-breadcrumb-item>
+      <a-breadcrumb-item>toolbox</a-breadcrumb-item>
+      <a-breadcrumb-item>历史记录</a-breadcrumb-item>
     </a-breadcrumb>
     <div class="toolbox-search">
       <a-form :model="formState" layout="inline">
@@ -39,7 +40,7 @@ import _ from 'lodash';
 export default {
   name: "History",
   setup() {
-    const formState: UnwrapRef = reactive({
+    const formState: UnwrapRef<any> = reactive({
       command: '',
       done: false,
       fileName: '',

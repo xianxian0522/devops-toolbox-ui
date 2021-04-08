@@ -1,12 +1,12 @@
 import axios from 'axios';
 import {message} from "ant-design-vue";
 import router from "../router";
-import qs from 'qs';
 
 const service = axios.create({
     baseURL: '/',
     timeout: 1000000, // 请求超时时间
 })
+service.defaults.headers.post['Content-Type'] = 'application/json';
 
 service.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
@@ -54,7 +54,7 @@ export default {
     },
     post: function (url: string, params = {}) {
         return new Promise((resolve, reject) => {
-            service.post(url, qs.stringify(params))
+            service.post(url, params)
                 .then(res => resolve(res.data))
                 .catch(err => reject(err))
         })

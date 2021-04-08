@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
     },
     // {
     //     path: '/home',
-    //     component: () => import('../views/Home.vue'),
+    //     component: () => import('../views/Hellworld.vue'),
     // },
     // {
     //     path: '/contact',
