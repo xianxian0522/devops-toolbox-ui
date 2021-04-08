@@ -152,7 +152,7 @@ export default defineComponent({
   background: #fff;
   border-left: 1px solid #DCDEE5;
 }
-.layout ::v-deep .ant-layout-header {
+.layout /deep/ .ant-layout-header {
   height: 58px;
   display: flex;
 }
