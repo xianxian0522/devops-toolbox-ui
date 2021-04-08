@@ -57,13 +57,13 @@ export default {
     const state = reactive({
       ids: [],
       args: [],
-      scriptId: undefined,
+      scriptId: '',
       command: '',
       comment: '',
     })
 
     const getServers = async () => {
-      const data = await systemInfo.queryPageAll('/getServers', value);
+      const data = await systemInfo.queryPageAll('getServers', value);
       data.Biz.map((biz, index: number) => {
         // console.log(treeData, biz);
         treeData.value.push({
