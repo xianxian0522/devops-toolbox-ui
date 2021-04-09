@@ -1,55 +1,56 @@
 <template>
   <div class="app-common-content">
     <a-spin :spinning="isLoading" tip="Loading..." size="large">
-    <a-breadcrumb separator=">" class="app-common-header">
-      <a-breadcrumb-item>devops</a-breadcrumb-item>
-      <a-breadcrumb-item>toolbox</a-breadcrumb-item>
-      <a-breadcrumb-item>首页</a-breadcrumb-item>
-    </a-breadcrumb>
-    <div class="home-select">
-      <a-tree-select
-          v-model:value="value"
-          :treeData="treeData"
-          show-search
-          multiple
-          style="width: 100%"
-          :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-          placeholder="请选择服务器"
-          allow-clear
-          tree-default-expand-all>
-      </a-tree-select>
-      <div class="btns">
-        <a-select
-            v-model:value="valueParams"
-            mode="tags"
-            style="width: 400px"
-            placeholder="请输入参数">
-        </a-select>
-        <a-button type="primary" :disabled="!scriptId" @click="execScript">执行脚本</a-button>
-        <a-button type="primary" @click="execCommand">执行命令</a-button>
+      <a-breadcrumb separator=">" class="app-common-header">
+        <a-breadcrumb-item>devops</a-breadcrumb-item>
+        <a-breadcrumb-item>toolbox</a-breadcrumb-item>
+        <a-breadcrumb-item>首页</a-breadcrumb-item>
+      </a-breadcrumb>
+      <div class="home-select">
+        <a-tree-select
+            v-model:value="value"
+            :treeData="treeData"
+            show-search
+            multiple
+            style="width: 100%"
+            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+            placeholder="请选择服务器"
+            allow-clear
+            tree-default-expand-all>
+        </a-tree-select>
+        <div class="btns">
+          <a-select
+              v-model:value="valueParams"
+              mode="tags"
+              style="width: 400px"
+              placeholder="请输入参数">
+          </a-select>
+          <a-button type="primary" :disabled="!scriptId" @click="execScript">执行脚本</a-button>
+          <a-button type="primary" @click="execCommand">执行命令</a-button>
+        </div>
       </div>
-    </div>
-    <div class="home-command">
-      <a-textarea v-model:value="command" placeholder="脚本输入框" :rows="6" />
-      <a-textarea v-model:value="comment" placeholder="备注" :rows="6" />
-    </div>
+      <div class="home-command">
+        <a-textarea v-model:value="command" placeholder="脚本输入框" :rows="6" />
+        <a-textarea v-model:value="comment" placeholder="备注" :rows="6" />
+      </div>
+      <div class="home-command-out">
+        <a-descriptions :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in outData">
+          <a-descriptions-item label="id">{{ out.id }}</a-descriptions-item>
+          <a-descriptions-item label="Ip" :span="2">{{ out.ip }}</a-descriptions-item>
+          <a-descriptions-item label="pid">{{ out.pid }}</a-descriptions-item>
+          <a-descriptions-item label="stderr" :span="2">{{ out.stderr }}</a-descriptions-item>
+          <a-descriptions-item label="retcode">{{ out.retcode }}</a-descriptions-item>
+          <a-descriptions-item label="stdout">{{ out.stdout }}</a-descriptions-item>
+        </a-descriptions>
+      </div>
     </a-spin>
-    <div class="home-command-out">
-      <a-descriptions title="执行命令的输出" bordered v-for="out in outData">
-        <a-descriptions-item label="id">{{ out.id }}</a-descriptions-item>
-        <a-descriptions-item label="Ip" :span="2">{{ out.ip }}</a-descriptions-item>
-        <a-descriptions-item label="pid">{{ out.pid }}</a-descriptions-item>
-        <a-descriptions-item label="stderr" :span="2">{{ out.stderr }}</a-descriptions-item>
-        <a-descriptions-item label="retcode">{{ out.retcode }}</a-descriptions-item>
-        <a-descriptions-item label="stdout">{{ out.stdout }}</a-descriptions-item>
-      </a-descriptions>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
-import {onMounted, reactive, ref, watch, toRefs} from 'vue';
+import {onMounted, reactive, ref, watch, toRefs, getCurrentInstance} from 'vue';
 import systemInfo from "../api/systemInfo";
+import {useRoute} from "vue-router";
 
 
 interface TreeDataItem {
@@ -59,6 +60,14 @@ interface TreeDataItem {
   disabled?: boolean;
   children?: TreeDataItem[];
 }
+interface OutItem {
+  id: number;
+  ip: string;
+  pid: number;
+  stderr: string;
+  retcode: number;
+  stdout: number;
+}
 
 export default {
   name: "Home",
@@ -66,22 +75,26 @@ export default {
     const value = ref<string[]>([]);
     const treeData = ref<TreeDataItem[]>([]);
     const valueParams = ref<string[]>([]);
-    // const isLoading = ref(false);
     const state = reactive({
-      ids: [],
-      args: [],
-      scriptId: '',
-      command: '',
+      ids: [] as number[],
+      args: [] as string[],
+      scriptId: '' as string,
+      command: '' as string,
       comment: '',
     });
     const stateOut = reactive({
       isLoading: false,
-      outData: [],
+      outData: [] as OutItem[],
     });
+
+    const proxy = getCurrentInstance()?.proxy
+    console.log(proxy?.$root?.$route)
+    const route = useRoute()
+    console.log(route.query, 'user')
 
     const getServers = async () => {
       const data = await systemInfo.queryPageAll('getServers', value);
-      data.Biz.map((biz, index: number) => {
+      data.Biz.map((biz: any, index: number) => {
         // console.log(treeData, biz);
         treeData.value.push({
           value: biz.Name,
@@ -91,12 +104,12 @@ export default {
           children: [],
         });
         if ((biz.Apps && biz.Apps.length > 0) || (biz.Hosts && biz.Hosts.length > 0)) {
-          treeData.value[index].children.push({
+          (treeData.value[index].children as TreeDataItem[]).push({
             value: '主机-' + index + '-' + biz.Name,
             title: '主机',
             key: '主机-' + index + '-' + biz.Name,
             disabled: true,
-            children: (biz.Hosts.map(h => ({
+            children: (biz.Hosts.map((h: any) => ({
               value: h.Name + '-' + h.Id,
               title: h.Ip,
               key: h.Name + '-' + h.Id,
@@ -104,17 +117,17 @@ export default {
             }))),
           })
           if (biz.Apps[0].Hosts && biz.Apps[0].Hosts.length > 0) {
-            treeData.value[index].children.push({
+            (treeData.value[index].children as TreeDataItem[]).push({
               value: '应用-' + index + '-' + biz.Name,
               title: '应用',
               key: '应用-' + index + '-' + biz.Name,
               disabled: true,
-              children: (biz.Apps.map((a) => ({
+              children: (biz.Apps.map((a: any) => ({
                 value: a.Name,
                 title: a.Name,
                 key: a.Name,
                 disabled: true,
-                children: (a.Hosts.map(h => ({
+                children: (a.Hosts.map((h: any) => ({
                   value: a.Name + '-' + h.HostName + '-' + h.Id,
                   title: (Object.keys(h).filter(id => id !== 'Id').map(key => `${key}:${h[key]}`).join(',')),
                   key: a.Name + '-' + h.HostName + '-' + h.Id,
@@ -123,12 +136,12 @@ export default {
               }))),
             })
           } else {
-            treeData.value[index].children.push({
+            (treeData.value[index].children as TreeDataItem[]).push({
               value: '应用-' + index + '-' + biz.Name,
               title: '应用',
               key: '应用-' + index + '-' + biz.Name,
               disabled: true,
-              children: (biz.Apps.map(a => ({
+              children: (biz.Apps.map((a: any) => ({
                 value: a.Name,
                 title: a.Name,
                 key: a.Name,
@@ -141,17 +154,12 @@ export default {
     }
 
     const execScript = async () => {
-      const value = state;
-      delete value.comment;
-      delete value.command;
-      const res = await systemInfo.execCommandScript('execScript', value);
+      const res = await systemInfo.execCommandScript('execScript', state);
       console.log(res, 'res');
     }
     const execCommand = async () => {
-      const value = state;
-      delete value.scriptId;
       stateOut.isLoading = true;
-      const res = await systemInfo.execCommandScript('execCommand', value);
+      const res = await systemInfo.execCommandScript('execCommand', state);
       if (res && res.id) {
         await getCurrentOutById(res.id);
       } else {
@@ -165,7 +173,7 @@ export default {
       state.comment = data.comment;
     }
 
-    const getCurrentOutById = async (outId) => {
+    const getCurrentOutById = async (outId: number) => {
       const data = await systemInfo.queryPageAll('getCurrentOut', { outId });
       if (data.out.length === 0) {
         await setTimeout( () => getCurrentOutById(outId), 2000);
@@ -205,12 +213,6 @@ export default {
       execScript,
     };
   },
-  created() {
-    if (this.$route.query && this.$route.query.scriptId) {
-      this.scriptId = this.$route.query.scriptId;
-    }
-    console.log(this.scriptId, 'di');
-  }
 }
 </script>
 
@@ -234,5 +236,8 @@ export default {
 }
 .home-command-out {
   margin-top: 20px;
+  .ant-descriptions {
+    margin-bottom: 10px;
+  }
 }
 </style>
