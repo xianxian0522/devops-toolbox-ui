@@ -1,5 +1,6 @@
 <template>
   <div class="app-common-content">
+    <a-spin :spinning="isLoading" tip="Loading..." size="large">
     <a-breadcrumb separator=">" class="app-common-header">
       <a-breadcrumb-item>devops</a-breadcrumb-item>
       <a-breadcrumb-item>toolbox</a-breadcrumb-item>
@@ -32,6 +33,10 @@
       <a-textarea v-model:value="command" placeholder="脚本输入框" :rows="6" />
       <a-textarea v-model:value="comment" placeholder="备注" :rows="6" />
     </div>
+    </a-spin>
+    <div>
+      neirong
+    </div>
   </div>
 </template>
 
@@ -54,13 +59,14 @@ export default {
     const value = ref<string[]>([]);
     const treeData = ref<TreeDataItem[]>([]);
     const valueParams = ref<string[]>([]);
+    const isLoading = ref(false);
     const state = reactive({
       ids: [],
       args: [],
       scriptId: '',
       command: '',
       comment: '',
-    })
+    });
 
     const getServers = async () => {
       const data = await systemInfo.queryPageAll('getServers', value);
@@ -134,13 +140,28 @@ export default {
       const value = state;
       delete value.scriptId;
       const res = await systemInfo.execCommandScript('execCommand', value);
-      console.log(res, 'vv');
+      isLoading.value = true;
+      if (res && res.id) {
+        await getCurrentOutById(res.id);
+      } else {
+        isLoading.value = false;
+      }
     }
 
     const queryContent = async () => {
       const data = await systemInfo.queryEditById(state.scriptId);
       state.command = data.command;
       state.comment = data.comment;
+    }
+
+    const getCurrentOutById = async (outId) => {
+      const data = await systemInfo.queryPageAll('getCurrentOut', { outId });
+      if (data.out.length === 0) {
+        setTimeout( await getCurrentOutById(outId), 20000);
+      } else {
+        isLoading.value = false;
+        console.log(data, 'outId');
+      }
     }
 
     onMounted(() => {
@@ -170,6 +191,7 @@ export default {
       ...toRefs(state),
       execCommand,
       execScript,
+      isLoading,
     };
   },
   created() {

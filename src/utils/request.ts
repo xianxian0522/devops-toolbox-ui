@@ -40,7 +40,7 @@ service.interceptors.response.use(response => {
         localStorage.removeItem('token');
         router.push('/login').then();
     }
-    message.error(error.message);
+    message.error(error.response.data);
     return Promise.reject(error);
 })
 
