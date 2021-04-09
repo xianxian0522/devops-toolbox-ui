@@ -34,8 +34,15 @@
       <a-textarea v-model:value="comment" placeholder="备注" :rows="6" />
     </div>
     </a-spin>
-    <div>
-      neirong
+    <div class="home-command-out">
+      <a-descriptions title="执行命令的输出" bordered v-for="out in outData">
+        <a-descriptions-item label="id">{{ out.id }}</a-descriptions-item>
+        <a-descriptions-item label="Ip" :span="2">{{ out.ip }}</a-descriptions-item>
+        <a-descriptions-item label="pid">{{ out.pid }}</a-descriptions-item>
+        <a-descriptions-item label="stderr" :span="2">{{ out.stderr }}</a-descriptions-item>
+        <a-descriptions-item label="retcode">{{ out.retcode }}</a-descriptions-item>
+        <a-descriptions-item label="stdout">{{ out.stdout }}</a-descriptions-item>
+      </a-descriptions>
     </div>
   </div>
 </template>
@@ -59,13 +66,17 @@ export default {
     const value = ref<string[]>([]);
     const treeData = ref<TreeDataItem[]>([]);
     const valueParams = ref<string[]>([]);
-    const isLoading = ref(false);
+    // const isLoading = ref(false);
     const state = reactive({
       ids: [],
       args: [],
       scriptId: '',
       command: '',
       comment: '',
+    });
+    const stateOut = reactive({
+      isLoading: false,
+      outData: [],
     });
 
     const getServers = async () => {
@@ -139,12 +150,12 @@ export default {
     const execCommand = async () => {
       const value = state;
       delete value.scriptId;
+      stateOut.isLoading = true;
       const res = await systemInfo.execCommandScript('execCommand', value);
-      isLoading.value = true;
       if (res && res.id) {
         await getCurrentOutById(res.id);
       } else {
-        isLoading.value = false;
+        stateOut.isLoading = false;
       }
     }
 
@@ -157,10 +168,10 @@ export default {
     const getCurrentOutById = async (outId) => {
       const data = await systemInfo.queryPageAll('getCurrentOut', { outId });
       if (data.out.length === 0) {
-        setTimeout( await getCurrentOutById(outId), 20000);
+        await setTimeout( () => getCurrentOutById(outId), 2000);
       } else {
-        isLoading.value = false;
-        console.log(data, 'outId');
+        stateOut.isLoading = false;
+        stateOut.outData = data.out;
       }
     }
 
@@ -189,9 +200,9 @@ export default {
       treeData,
       valueParams,
       ...toRefs(state),
+      ...toRefs(stateOut),
       execCommand,
       execScript,
-      isLoading,
     };
   },
   created() {
@@ -220,5 +231,8 @@ export default {
   textarea:nth-child(1) {
     margin-right: 20px;
   }
+}
+.home-command-out {
+  margin-top: 20px;
 }
 </style>
