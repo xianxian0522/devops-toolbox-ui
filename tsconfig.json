@@ -21,6 +21,7 @@
     // 启用 --strict相当于启用 --noImplicitAny, --noImplicitThis, --alwaysStrict，
     // --strictNullChecks和 --strictFunctionTypes和--strictPropertyInitialization。
     "strict": true,
+    "jsx": "preserve",
     // 生成相应的 .map文件。
     "sourceMap": true,
     // 忽略所有的声明文件（ *.d.ts）的类型检查。
@@ -48,6 +49,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
+    "src/**/*.d.ts",
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
