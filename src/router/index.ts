@@ -28,6 +28,10 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('../views/History.vue'),
             },
             {
+                path: 'command',
+                component: () => import('../views/CommandDetail.vue')
+            },
+            {
                 path: 'script',
                 component: () => import('../views/ScriptManagement.vue'),
             },

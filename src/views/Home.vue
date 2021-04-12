@@ -34,6 +34,8 @@
         <a-textarea v-model:value="comment" placeholder="备注" :rows="6" />
       </div>
       <div class="home-command-out">
+<!--        请求回来后加载-->
+        <Description v-if="outData"/>
         <a-descriptions :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in outData">
           <a-descriptions-item label="id">{{ out.id }}</a-descriptions-item>
           <a-descriptions-item label="Ip" :span="2">{{ out.ip }}</a-descriptions-item>
@@ -48,9 +50,10 @@
 </template>
 
 <script lang="ts">
-import {onMounted, reactive, ref, watch, toRefs, getCurrentInstance} from 'vue';
+import {onMounted, reactive, ref, watch, toRefs, getCurrentInstance, provide} from 'vue';
 import systemInfo from "../api/systemInfo";
 import {useRoute} from "vue-router";
+import Description from '../components/Description.vue';
 
 
 interface TreeDataItem {
@@ -71,6 +74,7 @@ interface OutItem {
 
 export default {
   name: "Home",
+  components: { Description },
   setup() {
     const value = ref<string[]>([]);
     const treeData = ref<TreeDataItem[]>([]);
@@ -86,6 +90,7 @@ export default {
       isLoading: false,
       outData: [] as OutItem[],
     });
+    provide('outData', stateOut.outData);
 
     const proxy = getCurrentInstance()?.proxy
     console.log(proxy?.$root?.$route)
