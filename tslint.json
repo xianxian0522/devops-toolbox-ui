@@ -9,6 +9,15 @@
       "typeLiterals": "ignore"
     }
   }],
+  "extends": [
+    "tslint:recommended"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**",
+      "*.json"
+    ]
+  },
 
   // 禁止给类的构造函数的参数添加修饰符
   "no-parameter-properties": false,

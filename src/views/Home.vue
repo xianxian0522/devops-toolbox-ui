@@ -94,63 +94,65 @@ export default {
 
     const getServers = async () => {
       const data = await systemInfo.queryPageAll('getServers', value);
-      data.Biz.map((biz: any, index: number) => {
-        // console.log(treeData, biz);
-        treeData.value.push({
-          value: biz.Name,
-          title: biz.Name,
-          key: biz.Name,
-          disabled: true,
-          children: [],
-        });
-        if ((biz.Apps && biz.Apps.length > 0) || (biz.Hosts && biz.Hosts.length > 0)) {
-          (treeData.value[index].children as TreeDataItem[]).push({
-            value: '主机-' + index + '-' + biz.Name,
-            title: '主机',
-            key: '主机-' + index + '-' + biz.Name,
+      if (data && data.Biz) {
+        data.Biz.map((biz: any, index: number) => {
+          // console.log(treeData, biz);
+          treeData.value.push({
+            value: biz.Name,
+            title: biz.Name,
+            key: biz.Name,
             disabled: true,
-            children: (biz.Hosts.map((h: any) => ({
-              value: h.Name + '-' + h.Id,
-              title: h.Ip,
-              key: h.Name + '-' + h.Id,
-              disabled: false,
-            }))),
-          })
-          if (biz.Apps[0].Hosts && biz.Apps[0].Hosts.length > 0) {
+            children: [],
+          });
+          if ((biz.Apps && biz.Apps.length > 0) || (biz.Hosts && biz.Hosts.length > 0)) {
             (treeData.value[index].children as TreeDataItem[]).push({
-              value: '应用-' + index + '-' + biz.Name,
-              title: '应用',
-              key: '应用-' + index + '-' + biz.Name,
+              value: '主机-' + index + '-' + biz.Name,
+              title: '主机',
+              key: '主机-' + index + '-' + biz.Name,
               disabled: true,
-              children: (biz.Apps.map((a: any) => ({
-                value: a.Name,
-                title: a.Name,
-                key: a.Name,
-                disabled: true,
-                children: (a.Hosts.map((h: any) => ({
-                  value: a.Name + '-' + h.HostName + '-' + h.Id,
-                  title: (Object.keys(h).filter(id => id !== 'Id').map(key => `${key}:${h[key]}`).join(',')),
-                  key: a.Name + '-' + h.HostName + '-' + h.Id,
-                  disabled: false,
-                })))
+              children: (biz.Hosts.map((h: any) => ({
+                value: h.Name + '-' + h.Id,
+                title: h.Ip,
+                key: h.Name + '-' + h.Id,
+                disabled: false,
               }))),
             })
-          } else {
-            (treeData.value[index].children as TreeDataItem[]).push({
-              value: '应用-' + index + '-' + biz.Name,
-              title: '应用',
-              key: '应用-' + index + '-' + biz.Name,
-              disabled: true,
-              children: (biz.Apps.map((a: any) => ({
-                value: a.Name,
-                title: a.Name,
-                key: a.Name,
+            if (biz.Apps[0].Hosts && biz.Apps[0].Hosts.length > 0) {
+              (treeData.value[index].children as TreeDataItem[]).push({
+                value: '应用-' + index + '-' + biz.Name,
+                title: '应用',
+                key: '应用-' + index + '-' + biz.Name,
                 disabled: true,
-              }))),
-            });
+                children: (biz.Apps.map((a: any) => ({
+                  value: a.Name,
+                  title: a.Name,
+                  key: a.Name,
+                  disabled: true,
+                  children: (a.Hosts.map((h: any) => ({
+                    value: a.Name + '-' + h.HostName + '-' + h.Id,
+                    title: (Object.keys(h).filter(id => id !== 'Id').map(key => `${key}:${h[key]}`).join(',')),
+                    key: a.Name + '-' + h.HostName + '-' + h.Id,
+                    disabled: false,
+                  })))
+                }))),
+              })
+            } else {
+              (treeData.value[index].children as TreeDataItem[]).push({
+                value: '应用-' + index + '-' + biz.Name,
+                title: '应用',
+                key: '应用-' + index + '-' + biz.Name,
+                disabled: true,
+                children: (biz.Apps.map((a: any) => ({
+                  value: a.Name,
+                  title: a.Name,
+                  key: a.Name,
+                  disabled: true,
+                }))),
+              });
+            }
           }
-        }
-      });
+        });
+      }
     }
 
     const execScript = async () => {
@@ -169,8 +171,10 @@ export default {
 
     const queryContent = async () => {
       const data = await systemInfo.queryEditById(state.scriptId);
-      state.command = data.command;
-      state.comment = data.comment;
+      if (data && data.command) {
+        state.command = data.command;
+        state.comment = data.comment;
+      }
     }
 
     const getCurrentOutById = async (outId: number) => {

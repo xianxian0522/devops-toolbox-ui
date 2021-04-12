@@ -23,6 +23,6 @@ const viteConfig: UserConfig = {
             changeOrigin: true,
         },
     },
-}
+};
 
 export default viteConfig
