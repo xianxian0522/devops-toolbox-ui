@@ -29,7 +29,7 @@
     // 指定ECMAScript目标版本
     "target": "esnext",
     // 要包含的类型声明文件名列表
-    "types": ["vite/client", "node"],
+    "types": ["node"],
     "isolatedModules": true,
     // 模块名到基于 baseUrl的路径映射的列表。
     "paths": {

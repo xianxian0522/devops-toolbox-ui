@@ -24,7 +24,9 @@ export default {
   setup() {
     const login = async () => {
       const data = await systemInfo.login();
-      window.location.href = data.url;
+      if (data && data.url) {
+        window.location.href = data.url;
+      }
     }
     onMounted(async () => {
     })

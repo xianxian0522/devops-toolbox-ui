@@ -4,7 +4,7 @@ const APILogin = '/api/v1/sso/login';
 const API = '/devops-toolbox/api/v1';
 
 const systemInfo: any = {};
-systemInfo.login = () => request.get(APILogin)
+systemInfo.login = () => request.get(APILogin).catch(err => console.error(err))
 
 systemInfo.queryPageAll = (urlString: string, params?: any) => request.get(`${API}/commands/${urlString}`, params).catch(err => console.error(err))
 
