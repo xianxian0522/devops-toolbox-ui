@@ -26,7 +26,7 @@
         </a-form-item>
       </a-form>
     </div>
-    <div >
+    <div style="min-height: 100%;">
       <a-table
           :columns="columns"
           :data-source="commandsData"
@@ -45,7 +45,7 @@
         </template>
         <template #action="{ record }">
           <span>
-            <router-link :to="{path: 'command', query: {commandId: record.id}}">详情</router-link>
+            <router-link :to="{path: 'history/command', query: {commandId: record.id}}">详情</router-link>
           </span>
         </template>
       </a-table>
@@ -90,12 +90,12 @@ export default {
     const commandsData = ref<[]>([]);
 
     const refresh = async (e) => {
+      isResultLoading.value = true;
       if (e === formState) {
         commandsData.value = [];
         state.page = 1;
       }
       const value = {...formState, ...state};
-      isResultLoading.value = true;
       if (value.starttime) {
         value.starttime = new Date(value.starttime).getTime();
       }

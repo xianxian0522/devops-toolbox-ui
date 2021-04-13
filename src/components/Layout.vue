@@ -53,19 +53,19 @@
           <a-menu-item :key="'/home'">
             <span>
               <user-outlined/>
-              <router-link to="home">首页</router-link>
+              <router-link to="/toolbox/home">首页</router-link>
             </span>
           </a-menu-item>
           <a-menu-item :key="'/history'">
             <span>
               <history-outlined/>
-              <router-link to="history">历史记录</router-link>
+              <router-link to="/toolbox/history">历史记录</router-link>
             </span>
           </a-menu-item>
           <a-menu-item :key="'/script'">
             <span>
               <profile-outlined/>
-              <router-link to="script">脚本管理</router-link>
+              <router-link to="/toolbox/script">脚本管理</router-link>
             </span>
           </a-menu-item>
 <!--          <a-sub-menu key="sub1">-->
@@ -104,11 +104,11 @@ export default defineComponent({
   },
   setup() {
     const url = useRoute().path.split('/');
-    console.log(url, url.length - 1)
 
     const state = reactive({
       selectedKey: ref(['/']),
-      selectedKeysMenu: ref([url[url.length - 1]]),
+      // selectedKeysMenu: ref([url[url.length - 1]]),
+      selectedKeysMenu: ref([url[2]]),
     })
 
     const menuItem = ({item, key, keyPath}: any) => {
@@ -116,7 +116,8 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      state.selectedKeysMenu = ['/' + url[url.length-1]];
+      // state.selectedKeysMenu = ['/' + url[url.length-1]];
+      state.selectedKeysMenu = ['/' + url[2]];
     })
     return {
       ...toRefs(state),
