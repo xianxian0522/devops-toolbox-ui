@@ -83,11 +83,11 @@ export default {
     const commandsData = ref<[]>([]);
 
     const refresh = async (e) => {
-      const value = {...formState, ...state};
       if (e === formState) {
         commandsData.value = [];
-        value.page = 1;
+        state.page = 1;
       }
+      const value = {...formState, ...state};
       isResultLoading.value = true;
       if (value.starttime) {
         value.starttime = new Date(value.starttime).getTime();
@@ -99,8 +99,8 @@ export default {
       isResultLoading.value = false;
       if (data && data.commands) {
         commandsData.value = commandsData.value.concat(data.commands);
-        state.page = parseInt(data.page, 10);
-        state.size = parseInt(data.size, 10);
+        // state.page = parseInt(data.page, 10);
+        // state.size = parseInt(data.size, 10);
         total.value = data.total;
       }
     };
@@ -108,7 +108,7 @@ export default {
     const stateHandle = _.throttle(refresh, 1000);
 
     const scrollFn = async () => {
-      if (state.page * state.size >= state.total) {
+      if (state.page * state.size >= total.value) {
         return message.info('没有更多数据了')
       }
       state.page ++ ;

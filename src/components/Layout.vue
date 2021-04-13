@@ -48,7 +48,6 @@
             mode="inline"
             @click="menuItem"
             v-model:selectedKeys="selectedKeysMenu"
-            v-model:openKeys="openKeys"
             :style="{ height: '100%', borderRight: 0 }"
         >
           <a-menu-item :key="'/home'">
@@ -110,7 +109,6 @@ export default defineComponent({
     const state = reactive({
       selectedKey: ref(['/']),
       selectedKeysMenu: ref([url[url.length - 1]]),
-      openKeys: ref<string[]>(['sub1']),
     })
 
     const menuItem = ({item, key, keyPath}: any) => {
@@ -131,8 +129,9 @@ export default defineComponent({
 <style scoped lang="less">
 .layout {
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  height: inherit;
+  //height: 100vh;
+  //overflow: hidden;
 }
 // 侧边栏滚动
 .ant-layout-sider {
