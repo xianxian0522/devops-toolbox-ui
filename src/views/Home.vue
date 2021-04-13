@@ -34,7 +34,6 @@
         <a-textarea v-model:value="comment" placeholder="备注" :rows="6" />
       </div>
       <div class="home-command-out">
-<!--        请求回来后加载-->
         <Description v-if="isShowChild" :outData="outData"/>
 <!--        <a-descriptions :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in outData">-->
 <!--          <a-descriptions-item label="id">{{ out.id }}</a-descriptions-item>-->

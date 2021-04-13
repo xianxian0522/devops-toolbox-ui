@@ -57,7 +57,7 @@
 import {UnwrapRef, reactive, onMounted, watch, ref, computed, watchEffect} from 'vue';
 import systemInfo from "../api/systemInfo";
 import _ from 'lodash';
-import {debounce} from "../utils/debounce";
+import {debounce} from '../utils/debounce';
 import {message} from "ant-design-vue";
 import moment from "moment";
 
@@ -65,7 +65,7 @@ export default {
   name: "History",
   setup() {
     const formState: UnwrapRef<any> = reactive({
-      done: false,
+      done: true,
       fileName: '',
       starttime: null,
       endtime: null,
@@ -147,10 +147,4 @@ export default {
 
 <style scoped lang="less">
 @import '../components/index.less';
-.toolbox-search {
-  text-align: left;
-  button {
-    margin-right: 20px;
-  }
-}
 </style>
