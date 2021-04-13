@@ -35,15 +35,15 @@
       </div>
       <div class="home-command-out">
 <!--        请求回来后加载-->
-        <Description v-if="outData"/>
-        <a-descriptions :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in outData">
-          <a-descriptions-item label="id">{{ out.id }}</a-descriptions-item>
-          <a-descriptions-item label="Ip" :span="2">{{ out.ip }}</a-descriptions-item>
-          <a-descriptions-item label="pid">{{ out.pid }}</a-descriptions-item>
-          <a-descriptions-item label="stderr" :span="2">{{ out.stderr }}</a-descriptions-item>
-          <a-descriptions-item label="retcode">{{ out.retcode }}</a-descriptions-item>
-          <a-descriptions-item label="stdout">{{ out.stdout }}</a-descriptions-item>
-        </a-descriptions>
+        <Description v-if="isShowChild" :outData="outData"/>
+<!--        <a-descriptions :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in outData">-->
+<!--          <a-descriptions-item label="id">{{ out.id }}</a-descriptions-item>-->
+<!--          <a-descriptions-item label="Ip" :span="2">{{ out.ip }}</a-descriptions-item>-->
+<!--          <a-descriptions-item label="pid">{{ out.pid }}</a-descriptions-item>-->
+<!--          <a-descriptions-item label="stderr" :span="2">{{ out.stderr }}</a-descriptions-item>-->
+<!--          <a-descriptions-item label="retcode">{{ out.retcode }}</a-descriptions-item>-->
+<!--          <a-descriptions-item label="stdout">{{ out.stdout }}</a-descriptions-item>-->
+<!--        </a-descriptions>-->
       </div>
     </a-spin>
   </div>
@@ -88,9 +88,10 @@ export default {
     });
     const stateOut = reactive({
       isLoading: false,
+      isShowChild: false,
       outData: [] as OutItem[],
     });
-    provide('outData', stateOut.outData);
+    // provide('outData', stateOut.outData);
 
     const proxy = getCurrentInstance()?.proxy
     console.log(proxy?.$root?.$route)
@@ -189,6 +190,7 @@ export default {
       } else {
         stateOut.isLoading = false;
         stateOut.outData = data.out;
+        stateOut.isShowChild = true;
       }
     }
 

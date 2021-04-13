@@ -1,6 +1,6 @@
 <template>
 <div>
-  <a-descriptions :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in outData">
+  <a-descriptions :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in props.outData">
     <a-descriptions-item label="id">{{ out.id }}</a-descriptions-item>
     <a-descriptions-item label="Ip" :span="2">{{ out.ip }}</a-descriptions-item>
     <a-descriptions-item label="pid">{{ out.pid }}</a-descriptions-item>
@@ -12,10 +12,12 @@
 </template>
 
 <script setup>
-import { inject } from "vue";
+import {defineProps, inject} from "vue";
 
-const outData = inject('outData')
-console.log(outData);
+const props = defineProps({
+  outData: {type: Array}
+})
+// const outData = inject('outData')
 
 </script>
 
