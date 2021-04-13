@@ -35,7 +35,13 @@
           :scroll="{ x: 1300}"
           :rowKey="(record, index) => index">
         <template #name="{ text }">
-          <a>{{ text }}</a>
+          <a> {{ text }}</a>
+        </template>
+        <template #done="{ text: done }">
+          <span> {{ done ? '是' : '否' }}</span>
+        </template>
+        <template #startTime="{ text: startTime }">
+          <span> {{ formatDateTime(startTime) }}</span>
         </template>
         <template #action="{ record }">
           <span>
@@ -53,6 +59,7 @@ import systemInfo from "../api/systemInfo";
 import _ from 'lodash';
 import {debounce} from "../utils/debounce";
 import {message} from "ant-design-vue";
+import moment from "moment";
 
 export default {
   name: "History",
@@ -71,9 +78,9 @@ export default {
     const columns = [
       {title: '文件名', key: 'fileName', dataIndex: 'fileName', fixed: 'left', width: 120},
       {title: '描述', key: 'description', dataIndex: 'description'},
-      {title: '执行时间', key: 'starttime', dataIndex: 'starttime'},
+      {title: '执行时间', key: 'startTime', dataIndex: 'startTime', slots: { customRender: 'startTime' },},
       {title: '执行脚本概略', key: 'command', dataIndex: 'command'},
-      {title: '执行完毕', key: 'done', dataIndex: 'done'},
+      {title: '执行完毕', key: 'done', dataIndex: 'done', slots: { customRender: 'done' },},
       {title: '备注', key: 'comment', dataIndex: 'comment'},
       {
         title: '操作', key: 'action', slots: { customRender: 'action' }, fixed: 'right', width: 120
@@ -115,6 +122,10 @@ export default {
     }
     const mousewheel = debounce(scrollFn, 200)
 
+    const formatDateTime = (value) => {
+      return moment(value).format('yyyy-MM-DD HH:mm:ss')
+    }
+
     onMounted(() => {
       refresh();
       watch(formState, formStateHandle);
@@ -127,7 +138,8 @@ export default {
       commandsData,
       isResultLoading,
       mousewheel,
-      refresh
+      refresh,
+      formatDateTime,
     }
   },
 }
