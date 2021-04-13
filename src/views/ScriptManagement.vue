@@ -25,7 +25,7 @@
       >
         <template #name="{ text }">{{ text }}</template>
         <template #detail="{ text: detail }">
-          <a-button>详情</a-button>
+          <a-button type="link">详情</a-button>
         </template>
         <template #action="{ record }">
           <a-button type="link" @click="showEditScript(record.id)">编辑</a-button>
