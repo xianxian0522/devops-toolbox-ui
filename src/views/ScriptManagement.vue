@@ -24,11 +24,11 @@
           @change="handleTableChange"
       >
         <template #name="{ text }">{{ text }}</template>
-        <template #detail="{ text: detail }">
-          <a-button type="link">详情</a-button>
+        <template #detail="{ record }">
+          <a-button type="link" @click="showEditScript(record.id, true)">详情</a-button>
         </template>
         <template #action="{ record }">
-          <a-button type="link" @click="showEditScript(record.id)">编辑</a-button>
+          <a-button type="link" @click="showEditScript(record.id, false)">编辑</a-button>
         </template>
       </a-table>
     </div>
@@ -37,16 +37,20 @@
         :title="mode === 'created' ? '新增脚本信息' : '修改脚本信息'"
         v-model:visible="visible"
         @ok="onSubmit"
+        ok-text="确认"
+        cancel-text="取消"
+        :ok-button-props="{ disabled: !!isOnlyShowScript }"
+        :destroyOnClose="true"
     >
       <a-form :model="scriptValue" :label-col="{ span: 4 }" :wrapper-col="{ span: 18}">
-        <a-form-item label="文件名">
+        <a-form-item label="文件名" v-if="!isOnlyShowScript">
           <a-input  v-model:value="scriptValue.fileName" placeholder="文件名" size="small"></a-input>
         </a-form-item>
-        <a-form-item label="备 注">
+        <a-form-item label="备 注" v-if="!isOnlyShowScript">
           <a-input v-model:value="scriptValue.comment" placeholder="备注" size="small"></a-input>
         </a-form-item>
         <a-form-item label="脚 本">
-          <a-textarea v-model:value="scriptValue.script" placeholder="脚本输入框" :auto-size="{ minRows: 4 }"/>
+          <a-textarea :readonly="isOnlyShowScript" v-model:value="scriptValue.script" placeholder="脚本输入框" :auto-size="{ minRows: 4 }"/>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -95,6 +99,7 @@ const scriptValue = reactive({
   script: '',
 })
 const mode = ref('')
+const isOnlyShowScript = ref(false)
 const onSubmit = async () => {
   const url = mode.value === 'created' ? 'saveScript' : 'updateScript'
   const value = {...scriptValue}
@@ -119,14 +124,16 @@ const refresh = async () => {
 const showCreateScript = () => {
   visible.value = true;
   mode.value = 'created';
+  isOnlyShowScript.value = false;
   scriptValue.id = null
   scriptValue.fileName = ''
   scriptValue.comment = ''
   scriptValue.script = ''
 }
-const showEditScript = async (id) => {
+const showEditScript = async (id, isShow) => {
   visible.value = true;
   mode.value = 'edit';
+  isOnlyShowScript.value = isShow;
   const value = await systemInfo.queryPageAll(`getScriptDetail?id=${id}`)
   scriptValue.id = value.id
   scriptValue.fileName = value.filename
