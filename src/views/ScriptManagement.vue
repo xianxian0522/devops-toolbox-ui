@@ -55,7 +55,7 @@
           <a-textarea :readonly="isOnlyShowScript" v-model:value="scriptValue.script" placeholder="脚本输入框" :auto-size="{ minRows: 4 }"/>
         </a-form-item>
       </a-form>
-<!--      <Handle @widthChange="widthChangeModal" />-->
+<!--      <Handle v-if="visible" @widthChange="widthChangeModal" />-->
     </a-modal>
   </div>
 </template>
@@ -152,10 +152,10 @@ const handleTableChange = (pag, filters, sorter) => {
 
 const formStateHandle = throttle(refresh, 200)
 
-// const widthChangeModal = (e) => {
-//   console.log(e, '...')
-//   width.value -= e
-// }
+const widthChangeModal = (e) => {
+  console.log(e, '...')
+  width.value -= e
+}
 
 onMounted(() => {
   refresh()

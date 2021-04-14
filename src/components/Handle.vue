@@ -1,14 +1,15 @@
 <template>
-  <div class="x-handle" @mousedown="mouseDown" @mousemove="mouseMove" @mouseup="mouseUp"></div>
+  <div class="x-handle" @mousedown="mouseDown"></div>
 </template>
 
 <script setup>
-import {defineEmit, ref} from "vue";
+import {defineEmit, onUnmounted, ref} from "vue";
 
 const emit = defineEmit(['widthChange'])
 const lastX = ref(0)
 
 const mouseDown = (e) => {
+  document.addEventListener("mousemove", mouseMove);
   lastX.value = e.screenX
 }
 const mouseMove = (e) => {
@@ -18,7 +19,15 @@ const mouseMove = (e) => {
 }
 const mouseUp = () => {
   lastX.value = 0
+  document.removeEventListener("mousemove", mouseMove);
 }
+mouseUp()
+
+onUnmounted(() => {
+  document.removeEventListener("mouseup", mouseUp);
+  document.removeEventListener("mouseup", mouseMove);
+})
+
 
 </script>
 
