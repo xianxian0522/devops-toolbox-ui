@@ -14,19 +14,23 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useRoute} from "vue-router";
 import systemInfo from "../api/systemInfo";
 import Description from '../components/Description.vue';
 import {reactive, ref} from "vue";
 
+interface Info {
+  Id: number;
+  Name: string;
+  Ip: string;
+}
+
 const route = useRoute()
-const state = ref({out: [], command: '', serverInfo: []})
+const state = ref({out: [], command: '', serverInfo: [] as Info[]})
 
 const commandDetail = async (id) => {
-  const data = await systemInfo.queryPageAll(`getDetail?queryId=${id}`)
-  console.log(data)
-  state.value = data
+  state.value = await systemInfo.queryPageAll(`getDetail?queryId=${id}`)
 }
 if (route.query && route.query.commandId) {
   commandDetail(route.query.commandId)

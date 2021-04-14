@@ -11,7 +11,7 @@
 </div>
 </template>
 
-<script setup>
+<script setup lang="ts" name="Description">
 import {defineProps, inject} from "vue";
 
 const props = defineProps({
