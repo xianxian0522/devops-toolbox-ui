@@ -23,7 +23,7 @@
               v-model:value="valueParams"
               mode="tags"
               style="width: 400px"
-              placeholder="请输入参数">
+              placeholder="脚本所需要的参数">
           </a-select>
           <a-button type="primary" :disabled="scriptId === 0" @click="execScript">执行脚本</a-button>
           <a-button type="primary" :disabled="scriptId !== 0" @click="execCommand">执行命令</a-button>
@@ -255,6 +255,7 @@ export default {
   margin-top: 20px;
   .ant-descriptions {
     margin-bottom: 10px;
+    white-space: pre-line;
   }
 }
 </style>
