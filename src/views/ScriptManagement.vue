@@ -38,6 +38,7 @@
         :title="mode === 'created' ? '新增脚本信息' : '修改脚本信息'"
         v-model:visible="visible"
         @ok="onSubmit"
+        width="80vw"
         ok-text="确认"
         cancel-text="取消"
         :ok-button-props="{ disabled: !!isOnlyShowScript }"
@@ -54,15 +55,17 @@
           <a-textarea :readonly="isOnlyShowScript" v-model:value="scriptValue.script" placeholder="脚本输入框" :auto-size="{ minRows: 4 }"/>
         </a-form-item>
       </a-form>
+<!--      <Handle @widthChange="widthChangeModal" />-->
     </a-modal>
   </div>
 </template>
 
 <script setup>
-import {computed, onMounted, reactive, ref, watch} from "vue";
+import {computed, onMounted, reactive, ref, watch, withDirectives} from "vue";
 import systemInfo from "../api/systemInfo";
 import {message, Modal} from "ant-design-vue";
 import {debounce, throttle} from "../utils/debounce";
+import Handle from '../components/Handle.vue'
 
 
 const columns = [
@@ -93,6 +96,7 @@ const pagination = computed(() => ({
 }))
 
 const visible = ref(false)
+const width = ref(500)
 const scriptValue = reactive({
   id: null,
   comment: '',
@@ -147,6 +151,11 @@ const handleTableChange = (pag, filters, sorter) => {
 };
 
 const formStateHandle = throttle(refresh, 200)
+
+// const widthChangeModal = (e) => {
+//   console.log(e, '...')
+//   width.value -= e
+// }
 
 onMounted(() => {
   refresh()

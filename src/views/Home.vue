@@ -30,8 +30,8 @@
         </div>
       </div>
       <div class="home-command">
-        <a-textarea v-model:value="command" placeholder="脚本输入框" :rows="6" />
-        <a-textarea v-model:value="comment" placeholder="备注" :rows="6" />
+        <a-textarea v-model:value="command" :readonly="scriptId !== 0" placeholder="脚本输入框" :rows="6" />
+        <a-textarea v-model:value="comment" :readonly="scriptId !== 0" placeholder="备注" :rows="6" />
       </div>
       <div class="home-command-out">
         <Description v-if="isShowChild" :outData="outData"/>
