@@ -61,6 +61,17 @@ import {debounce} from '../utils/debounce';
 import {message} from "ant-design-vue";
 import moment from "moment";
 
+interface CommandItem {
+  command: string;
+  comment: string;
+  description: string;
+  done: boolean
+  fileName: string;
+  id: number;
+  startTime: string;
+  updateTime: string;
+}
+
 export default {
   name: "History",
   setup() {
@@ -87,9 +98,9 @@ export default {
       },
     ];
     const isResultLoading = ref(false);
-    const commandsData = ref<[]>([]);
+    const commandsData = ref<CommandItem[]>([]);
 
-    const refresh = async (e) => {
+    const refresh = async (e?: any) => {
       isResultLoading.value = true;
       if (e === formState) {
         commandsData.value = [];
@@ -122,7 +133,7 @@ export default {
     }
     const mousewheel = debounce(scrollFn, 200)
 
-    const formatDateTime = (value) => {
+    const formatDateTime = (value: string) => {
       return moment(value).format('yyyy-MM-DD HH:mm:ss')
     }
 

@@ -96,7 +96,7 @@ export default {
     // console.log(proxy?.$root?.$route)
     const route = useRoute()
     if (route.query && route.query.scriptId) {
-      state.scriptId = parseInt(route.query.scriptId, 10);
+      state.scriptId = parseInt(route.query.scriptId as string, 10);
     }
 
     const getServers = async () => {

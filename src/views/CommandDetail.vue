@@ -29,11 +29,11 @@ interface Info {
 const route = useRoute()
 const state = ref({out: [], command: '', serverInfo: [] as Info[]})
 
-const commandDetail = async (id) => {
+const commandDetail = async (id: number) => {
   state.value = await systemInfo.queryPageAll(`getDetail?queryId=${id}`)
 }
 if (route.query && route.query.commandId) {
-  commandDetail(route.query.commandId)
+  commandDetail(parseInt(route.query.commandId as string, 10))
 }
 
 </script>
