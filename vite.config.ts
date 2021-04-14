@@ -15,11 +15,13 @@ const viteConfig: UserConfig = {
     },
     proxy: {
         '/api/v1': {
-            target: 'http://172.16.78.42:8002',
+            // target: 'http://172.16.78.42:8002',
+            target: 'http://172.16.69.122:8001',
             changeOrigin: true,
         },
         '/devops-toolbox/api/v1': {
-            target: 'http://172.16.78.42:8002',
+            // target: 'http://172.16.78.42:8002',
+            target: 'http://172.16.69.122:8001',
             changeOrigin: true,
         },
     },

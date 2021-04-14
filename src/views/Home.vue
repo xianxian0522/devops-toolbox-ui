@@ -25,8 +25,8 @@
               style="width: 400px"
               placeholder="请输入参数">
           </a-select>
-          <a-button type="primary" :disabled="!scriptId" @click="execScript">执行脚本</a-button>
-          <a-button type="primary" @click="execCommand">执行命令</a-button>
+          <a-button type="primary" :disabled="scriptId === 0" @click="execScript">执行脚本</a-button>
+          <a-button type="primary" :disabled="scriptId !== 0" @click="execCommand">执行命令</a-button>
         </div>
       </div>
       <div class="home-command">
@@ -81,7 +81,7 @@ export default {
     const state = reactive({
       ids: [] as number[],
       args: [] as string[],
-      scriptId: '' as string,
+      scriptId: 0 as number,
       command: '' as string,
       comment: '',
     });
@@ -92,10 +92,12 @@ export default {
     });
     // provide('outData', stateOut.outData);
 
-    const proxy = getCurrentInstance()?.proxy
-    console.log(proxy?.$root?.$route)
+    // const proxy = getCurrentInstance()?.proxy
+    // console.log(proxy?.$root?.$route)
     const route = useRoute()
-    console.log(route.query, 'user')
+    if (route.query && route.query.scriptId) {
+      state.scriptId = parseInt(route.query.scriptId, 10);
+    }
 
     const getServers = async () => {
       const data = await systemInfo.queryPageAll('getServers', value);
@@ -161,8 +163,13 @@ export default {
     }
 
     const execScript = async () => {
+      stateOut.isLoading = true;
       const res = await systemInfo.execCommandScript('execScript', state);
-      console.log(res, 'res');
+      if (res && res.id) {
+        await getCurrentOutById(res.id)
+      } else {
+        stateOut.isLoading = false;
+      }
     }
     const execCommand = async () => {
       stateOut.isLoading = true;

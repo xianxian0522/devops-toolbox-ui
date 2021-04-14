@@ -46,6 +46,7 @@ if (route.query && route.query.commandId) {
   h2 {
     font-weight: bold;
     font-size: 16px;
+    white-space: pre-line;
   }
 }
 </style>

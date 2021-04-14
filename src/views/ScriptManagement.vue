@@ -28,6 +28,7 @@
           <a-button type="link" @click="showEditScript(record.id, true)">详情</a-button>
         </template>
         <template #action="{ record }">
+          <router-link :to="{path: '/toolbox/home', query: {scriptId: record.id}}">脚本</router-link>
           <a-button type="link" @click="showEditScript(record.id, false)">编辑</a-button>
         </template>
       </a-table>

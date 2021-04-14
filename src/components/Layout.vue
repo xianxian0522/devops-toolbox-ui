@@ -46,7 +46,6 @@
         <a-menu
             class="menu-sider"
             mode="inline"
-            @click="menuItem"
             v-model:selectedKeys="selectedKeysMenu"
             :style="{ height: '100%', borderRight: 0 }"
         >
@@ -90,8 +89,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, reactive, toRefs, onMounted} from 'vue';
-import {useRoute} from 'vue-router';
+import {defineComponent, ref, reactive, toRefs, onMounted, watch} from 'vue';
+import {onBeforeRouteUpdate, useRoute} from 'vue-router';
 import {UserOutlined, NotificationOutlined, HistoryOutlined, ProfileOutlined} from '@ant-design/icons-vue';
 
 export default defineComponent({
@@ -103,7 +102,8 @@ export default defineComponent({
     ProfileOutlined
   },
   setup() {
-    const url = useRoute().path.split('/');
+    const route = useRoute()
+    const url = route.path.split('/');
 
     const state = reactive({
       selectedKey: ref(['/']),
@@ -111,9 +111,15 @@ export default defineComponent({
       selectedKeysMenu: ref([url[2]]),
     })
 
-    const menuItem = ({item, key, keyPath}: any) => {
-      state.selectedKeysMenu = keyPath;
-    }
+    // const menuItem = ({item, key, keyPath}: any) => {
+    //   state.selectedKeysMenu = keyPath;
+    // }
+    // onBeforeRouteUpdate((to) => console.log(to, ';;'))
+
+    watch(() => route.path, () => {
+      const url = route.path.split('/');
+      state.selectedKeysMenu = ['/' + url[2]];
+    })
 
     onMounted(async () => {
       // state.selectedKeysMenu = ['/' + url[url.length-1]];
@@ -121,7 +127,7 @@ export default defineComponent({
     })
     return {
       ...toRefs(state),
-      menuItem
+      // menuItem
     }
   }
 })
