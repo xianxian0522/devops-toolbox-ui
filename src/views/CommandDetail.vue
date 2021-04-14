@@ -41,6 +41,7 @@ if (route.query && route.query.commandId) {
 <style scoped lang="less">
 .command-content {
   padding-top: 20px;
+  white-space: pre-line;
   .ant-descriptions {
     margin-bottom: 10px;
   }

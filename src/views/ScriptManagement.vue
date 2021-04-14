@@ -120,7 +120,6 @@ const refresh = async () => {
   const data = await systemInfo.queryPageAll('getManagerList', value)
   total.value = data.total;
   dataList.value = data.list;
-  console.log(data);
 }
 const showCreateScript = () => {
   visible.value = true;
