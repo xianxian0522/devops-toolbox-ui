@@ -255,7 +255,8 @@ export default {
   margin-top: 20px;
   .ant-descriptions {
     margin-bottom: 10px;
-    white-space: pre-line;
+    white-space: pre-wrap;
+    word-break: break-all;
   }
 }
 </style>

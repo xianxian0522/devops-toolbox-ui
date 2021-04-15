@@ -1,12 +1,12 @@
 <template>
 <div>
-  <a-descriptions :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in props.outData">
+  <a-descriptions :column="4" layout="vertical" :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in props.outData">
     <a-descriptions-item label="id">{{ out.id }}</a-descriptions-item>
-    <a-descriptions-item label="Ip" :span="2">{{ out.ip }}</a-descriptions-item>
+    <a-descriptions-item label="Ip" >{{ out.ip }}</a-descriptions-item>
     <a-descriptions-item label="pid">{{ out.pid }}</a-descriptions-item>
-    <a-descriptions-item style="text-align: left" label="stderr" :span="2">{{ out.stderr }}</a-descriptions-item>
     <a-descriptions-item label="retcode">{{ out.retcode }}</a-descriptions-item>
-    <a-descriptions-item style="text-align: left" label="stdout">{{ out.stdout }}</a-descriptions-item>
+    <a-descriptions-item :span="4" label="stderr">{{ out.stderr }}</a-descriptions-item>
+    <a-descriptions-item label="stdout">{{ out.stdout }}</a-descriptions-item>
   </a-descriptions>
 </div>
 </template>
@@ -21,6 +21,11 @@ const props = defineProps({
 
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+.ant-descriptions {
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  //word-break: break-all;
+  text-align: left;
+}
 </style>

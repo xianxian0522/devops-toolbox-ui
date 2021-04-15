@@ -3,7 +3,7 @@
     <div>
       <h2> 脚本：{{ state.command }}</h2>
     </div>
-    <Description :outData="state.out"></Description>
+    <Description :outData="state.out" ></Description>
     <div class="command-content-server">
       <a-descriptions :title="index === 0 ? '服务器的信息' : ''" bordered v-for="(out, index) in state.serverInfo">
         <a-descriptions-item label="Id">{{ out.Id }}</a-descriptions-item>
@@ -41,7 +41,7 @@ if (route.query && route.query.commandId) {
 <style scoped lang="less">
 .command-content {
   padding-top: 20px;
-  white-space: pre-line;
+  white-space: pre-wrap;
   .ant-descriptions {
     margin-bottom: 10px;
   }
@@ -51,7 +51,7 @@ if (route.query && route.query.commandId) {
   h2 {
     font-weight: bold;
     font-size: 16px;
-    white-space: pre-line;
+    white-space: pre-wrap;
   }
 }
 </style>
