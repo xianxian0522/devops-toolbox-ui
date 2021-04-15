@@ -38,24 +38,28 @@
         :title="mode === 'created' ? '新增脚本信息' : '修改脚本信息'"
         v-model:visible="visible"
         @ok="onSubmit"
-        width="80vw"
+        :width="width"
         ok-text="确认"
         cancel-text="取消"
         :ok-button-props="{ disabled: !!isOnlyShowScript }"
         :destroyOnClose="true"
     >
-      <a-form :model="scriptValue" :label-col="{ span: 4 }" :wrapper-col="{ span: 18}">
-        <a-form-item label="文件名" v-if="!isOnlyShowScript">
-          <a-input  v-model:value="scriptValue.fileName" placeholder="文件名" size="small"></a-input>
-        </a-form-item>
-        <a-form-item label="备 注" v-if="!isOnlyShowScript">
-          <a-input v-model:value="scriptValue.comment" placeholder="备注" size="small"></a-input>
-        </a-form-item>
-        <a-form-item label="脚 本">
-          <a-textarea :readonly="isOnlyShowScript" v-model:value="scriptValue.script" placeholder="脚本输入框" :auto-size="{ minRows: 4 }"/>
-        </a-form-item>
-      </a-form>
-<!--      <Handle v-if="visible" @widthChange="widthChangeModal" />-->
+      <div style="display: flex">
+        <div style="flex: 1">
+          <a-form :model="scriptValue" :label-col="{ span: 4 }" :wrapper-col="{ span: 18}">
+            <a-form-item label="文件名" v-if="!isOnlyShowScript">
+              <a-input  v-model:value="scriptValue.fileName" placeholder="文件名" size="small"></a-input>
+            </a-form-item>
+            <a-form-item label="备 注" v-if="!isOnlyShowScript">
+              <a-input v-model:value="scriptValue.comment" placeholder="备注" size="small"></a-input>
+            </a-form-item>
+            <a-form-item label="脚 本">
+              <a-textarea :readonly="isOnlyShowScript" v-model:value="scriptValue.script" placeholder="脚本输入框" :auto-size="{ minRows: 4 }"/>
+            </a-form-item>
+          </a-form>
+        </div>
+        <Handle v-if="visible" @widthChange="widthChangeModal" />
+      </div>
     </a-modal>
   </div>
 </template>
@@ -156,6 +160,9 @@ const widthChangeModal = (e) => {
   if (visible.value) {
     console.log(e, '...')
     width.value -= e
+    if (width.value < 300) {
+      width.value = 300;
+    }
   }
 }
 

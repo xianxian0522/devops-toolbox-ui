@@ -1,9 +1,12 @@
 <template>
-  <div class="x-handle" @mousedown="mouseDown"></div>
+  <div class="x-handle" @mousedown="mouseDown" @mouseout="mouseOut">
+    <div></div>
+    <div></div>
+  </div>
 </template>
 
 <script setup>
-import {defineEmit, onUnmounted, ref} from "vue";
+import {defineEmit, defineProps, onUnmounted, ref} from "vue";
 
 const emit = defineEmit(['widthChange'])
 const lastX = ref(0)
@@ -23,9 +26,14 @@ const mouseUp = () => {
 }
 mouseUp()
 
+const mouseOut = () => {
+  document.removeEventListener("mousemove", mouseMove);
+}
+
 onUnmounted(() => {
   document.removeEventListener("mouseup", mouseUp);
   document.removeEventListener("mouseup", mouseMove);
+  document.removeEventListener('mouseover', mouseDown)
 })
 
 
@@ -33,10 +41,14 @@ onUnmounted(() => {
 
 <style scoped lang="less">
 .x-handle {
-  width: 20px;
-  height: 2px;
+  width: 30px;
+  //height: 2px;
   cursor: w-resize;
   z-index: 10;
-  background: #ccc;
+  display: flex;
+  div:nth-child(1) {
+    background: #ccc;
+    width: 2px;
+  }
 }
 </style>
