@@ -30,12 +30,6 @@ const mouseOut = () => {
   document.removeEventListener("mousemove", mouseMove);
 }
 
-onUnmounted(() => {
-  document.removeEventListener("mouseup", mouseUp);
-  document.removeEventListener("mouseup", mouseMove);
-  document.removeEventListener('mouseover', mouseDown)
-})
-
 
 </script>
 

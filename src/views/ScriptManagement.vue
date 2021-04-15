@@ -158,7 +158,6 @@ const formStateHandle = throttle(refresh, 200)
 
 const widthChangeModal = (e) => {
   if (visible.value) {
-    console.log(e, '...')
     width.value -= e
     if (width.value < 300) {
       width.value = 300;
