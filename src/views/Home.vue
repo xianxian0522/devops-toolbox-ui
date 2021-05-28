@@ -27,6 +27,14 @@
           </a-select>
           <a-button type="primary" :disabled="scriptId === 0" @click="execScript">执行脚本</a-button>
           <a-button type="primary" :disabled="scriptId !== 0" @click="execCommand">执行命令</a-button>
+          <a-select
+              v-model:value="user"
+              show-search
+              placeholder="Select a person"
+              style="width: 200px; margin-left: 10px;"
+          >
+            <a-select-option v-for="option in userData" :key="option" :value="option">{{option}}</a-select-option>
+          </a-select>
         </div>
       </div>
       <div class="home-command">
@@ -78,12 +86,14 @@ export default {
     const value = ref<string[]>([]);
     const treeData = ref<TreeDataItem[]>([]);
     const valueParams = ref<string[]>([]);
+    const userData = ref<string[]>([])
     const state = reactive({
       ids: [] as number[],
       args: [] as string[],
       scriptId: 0 as number,
       command: '' as string,
       comment: '',
+      user: '',
     });
     const stateOut = reactive({
       isLoading: false,
@@ -191,7 +201,7 @@ export default {
 
     const getCurrentOutById = async (outId: number) => {
       const data = await systemInfo.queryPageAll('getCurrentOut', { outId });
-      if (data.out.length === 0) {
+      if (data?.out?.length === 0) {
         await setTimeout( () => getCurrentOutById(outId), 2000);
       } else {
         stateOut.isLoading = false;
@@ -200,9 +210,16 @@ export default {
       }
     }
 
+    const getServerUser = async () => {
+      const data = await systemInfo.queryPageAll('getServerUser');
+      userData.value = data.content
+      state.user = userData.value?.[0]
+    }
+
     onMounted(() => {
       getServers();
       queryContent();
+      getServerUser();
     })
 
     watch(value, () => {
@@ -224,6 +241,7 @@ export default {
       getServers,
       treeData,
       valueParams,
+      userData,
       ...toRefs(state),
       ...toRefs(stateOut),
       execCommand,
