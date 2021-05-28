@@ -24,6 +24,10 @@ const viteConfig: UserConfig = {
             // target: 'http://172.16.69.122:8001',
             changeOrigin: true,
         },
+        '/job-actuator/api/v1': {
+            target: 'http://172.16.78.42:8002',
+            changeOrigin: true,
+        }
     },
 };
 

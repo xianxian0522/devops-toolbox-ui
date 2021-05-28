@@ -5,27 +5,32 @@
       <a-breadcrumb-item>toolbox</a-breadcrumb-item>
       <a-breadcrumb-item>历史记录</a-breadcrumb-item>
     </a-breadcrumb>
-    <div class="toolbox-search">
-      <a-form :model="formState" layout="inline">
+    <RecordCommon :formState="formState">
+      <template v-slot:button>
         <a-button @click="refresh">搜索</a-button>
-        <a-form-item label="是否完成">
-          <a-checkbox v-model:checked="formState.done"></a-checkbox>
-        </a-form-item>
-        <a-form-item label="文件名">
-          <a-input v-model:value="formState.fileName" placeholder="文件名" size="small"></a-input>
-        </a-form-item>
-        <a-form-item label="开始时间">
-          <a-space direction="vertical">
-            <a-date-picker show-time v-model:value="formState.starttime" placeholder="开始时间" size="small" />
-          </a-space>
-        </a-form-item>
-        <a-form-item label="结束时间">
-          <a-space direction="vertical">
-            <a-date-picker show-time v-model:value="formState.endtime" placeholder="结束时间" size="small" />
-          </a-space>
-        </a-form-item>
-      </a-form>
-    </div>
+      </template>
+    </RecordCommon>
+<!--    <div class="toolbox-search">-->
+<!--      <a-form :model="formState" layout="inline">-->
+<!--        <a-button @click="refresh">搜索</a-button>-->
+<!--        <a-form-item label="是否完成">-->
+<!--          <a-checkbox v-model:checked="formState.done"></a-checkbox>-->
+<!--        </a-form-item>-->
+<!--        <a-form-item label="文件名">-->
+<!--          <a-input v-model:value="formState.fileName" placeholder="文件名" size="small"></a-input>-->
+<!--        </a-form-item>-->
+<!--        <a-form-item label="开始时间">-->
+<!--          <a-space direction="vertical">-->
+<!--            <a-date-picker show-time v-model:value="formState.starttime" placeholder="开始时间" size="small" />-->
+<!--          </a-space>-->
+<!--        </a-form-item>-->
+<!--        <a-form-item label="结束时间">-->
+<!--          <a-space direction="vertical">-->
+<!--            <a-date-picker show-time v-model:value="formState.endtime" placeholder="结束时间" size="small" />-->
+<!--          </a-space>-->
+<!--        </a-form-item>-->
+<!--      </a-form>-->
+<!--    </div>-->
     <div style="min-height: 100%;">
       <a-table
           :columns="columns"
@@ -60,6 +65,7 @@ import _ from 'lodash';
 import {debounce} from '../utils/debounce';
 import {message} from "ant-design-vue";
 import moment from "moment";
+import RecordCommon from "../components/RecordCommon.vue";
 
 interface CommandItem {
   command: string;
@@ -74,6 +80,9 @@ interface CommandItem {
 
 export default {
   name: "History",
+  components: {
+    RecordCommon,
+  },
   setup() {
     const formState: UnwrapRef<any> = reactive({
       done: true,
