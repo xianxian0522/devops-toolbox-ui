@@ -7,7 +7,7 @@
     </a-breadcrumb>
     <div class="toolbox-search">
       <a-form :model="formState" layout="inline">
-        <a-button @click="addTAsk">新增</a-button>
+        <a-button @click="addTask">新增</a-button>
         <a-button @click="refresh">搜索</a-button>
         <a-form-item label="脚本名">
           <a-input v-model:value="formState.fileName" placeholder="文件名" size="small"></a-input>
@@ -61,6 +61,12 @@
         </template>
       </a-table>
     </div>
+
+    <a-modal v-model:visible="showTask" title="Basic Modal" :footer="null">
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+    </a-modal>
   </div>
 </template>
 
@@ -68,9 +74,12 @@
 import {reactive, ref} from "vue";
 import {CommandItem} from "@/views/History.vue";
 import moment from "moment";
+import TaskEdit from './TaskEdit.vue'
+import {Modal} from "ant-design-vue";
 
 export default {
   name: "TaskManagement",
+  components: { TaskEdit },
   setup() {
     const formState = reactive({
       fileName: '',
@@ -88,12 +97,12 @@ export default {
       {title: 'ID', key: 'id', dataIndex: 'id', fixed: 'left', width: 80},
       {title: '名字', key: 'name', dataIndex: 'name', fixed: 'left', width: 120},
 
-      {title: '脚本名', key: 'fileName', dataIndex: 'fileName'},
+      {title: '脚本名', key: 'scriptName', dataIndex: 'scriptName'},
       {title: 'crontab', key: 'schedule_time', dataIndex: 'schedule_time'},
       {title: '执行时间', key: 'exec_time', dataIndex: 'exec_time', slots: { customRender: 'time'}},
       {title: '执行服务用户', key: 'user_id', dataIndex: 'user_id'},
 
-      {title: '选中服务器', key: 'serverUser', dataIndex: 'serverUser'},
+      {title: '选中服务器', key: 'serverInfo', dataIndex: 'serverInfo'},
       {title: '参数', key: 'tags', dataIndex: 'tags', slots: { customRender: 'tags' },},
       {title: '创建时间', key: 'created_at', dataIndex: 'created_at', slots: { customRender: 'time'}},
       {title: '修改时间', key: 'updated_at', dataIndex: 'updated_at', slots: { customRender: 'time'}},
@@ -105,12 +114,13 @@ export default {
     ];
     const isResultLoading = ref(false);
     const commandsData = ref<CommandItem[]>([]);
+    const showTask = ref(false);
 
-    const addTAsk = async () => {
-
-    }
     const refresh = async () => {
 
+    }
+    const addTask = () => {
+      showTask.value = true
     }
 
     return {
@@ -119,8 +129,9 @@ export default {
       columns,
       formState,
       pagination,
-      addTAsk,
+      showTask,
       refresh,
+      addTask,
     }
   }
 }

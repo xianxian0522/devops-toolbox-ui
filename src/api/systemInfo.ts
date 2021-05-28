@@ -20,5 +20,6 @@ systemInfo.queryEditById = (id: number) => request.get(`${APICommands}/${id}`).c
 systemInfo.queryAllTasks = () => request.get(`${APITask}/getTasks`).catch(err => console.error(err))
 systemInfo.queryPageTasks = (page: number, size: number) => request.get(`${APITask}/getTasksPage`, {page, size}).catch(err => console.error(err))
 systemInfo.updateTask = (params?: any) => request.post(`${APITask}/updateTask`, params).catch(err => console.error(err))
+systemInfo.addTask = (params?: any) => request.post(`${APITask}/setTask`, params).catch(err => console.error(err))
 
 export default systemInfo
