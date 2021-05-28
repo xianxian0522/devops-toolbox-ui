@@ -33,12 +33,6 @@ export default {
 
     return { login }
   },
-  methods: {
-    // login() {
-    //   const url = systemInfo.login();
-    //   console.log(url);
-    // }
-  }
 }
 </script>
 <style scoped lang="less">
