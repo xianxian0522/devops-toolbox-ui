@@ -1,42 +1,22 @@
 <template>
-  <div class="app-common-content" @scroll="mousewheel">
+  <div class="app-common-content" >
     <a-breadcrumb separator=">" class="app-common-header">
       <a-breadcrumb-item>devops</a-breadcrumb-item>
       <a-breadcrumb-item>toolbox</a-breadcrumb-item>
-      <a-breadcrumb-item>历史记录</a-breadcrumb-item>
+      <a-breadcrumb-item>日程任务记录</a-breadcrumb-item>
     </a-breadcrumb>
     <RecordCommon :formState="formState">
       <template v-slot:button>
         <a-button @click="refresh">搜索</a-button>
       </template>
     </RecordCommon>
-<!--    <div class="toolbox-search">-->
-<!--      <a-form :model="formState" layout="inline">-->
-<!--        <a-button @click="refresh">搜索</a-button>-->
-<!--        <a-form-item label="是否完成">-->
-<!--          <a-checkbox v-model:checked="formState.done"></a-checkbox>-->
-<!--        </a-form-item>-->
-<!--        <a-form-item label="文件名">-->
-<!--          <a-input v-model:value="formState.fileName" placeholder="文件名" size="small"></a-input>-->
-<!--        </a-form-item>-->
-<!--        <a-form-item label="开始时间">-->
-<!--          <a-space direction="vertical">-->
-<!--            <a-date-picker show-time v-model:value="formState.starttime" placeholder="开始时间" size="small" />-->
-<!--          </a-space>-->
-<!--        </a-form-item>-->
-<!--        <a-form-item label="结束时间">-->
-<!--          <a-space direction="vertical">-->
-<!--            <a-date-picker show-time v-model:value="formState.endtime" placeholder="结束时间" size="small" />-->
-<!--          </a-space>-->
-<!--        </a-form-item>-->
-<!--      </a-form>-->
-<!--    </div>-->
+
     <div style="min-height: 100%;">
       <a-table
           :columns="columns"
           :data-source="commandsData"
           :loading="isResultLoading"
-          :pagination="false"
+          :pagination="pagination"
           :scroll="{ x: 1300}"
           :rowKey="(record, index) => index">
         <template #name="{ text }">
@@ -59,27 +39,14 @@
 </template>
 
 <script lang="ts">
-import {UnwrapRef, reactive, onMounted, watch, ref, computed, watchEffect} from 'vue';
-import systemInfo from "../api/systemInfo";
-import _ from 'lodash';
-import {debounce} from '../utils/debounce';
-import {message} from "ant-design-vue";
-import moment from "moment";
+import {onMounted, reactive, ref, UnwrapRef, watch} from "vue";
 import RecordCommon from "../components/RecordCommon.vue";
-
-export interface CommandItem {
-  command: string;
-  comment: string;
-  description: string;
-  done: boolean
-  fileName: string;
-  id: number;
-  startTime: string;
-  updateTime: string;
-}
+import {CommandItem} from "./History.vue";
+import moment from "moment";
+import systemInfo from "../api/systemInfo";
 
 export default {
-  name: "History",
+  name: "TaskRecord",
   components: {
     RecordCommon,
   },
@@ -90,12 +57,15 @@ export default {
       starttime: null,
       endtime: null,
       serverUser: '',
-    });
-    const state = reactive({
-      page: 1,
-      size: 10,
+      historyType: 2,
     })
-    const total = ref(1);
+    const pagination = reactive({
+      current: 1,
+      pageSize: 10,
+      total: 20,
+      showSizeChanger: true,
+    })
+
     const columns = [
       {title: '文件名', key: 'fileName', dataIndex: 'fileName', fixed: 'left', width: 120},
       {title: '描述', key: 'description', dataIndex: 'description'},
@@ -112,13 +82,9 @@ export default {
     const isResultLoading = ref(false);
     const commandsData = ref<CommandItem[]>([]);
 
-    const refresh = async (e?: any) => {
-      isResultLoading.value = true;
-      if (e === formState) {
-        commandsData.value = [];
-        state.page = 1;
-      }
-      const value = {...formState, ...state};
+    const refresh = async () => {
+      isResultLoading.value = true
+      const value = {...formState, page: pagination.current, size: pagination.pageSize};
       if (value.starttime) {
         value.starttime = new Date(value.starttime).getTime();
       }
@@ -127,44 +93,32 @@ export default {
       }
       const data = await systemInfo.queryPageAll('getCommandHistories', value);
       isResultLoading.value = false;
-      if (data && data.commands) {
-        commandsData.value = commandsData.value.concat(data.commands);
-        // state.page = parseInt(data.page, 10);
-        // state.size = parseInt(data.size, 10);
-        total.value = data.total;
-      }
-    };
-    const formStateHandle = _.throttle(refresh, 1000);
-    const stateHandle = _.throttle(refresh, 1000);
-
-    const scrollFn = async () => {
-      if (state.page * state.size >= total.value) {
-        return message.info('没有更多数据了')
-      }
-      state.page ++ ;
+      commandsData.value = data.commands
+      // pagination.total = data.total
     }
-    const mousewheel = debounce(scrollFn, 200)
-
     const formatDateTime = (value: string) => {
       return moment(value).format('yyyy-MM-DD HH:mm:ss')
     }
 
+    watch(() => [pagination.pageSize, pagination.current], () => {
+      console.log(';;;;')
+      refresh()
+    })
+
     onMounted(() => {
-      refresh();
-      watch(formState, formStateHandle);
-      watch(state, stateHandle)
+      refresh()
     })
 
     return {
       formState,
-      columns,
-      commandsData,
       isResultLoading,
-      mousewheel,
+      commandsData,
+      columns,
+      pagination,
       refresh,
       formatDateTime,
     }
-  },
+  }
 }
 </script>
 

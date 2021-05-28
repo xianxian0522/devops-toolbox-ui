@@ -1,25 +1,4 @@
 <template>
-<!--  <a-layout class="layout">-->
-<!--    <a-layout-header>-->
-<!--      <div class="logo">logo</div>-->
-<!--      <a-menu-->
-<!--          theme="dark"-->
-<!--          mode="horizontal"-->
-<!--          v-model:selectedKeys="selectedKeys"-->
-<!--          :style="{ lineHeight: '58px' }">-->
-<!--        <a-menu-item key="home">-->
-<!--          <router-link to="home">home</router-link>-->
-<!--        </a-menu-item>-->
-<!--        <a-menu-item key="contact">-->
-<!--          <router-link to="contact">contact</router-link>-->
-<!--        </a-menu-item>-->
-<!--        <a-menu-item key="3">nav 3</a-menu-item>-->
-<!--      </a-menu>-->
-<!--    </a-layout-header>-->
-<!--    <a-layout-content class="common-content">-->
-<!--      <router-view></router-view>-->
-<!--    </a-layout-content>-->
-<!--  </a-layout>-->
   <a-layout class="layout">
     <a-layout-header class="header">
       <div class="logo" >logo</div>
@@ -65,6 +44,18 @@
             <span>
               <profile-outlined/>
               <router-link to="/toolbox/script">脚本管理</router-link>
+            </span>
+          </a-menu-item>
+          <a-menu-item :key="'/task-record'">
+            <span>
+              <profile-outlined/>
+              <router-link to="/toolbox/task-record">日程任务记录</router-link>
+            </span>
+          </a-menu-item>
+          <a-menu-item :key="'/task-management'">
+            <span>
+              <profile-outlined/>
+              <router-link to="/toolbox/task-management">日程任务管理</router-link>
             </span>
           </a-menu-item>
 <!--          <a-sub-menu key="sub1">-->

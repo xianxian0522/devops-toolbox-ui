@@ -36,6 +36,14 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('../views/ScriptManagement.vue'),
             },
             {
+                path: 'task-record',
+                component: () => import('../views/TaskRecord.vue'),
+            },
+            {
+                path: 'task-management',
+                component: () => import('../views/TaskManagement.vue'),
+            },
+            {
                 path: 'contact',
                 component: () =>
                     import(/* webpackChunkName: "About" */ '../views/Contact.vue')
