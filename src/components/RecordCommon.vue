@@ -19,17 +19,43 @@
           <a-date-picker show-time v-model:value="formState.endtime" placeholder="结束时间" size="small" />
         </a-space>
       </a-form-item>
+      <a-form-item label="执行用户">
+        <a-select
+            v-model:value="formState.serverUser"
+            show-search
+            placeholder="Select a person"
+            size="small"
+            style="width: 200px; margin-left: 10px;"
+        >
+          <a-select-option v-for="option in userData" :key="option" :value="option">{{option}}</a-select-option>
+        </a-select>
+      </a-form-item>
     </a-form>
   </div>
 </template>
 
 <script lang="ts">
 
+import systemInfo from "../api/systemInfo";
+import {onMounted, ref} from "vue";
+
 export default {
   name: "RecordCommon",
   props: ['formState'],
   setup() {
+    const userData = ref<string[]>([])
+    const getServerUser = async () => {
+      const data = await systemInfo.queryPageAll('getServerUser');
+      userData.value = data.content
+    }
 
+    onMounted(() => {
+      getServerUser()
+    })
+
+    return {
+      userData,
+    }
   },
 }
 </script>

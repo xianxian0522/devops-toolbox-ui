@@ -89,6 +89,7 @@ export default {
       fileName: '',
       starttime: null,
       endtime: null,
+      serverUser: '',
     });
     const state = reactive({
       page: 1,
