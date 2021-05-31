@@ -62,10 +62,8 @@
       </a-table>
     </div>
 
-    <a-modal v-model:visible="showTask" title="Basic Modal" :footer="null">
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
+    <a-modal v-model:visible="showTask" :title="taskData?.id ? '修改任务管理' : '新增任务管理'" :footer="null">
+      <TaskEdit v-if="showTask" :data="taskData" @changeShowTask="changeShowTask" />
     </a-modal>
   </div>
 </template>
@@ -115,12 +113,17 @@ export default {
     const isResultLoading = ref(false);
     const commandsData = ref<CommandItem[]>([]);
     const showTask = ref(false);
+    const taskData = ref()
 
     const refresh = async () => {
 
     }
     const addTask = () => {
       showTask.value = true
+      taskData.value = {}
+    }
+    const changeShowTask = () => {
+      showTask.value = false
     }
 
     return {
@@ -130,8 +133,10 @@ export default {
       formState,
       pagination,
       showTask,
+      taskData,
       refresh,
       addTask,
+      changeShowTask,
     }
   }
 }
