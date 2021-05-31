@@ -1,8 +1,11 @@
 <template>
   <a-form :model="formState" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">
+    <a-form-item label="任务名">
+      <a-input v-model:value="formState.name" placeholder="input name" />
+    </a-form-item>
     <a-form-item label="执行用户">
       <a-select
-          v-model:value="formState.userid"
+          v-model:value="formState.user"
           show-search
           placeholder="Select a user"
           style="width: 100%">
@@ -29,15 +32,6 @@
     </a-form-item>
     <a-form-item label="服务器">
       <CommonTree @treeChange="selectServers"/>
-<!--      <a-select-->
-<!--          mode="multiple"-->
-<!--          v-model:value="formState.servers"-->
-<!--          style="width: 100%"-->
-<!--          placeholder="Please select server">-->
-<!--        <a-select-option value="jack">Jack</a-select-option>-->
-<!--        <a-select-option value="lucy">Lucy</a-select-option>-->
-<!--        <a-select-option value="tom">Tom</a-select-option>-->
-<!--      </a-select>-->
     </a-form-item>
     <a-form-item label="crontab">
       <a-input v-model:value="formState.scheduleTime" placeholder="input crontab" />
@@ -56,17 +50,20 @@
 import {onMounted, reactive, toRefs} from "vue";
 import systemInfo from "../api/systemInfo";
 import CommonTree from '../components/CommonTree.vue'
+import moment from "moment";
+import {message} from "ant-design-vue";
 
 export default {
   name: "TaskEdit",
-  props: ['data'],
+  props: ['data', 'mode'],
   components: {CommonTree, },
   emits: ['changeShowTask'],
   setup(props: any, {emit}: any) {
     console.log(props.data)
     const formState = reactive({
+      name: props.data?.name,
       scriptId: props.data?.scriptId,
-      userid: props.data?.userid,
+      user: props.data?.user,
       execTime: props.data?.execTime,
       scheduleTime: props.data?.scheduleTime,
       servers: props.data?.servers,
@@ -79,19 +76,29 @@ export default {
     })
 
     const onSubmit = async () => {
-
+      const value = {...formState}
+      if (value.execTime) {
+        value.execTime = moment(value.execTime).valueOf()
+      }
+      if (value.execTime && value.scheduleTime) {
+        return message.warning('执行时间和crontab只能填一个')
+      }
+      console.log(value)
+      try {
+        const data = props.mode === 'edit' ? await systemInfo.updateTask(value) : await systemInfo.addTask(value)
+        console.log(data, 'wwwww')
+      } catch (e) {
+        console.error(e)
+      }
     }
     const onCancel = () => {
-      emit('changeShowTask')
+      emit('changeShowTask', false)
     }
 
     const getUser = async () => {
       const data = await systemInfo.queryPageAll('getServerUser')
       state.usersList = data.content
     }
-    // const getServer = async () => {
-    //   const data = await systemInfo.queryPageAll('getServers')
-    // }
     const getScript = async () => {
       const data = await systemInfo.queryPageAll('getScriptList')
       state.scriptList = data.list
@@ -116,6 +123,12 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
-
+<style lang="less">
+@import "../components/index.less";
+.ant-select-dropdown {
+  word-break: break-all;
+}
+.ant-select-tree li .ant-select-tree-node-content-wrapper {
+  white-space: pre-wrap;
+}
 </style>

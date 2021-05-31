@@ -62,8 +62,8 @@
       </a-table>
     </div>
 
-    <a-modal v-model:visible="showTask" :title="taskData?.id ? '修改任务管理' : '新增任务管理'" :footer="null">
-      <TaskEdit v-if="showTask" :data="taskData" @changeShowTask="changeShowTask" />
+    <a-modal v-model:visible="showTask" :title="taskData?.id ? '修改任务管理' : '新增任务管理'" :footer="null" :width="750">
+      <TaskEdit v-if="showTask" :mode="mode" :data="taskData" @changeShowTask="changeShowTask" />
     </a-modal>
   </div>
 </template>
@@ -114,16 +114,21 @@ export default {
     const commandsData = ref<CommandItem[]>([]);
     const showTask = ref(false);
     const taskData = ref()
+    const mode = ref()
 
     const refresh = async () => {
-
+      console.log(';;;;')
     }
     const addTask = () => {
       showTask.value = true
       taskData.value = {}
+      mode.value = 'created'
     }
-    const changeShowTask = () => {
+    const changeShowTask = (value) => {
       showTask.value = false
+      if (value) {
+        refresh()
+      }
     }
 
     return {
@@ -134,6 +139,7 @@ export default {
       pagination,
       showTask,
       taskData,
+      mode,
       refresh,
       addTask,
       changeShowTask,
