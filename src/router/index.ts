@@ -44,6 +44,10 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('../views/TaskRecord.vue'),
             },
             {
+                path: 'task-record/command',
+                component: () => import('../views/CommandDetail.vue')
+            },
+            {
                 path: 'task-management',
                 component: () => import('../views/TaskManagement.vue'),
             },

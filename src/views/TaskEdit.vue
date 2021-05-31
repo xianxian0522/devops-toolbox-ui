@@ -71,7 +71,7 @@ export default {
       state: props.data?.state,
       scriptId: props.data?.scriptId,
       user: props.data?.user,
-      execTime: props.data?.execTime,
+      execTime: moment(props.data?.execTime),
       scheduleTime: props.data?.scheduleTime,
       servers: props.data?.servers,
       comment: props.data?.comment,
@@ -93,6 +93,7 @@ export default {
       console.log(value)
       try {
         props.mode === 'edit' ? await systemInfo.updateTask(value) : await systemInfo.addTask(value)
+        message.success(props.mode === 'edit' ? '修改成功' : '新增成功')
         emit('changeShowTask', true)
       } catch (e) {
         emit('changeShowTask', false)

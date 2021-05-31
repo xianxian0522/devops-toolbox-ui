@@ -63,7 +63,7 @@
         </template>
         <template #action="{ record }">
           <span>
-            <router-link :to="{path: 'history/command', query: {commandId: record.id}}">详情</router-link>
+            <a-button type="link" @click="updateTask(record)">修改</a-button>
           </span>
         </template>
       </a-table>
@@ -152,6 +152,12 @@ export default {
       taskData.value = {}
       mode.value = 'created'
     }
+    const updateTask = (el) => {
+      console.log(el, '[[[[')
+      showTask.value = true
+      taskData.value = el
+      mode.value = 'edit'
+    }
     const changeShowTask = (value) => {
       showTask.value = false
       if (value) {
@@ -178,6 +184,7 @@ export default {
       mode,
       refresh,
       addTask,
+      updateTask,
       changeShowTask,
       paginationChange,
       timeFormat,

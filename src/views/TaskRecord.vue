@@ -31,7 +31,7 @@
         </template>
         <template #action="{ record }">
           <span>
-            <router-link :to="{path: 'history/command', query: {commandId: record.id}}">详情</router-link>
+            <router-link :to="{path: 'task-record/command', query: {commandId: record.id}}">详情</router-link>
           </span>
         </template>
       </a-table>

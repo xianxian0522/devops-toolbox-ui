@@ -98,6 +98,7 @@ export default {
     watch(value, () => {
       let ids: any = []
       if (value.value.length > 0) {
+        console.log(value, '[[[[')
         ids = value.value.map(v => {
           const arr = v.split('-');
           return parseInt(arr[arr.length - 1], 10);
