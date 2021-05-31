@@ -9,9 +9,9 @@
       <a-form :model="formState" layout="inline">
         <a-button @click="addTask">新增</a-button>
         <a-button @click="refresh">搜索</a-button>
-        <a-form-item label="脚本名">
-          <a-input v-model:value="formState.fileName" placeholder="文件名" size="small"></a-input>
-        </a-form-item>
+<!--        <a-form-item label="脚本名">-->
+<!--          <a-input v-model:value="formState.fileName" placeholder="文件名" size="small"></a-input>-->
+<!--        </a-form-item>-->
         <a-form-item label="名字">
           <a-input v-model:value="formState.name" placeholder="文件名" size="small"></a-input>
         </a-form-item>
@@ -19,6 +19,7 @@
           <a-select
               v-model:value="formState.state"
               show-search
+              :allowClear="true"
               placeholder="Select a state"
               size="small"
               style="width: 200px; margin-left: 10px;"
@@ -27,9 +28,14 @@
             <a-select-option value="2"> 禁用 </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="修改时间">
+        <a-form-item label="开始时间">
           <a-space direction="vertical">
-            <a-date-picker show-time v-model:value="formState.updated_at" placeholder="开始时间" size="small" />
+            <a-date-picker show-time v-model:value="formState.startTime" placeholder="开始时间" size="small" />
+          </a-space>
+        </a-form-item>
+        <a-form-item label="结束时间">
+          <a-space direction="vertical">
+            <a-date-picker show-time v-model:value="formState.endTime" placeholder="结束时间" size="small" />
           </a-space>
         </a-form-item>
       </a-form>
@@ -41,7 +47,8 @@
           :data-source="taskDataList"
           :loading="isResultLoading"
           :pagination="pagination"
-          :scroll="{ x: 1300}"
+          :scroll="{ x: 2300}"
+          @change="paginationChange"
           :rowKey="(record, index) => index">
         <template #name="{ text }">
           <span> {{ text }}</span>
@@ -52,7 +59,7 @@
           </span>
         </template>
         <template #time="{ text }">
-          <span>{{ formatDate(text, 'YYYY-MM-DD HH:mm:ss') }}</span>
+          <span>{{ timeFormat(text) }}</span>
         </template>
         <template #action="{ record }">
           <span>
@@ -69,7 +76,7 @@
 </template>
 
 <script lang="ts">
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import moment from "moment";
 import TaskEdit from './TaskEdit.vue'
 import {Modal} from "ant-design-vue";
@@ -80,26 +87,25 @@ export default {
   components: { TaskEdit },
   setup() {
     const formState = reactive({
-      fileName: '',
+      // fileName: '',
       name: '',
       state: '',
-      updated_at: null,
+      endTime: null,
+      startTime: null,
     })
     const pagination = reactive({
       current: 1,
       pageSize: 10,
-      total: 20,
+      total: 1,
       showSizeChanger: true,
     })
     const columns = [
       {title: 'ID', key: 'id', dataIndex: 'id', fixed: 'left', width: 80},
       {title: '名字', key: 'name', dataIndex: 'name', fixed: 'left', width: 120},
-
       {title: '脚本名', key: 'scriptName', dataIndex: 'scriptName'},
-      {title: 'crontab', key: 'schedule_time', dataIndex: 'schedule_time'},
-      {title: '执行时间', key: 'exec_time', dataIndex: 'exec_time', slots: { customRender: 'time'}},
-      {title: '执行服务用户', key: 'user_id', dataIndex: 'user_id'},
-
+      {title: 'crontab', key: 'scheduleTime', dataIndex: 'scheduleTime'},
+      {title: '执行时间', key: 'execTime', dataIndex: 'execTime', slots: { customRender: 'time'}},
+      {title: '执行服务用户', key: 'user', dataIndex: 'user'},
       {title: '选中服务器', key: 'serverInfo', dataIndex: 'serverInfo'},
       {title: '参数', key: 'tags', dataIndex: 'tags', slots: { customRender: 'tags' },},
       {title: '创建时间', key: 'created_at', dataIndex: 'created_at', slots: { customRender: 'time'}},
@@ -117,12 +123,29 @@ export default {
     const mode = ref()
 
     const refresh = async () => {
+      isResultLoading.value = true
       const value = {...formState}
       value.page = pagination.current
       value.size = pagination.pageSize
-      const data = await systemInfo.queryPageTasks(value)
-      taskDataList.value = data.task
-      console.log(';;;;', data)
+      if (value.startTime) {
+        value.startTime = moment(value.startTime).valueOf()
+      }
+      if (value.endTime) {
+        value.endTime = moment(value.endTime).valueOf()
+      }
+      try {
+        const data = await systemInfo.queryPageTasks(value)
+        taskDataList.value = data.task
+        pagination.total = data.total
+        isResultLoading.value = false
+        console.log(';;;;', data)
+      } catch (e) {
+        isResultLoading.value = false
+        console.error(e)
+      }
+    }
+    const timeFormat = (value) => {
+      return moment(value).format('YYYY-MM-DD HH:mm:ss')
     }
     const addTask = () => {
       showTask.value = true
@@ -134,6 +157,11 @@ export default {
       if (value) {
         refresh()
       }
+    }
+    const paginationChange = (value) => {
+      pagination.pageSize = value.pageSize
+      pagination.current = value.current
+      refresh()
     }
     onMounted(() => {
       refresh()
@@ -151,6 +179,8 @@ export default {
       refresh,
       addTask,
       changeShowTask,
+      paginationChange,
+      timeFormat,
     }
   }
 }

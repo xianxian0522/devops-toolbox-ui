@@ -17,6 +17,7 @@
           :data-source="commandsData"
           :loading="isResultLoading"
           :pagination="pagination"
+          @change="paginationChange"
           :scroll="{ x: 1300}"
           :rowKey="(record, index) => index">
         <template #name="{ text }">
@@ -91,19 +92,25 @@ export default {
       if (value.endtime) {
         value.endtime = new Date(value.endtime).getTime();
       }
-      const data = await systemInfo.queryPageAll('getCommandHistories', value);
-      isResultLoading.value = false;
-      commandsData.value = data.commands
-      // pagination.total = data.total
+      try {
+        const data = await systemInfo.queryPageAll('getCommandHistories', value);
+        commandsData.value = data.commands
+        pagination.total = data.total
+        isResultLoading.value = false
+      } catch (e) {
+        isResultLoading.value = false
+        console.error(e)
+      }
     }
     const formatDateTime = (value: string) => {
       return moment(value).format('yyyy-MM-DD HH:mm:ss')
     }
 
-    watch(() => [pagination.pageSize, pagination.current], () => {
-      console.log(';;;;')
+    const paginationChange = (value) => {
+      pagination.pageSize = value.pageSize
+      pagination.current = value.current
       refresh()
-    })
+    }
 
     onMounted(() => {
       refresh()
@@ -117,6 +124,7 @@ export default {
       pagination,
       refresh,
       formatDateTime,
+      paginationChange,
     }
   }
 }

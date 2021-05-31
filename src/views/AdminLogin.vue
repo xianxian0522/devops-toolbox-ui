@@ -9,7 +9,7 @@
         <a-input v-model:value="formState.password" />
       </a-form-item>
     </a-form>
-    <a-button size="large" type="primary" @click="adminLogin">登录</a-button>
+    <a-button class="login-btn" size="large" type="primary" @click="adminLogin">登录</a-button>
   </div>
 </div>
 </template>
@@ -29,7 +29,9 @@ export default {
     const adminLogin = async () => {
       const value = {...formState}
       try {
-        await systemInfo.adminLogin(value)
+        const data = await systemInfo.adminLogin(value)
+        // console.log(data, data.slice(7))
+        localStorage.setItem('token', data.slice(7))
         router.push('/toolbox/home').then()
       } catch (e) {
         console.error(e)
@@ -47,7 +49,7 @@ export default {
 <style scoped lang="less">
 @import "../components/index.less";
 .login-admin {
-  button {
+  .login-btn {
     width: 80% !important;
     margin-left: 62px;
   }
