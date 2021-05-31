@@ -67,6 +67,7 @@ export default {
   setup(props: any, {emit}: any) {
     console.log(props.data)
     const formState = reactive({
+      id: props.data?.id,
       name: props.data?.name,
       state: props.data?.state,
       scriptId: props.data?.scriptId,
