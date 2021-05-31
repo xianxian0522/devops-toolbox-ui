@@ -7,17 +7,18 @@
         <a-breadcrumb-item>首页</a-breadcrumb-item>
       </a-breadcrumb>
       <div class="home-select">
-        <a-tree-select
-            v-model:value="value"
-            :treeData="treeData"
-            show-search
-            multiple
-            style="width: 100%"
-            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-            placeholder="请选择服务器"
-            allow-clear
-            tree-default-expand-all>
-        </a-tree-select>
+        <CommonTree @treeChange="selectIds" />
+<!--        <a-tree-select-->
+<!--            v-model:value="value"-->
+<!--            :treeData="treeData"-->
+<!--            show-search-->
+<!--            multiple-->
+<!--            style="width: 100%"-->
+<!--            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"-->
+<!--            placeholder="请选择服务器"-->
+<!--            allow-clear-->
+<!--            tree-default-expand-all>-->
+<!--        </a-tree-select>-->
         <div class="btns">
           <a-select
               v-model:value="valueParams"
@@ -61,7 +62,7 @@ import {onMounted, reactive, ref, watch, toRefs, getCurrentInstance, provide, on
 import systemInfo from "../api/systemInfo";
 import {useRoute} from "vue-router";
 import Description from '../components/Description.vue';
-
+import CommonTree from '../components/CommonTree.vue'
 
 export interface TreeDataItem {
   value: string;
@@ -81,7 +82,7 @@ interface OutItem {
 
 export default {
   name: "Home",
-  components: { Description },
+  components: { Description, CommonTree },
   setup() {
     const value = ref<string[]>([]);
     const treeData = ref<TreeDataItem[]>([]);
@@ -177,6 +178,10 @@ export default {
       }
     }
 
+    const selectIds = (value) => {
+      state.ids = value
+    }
+
     const execScript = async () => {
       stateOut.isLoading = true;
       const res = await systemInfo.execCommandScript('execScript', state);
@@ -222,7 +227,7 @@ export default {
     }
 
     onMounted(() => {
-      getServers();
+      // getServers();
       queryContent();
       getServerUser();
     })
@@ -230,29 +235,30 @@ export default {
       clearTimeout(timer.value)
     })
 
-    watch(value, () => {
-      if (value.value.length > 0) {
-        state.ids = value.value.map(v => {
-          const arr = v.split('-');
-          return parseInt(arr[arr.length - 1], 10);
-        });
-      } else {
-        state.ids = [];
-      }
-    });
+    // watch(value, () => {
+    //   if (value.value.length > 0) {
+    //     state.ids = value.value.map(v => {
+    //       const arr = v.split('-');
+    //       return parseInt(arr[arr.length - 1], 10);
+    //     });
+    //   } else {
+    //     state.ids = [];
+    //   }
+    // });
     watch(valueParams, () => {
       state.args = valueParams.value;
     });
 
     return {
-      value,
-      treeData,
+      // value,
+      // treeData,
       valueParams,
       userData,
       ...toRefs(state),
       ...toRefs(stateOut),
       execCommand,
       execScript,
+      selectIds,
     };
   },
 }

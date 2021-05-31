@@ -8,6 +8,7 @@
       :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
       placeholder="请选择服务器"
       allow-clear
+      dropdownMatchSelectWidth
       tree-default-expand-all>
   </a-tree-select>
 </template>

@@ -28,15 +28,16 @@
       />
     </a-form-item>
     <a-form-item label="服务器">
-      <a-select
-          mode="multiple"
-          v-model:value="formState.servers"
-          style="width: 100%"
-          placeholder="Please select server">
-        <a-select-option value="jack">Jack</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
-      </a-select>
+      <CommonTree @treeChange="selectServers"/>
+<!--      <a-select-->
+<!--          mode="multiple"-->
+<!--          v-model:value="formState.servers"-->
+<!--          style="width: 100%"-->
+<!--          placeholder="Please select server">-->
+<!--        <a-select-option value="jack">Jack</a-select-option>-->
+<!--        <a-select-option value="lucy">Lucy</a-select-option>-->
+<!--        <a-select-option value="tom">Tom</a-select-option>-->
+<!--      </a-select>-->
     </a-form-item>
     <a-form-item label="crontab">
       <a-input v-model:value="formState.scheduleTime" placeholder="input crontab" />
@@ -54,10 +55,12 @@
 <script lang="ts">
 import {onMounted, reactive, toRefs} from "vue";
 import systemInfo from "../api/systemInfo";
+import CommonTree from '../components/CommonTree.vue'
 
 export default {
   name: "TaskEdit",
   props: ['data'],
+  components: {CommonTree, },
   emits: ['changeShowTask'],
   setup(props: any, {emit}: any) {
     console.log(props.data)
@@ -86,18 +89,20 @@ export default {
       const data = await systemInfo.queryPageAll('getServerUser')
       state.usersList = data.content
     }
-    const getServer = async () => {
-      const data = await systemInfo.queryPageAll('getServers')
-    }
+    // const getServer = async () => {
+    //   const data = await systemInfo.queryPageAll('getServers')
+    // }
     const getScript = async () => {
       const data = await systemInfo.queryPageAll('getScriptList')
       state.scriptList = data.list
+    }
+    const selectServers = (value) => {
+      formState.servers = value
     }
 
     onMounted(() => {
       getScript()
       getUser()
-      getServer()
     })
 
     return {
@@ -105,6 +110,7 @@ export default {
       ...toRefs(state),
       onSubmit,
       onCancel,
+      selectServers,
     }
   }
 }
