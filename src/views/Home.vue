@@ -246,7 +246,6 @@ export default {
 
     return {
       value,
-      getServers,
       treeData,
       valueParams,
       userData,
