@@ -3,6 +3,12 @@
     <a-form-item label="任务名">
       <a-input v-model:value="formState.name" placeholder="input name" />
     </a-form-item>
+    <a-form-item label="状态">
+      <a-select v-model:value="formState.state" style="width: 100%;" placeholder="Select a state">
+        <a-select-option :value="1">启用</a-select-option>
+        <a-select-option :value="2">禁用</a-select-option>
+      </a-select>
+    </a-form-item>
     <a-form-item label="执行用户">
       <a-select
           v-model:value="formState.user"
@@ -62,6 +68,7 @@ export default {
     console.log(props.data)
     const formState = reactive({
       name: props.data?.name,
+      state: props.data?.state,
       scriptId: props.data?.scriptId,
       user: props.data?.user,
       execTime: props.data?.execTime,
@@ -85,9 +92,10 @@ export default {
       }
       console.log(value)
       try {
-        const data = props.mode === 'edit' ? await systemInfo.updateTask(value) : await systemInfo.addTask(value)
-        console.log(data, 'wwwww')
+        props.mode === 'edit' ? await systemInfo.updateTask(value) : await systemInfo.addTask(value)
+        emit('changeShowTask', true)
       } catch (e) {
+        emit('changeShowTask', false)
         console.error(e)
       }
     }

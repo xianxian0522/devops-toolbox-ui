@@ -83,6 +83,7 @@
 import {defineComponent, ref, reactive, toRefs, onMounted, watch} from 'vue';
 import {onBeforeRouteUpdate, useRoute} from 'vue-router';
 import {UserOutlined, NotificationOutlined, HistoryOutlined, ProfileOutlined} from '@ant-design/icons-vue';
+import systemInfo from "../api/systemInfo";
 
 export default defineComponent({
   name: 'Layout',
@@ -105,14 +106,19 @@ export default defineComponent({
     // const menuItem = ({item, key, keyPath}: any) => {
     //   state.selectedKeysMenu = keyPath;
     // }
-    // onBeforeRouteUpdate((to) => console.log(to, ';;'))
+
+    const getBar = async () => {
+      const data = await systemInfo.getBar()
+      console.log(data, ';;;;;')
+    }
 
     watch(() => route.path, () => {
       const url = route.path.split('/');
       state.selectedKeysMenu = ['/' + url[2]];
     })
 
-    onMounted(async () => {
+    onMounted(() => {
+      getBar()
       // state.selectedKeysMenu = ['/' + url[url.length-1]];
       state.selectedKeysMenu = ['/' + url[2]];
     })

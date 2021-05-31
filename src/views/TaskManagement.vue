@@ -38,7 +38,7 @@
     <div style="min-height: 100%;">
       <a-table
           :columns="columns"
-          :data-source="commandsData"
+          :data-source="taskDataList"
           :loading="isResultLoading"
           :pagination="pagination"
           :scroll="{ x: 1300}"
@@ -69,11 +69,11 @@
 </template>
 
 <script lang="ts">
-import {reactive, ref} from "vue";
-import {CommandItem} from "@/views/History.vue";
+import {onMounted, reactive, ref} from "vue";
 import moment from "moment";
 import TaskEdit from './TaskEdit.vue'
 import {Modal} from "ant-design-vue";
+import systemInfo from "../api/systemInfo";
 
 export default {
   name: "TaskManagement",
@@ -111,13 +111,18 @@ export default {
       },
     ];
     const isResultLoading = ref(false);
-    const commandsData = ref<CommandItem[]>([]);
+    const taskDataList = ref([]);
     const showTask = ref(false);
     const taskData = ref()
     const mode = ref()
 
     const refresh = async () => {
-      console.log(';;;;')
+      const value = {...formState}
+      value.page = pagination.current
+      value.size = pagination.pageSize
+      const data = await systemInfo.queryPageTasks(value)
+      taskDataList.value = data.task
+      console.log(';;;;', data)
     }
     const addTask = () => {
       showTask.value = true
@@ -130,10 +135,13 @@ export default {
         refresh()
       }
     }
+    onMounted(() => {
+      refresh()
+    })
 
     return {
       isResultLoading,
-      commandsData,
+      taskDataList,
       columns,
       formState,
       pagination,

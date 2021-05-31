@@ -3,6 +3,7 @@
     <div class="login-admin">
       <h2>通过 SSO 登录 TOOLBOX</h2>
       <a-button size="large" type="primary" @click="login">登录</a-button>
+      <a-button size="large" type="primary" @click="adminLogin">管理员登录</a-button>
     </div>
   </div>
 </template>
@@ -28,10 +29,13 @@ export default {
         window.location.href = data.url;
       }
     }
+    const adminLogin = async () => {
+
+    }
     onMounted(async () => {
     })
 
-    return { login }
+    return { login, adminLogin }
   },
 }
 </script>
