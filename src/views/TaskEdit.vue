@@ -71,7 +71,7 @@ export default {
       state: props.data?.state,
       scriptId: props.data?.scriptId,
       user: props.data?.user,
-      execTime: moment(props.data?.execTime),
+      execTime: props.data?.execTime ? moment(props.data?.execTime) : null,
       scheduleTime: props.data?.scheduleTime,
       servers: props.data?.servers,
       comment: props.data?.comment,
