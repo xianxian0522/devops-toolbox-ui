@@ -11,6 +11,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/Login.vue'),
     },
     {
+        path: '/admin-login',
+        component: () => import('../views/AdminLogin.vue'),
+    },
+    {
         path: '/middle',
         component: () => import('../views/Middle.vue'),
     },

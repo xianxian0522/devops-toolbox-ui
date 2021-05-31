@@ -11,6 +11,7 @@
 <script lang="ts">
 import { onMounted } from 'vue'
 import systemInfo from "../api/systemInfo";
+import {useRoute, useRouter} from "vue-router";
 
 export default {
   name: 'Login',
@@ -23,15 +24,17 @@ export default {
     }
   },
   setup() {
+    const router = useRouter()
     const login = async () => {
       const data = await systemInfo.login();
       if (data && data.url) {
         window.location.href = data.url;
       }
     }
-    const adminLogin = async () => {
-
+    const adminLogin = () => {
+      router.push('/admin-login')
     }
+
     onMounted(async () => {
     })
 
@@ -40,25 +43,5 @@ export default {
 }
 </script>
 <style scoped lang="less">
-.login {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .login-admin {
-    width: 370px;
-    padding: 20px 40px;
-    text-align: center;
-    button {
-      width: 100%;
-      margin-top: 30px;
-      border-radius: 4px;
-    }
-    h2 {
-      font-weight: 600;
-    }
-  }
-}
-
+@import "../components/index.less";
 </style>

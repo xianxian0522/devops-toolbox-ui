@@ -13,6 +13,7 @@ const APIBar = `${API}/commands/getBar`
 
 const systemInfo: any = {};
 systemInfo.login = () => request.get(APILogin).catch(err => console.error(err))
+systemInfo.adminLogin = (params?: any) => request.post(APIAdmin, params)
 
 systemInfo.getBar = () => request.get(APIBar).catch(err => console.error(err))
 
