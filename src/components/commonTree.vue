@@ -15,7 +15,7 @@
 <script lang="ts">
 import {onMounted, ref, watch} from "vue";
 import {TreeDataItem} from "../views/Home.vue";
-import systemInfo from "@/api/systemInfo";
+import systemInfo from "../api/systemInfo";
 
 export default {
   name: "commonTree",
