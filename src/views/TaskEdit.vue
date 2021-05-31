@@ -51,7 +51,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {onMounted, reactive, toRefs} from "vue";
 import systemInfo from "../api/systemInfo";
 
@@ -59,7 +59,7 @@ export default {
   name: "TaskEdit",
   props: ['data'],
   emits: ['changeShowTask'],
-  setup(props, {emit}) {
+  setup(props: any, {emit}: any) {
     console.log(props.data)
     const formState = reactive({
       scriptId: props.data?.scriptId,

@@ -63,7 +63,7 @@ import {useRoute} from "vue-router";
 import Description from '../components/Description.vue';
 
 
-interface TreeDataItem {
+export interface TreeDataItem {
   value: string;
   key: string;
   title?: string;
@@ -112,7 +112,7 @@ export default {
 
     const getServers = async () => {
       try {
-        const data = await systemInfo.queryPageAll('getServers', value);
+        const data = await systemInfo.queryPageAll('getServers');
         if (data && data.Biz) {
           data.Biz.map((biz: any, index: number) => {
             // console.log(treeData, biz);
