@@ -60,8 +60,9 @@
           </a-menu-item>
           <a-menu-item v-for="item in bar" :key="item.path">
             <span>
-              {{ item.icon }}
-              <router-link :to="item.path">{{ item.name }}</router-link>
+<!--              {{ item.icon }}-->
+<!--              <icon-font type="icon-facebook" />-->
+              <router-link :to="'/toolbox/' + item.path">{{ item.name }}</router-link>
             </span>
           </a-menu-item>
 <!--          <a-sub-menu key="sub1">-->
@@ -88,7 +89,13 @@
 <script lang="ts">
 import {defineComponent, ref, reactive, toRefs, onMounted, watch} from 'vue';
 import {onBeforeRouteUpdate, useRoute} from 'vue-router';
-import {UserOutlined, NotificationOutlined, HistoryOutlined, ProfileOutlined} from '@ant-design/icons-vue';
+import {
+  UserOutlined,
+  NotificationOutlined,
+  HistoryOutlined,
+  ProfileOutlined,
+  createFromIconfontCN,
+} from '@ant-design/icons-vue';
 import systemInfo from "../api/systemInfo";
 
 export default defineComponent({
@@ -102,6 +109,10 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const url = route.path.split('/');
+
+    const IconFont = createFromIconfontCN({
+      // scriptUrl: ['icon-tuichu', 'icon-facebook'],
+    });
 
     const state = reactive({
       selectedKey: ref(['/']),
@@ -136,6 +147,7 @@ export default defineComponent({
       ...toRefs(state),
       // menuItem
       bar,
+      IconFont,
     }
   }
 })
