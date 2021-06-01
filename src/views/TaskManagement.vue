@@ -58,6 +58,9 @@
             <a-tag v-for="tag in tags" :key="tag">{{ tag }}</a-tag>
           </span>
         </template>
+        <template #state="{ text: state }">
+          <span>{{ state === 1 ? '启用' : '禁用' }}</span>
+        </template>
         <template #time="{ text }">
           <span>{{ timeFormat(text) }}</span>
         </template>
@@ -111,7 +114,7 @@ export default {
       {title: '创建时间', key: 'created_at', dataIndex: 'created_at', slots: { customRender: 'time'}},
       {title: '修改时间', key: 'updated_at', dataIndex: 'updated_at', slots: { customRender: 'time'}},
       {title: '备注', key: 'comment', dataIndex: 'comment'},
-      {title: '状态', key: 'state', dataIndex: 'state'},
+      {title: '状态', key: 'state', dataIndex: 'state', slots: { customRender: 'state'}},
       {
         title: '操作', key: 'action', slots: { customRender: 'action' }, fixed: 'right', width: 120
       },

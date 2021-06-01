@@ -28,34 +28,40 @@
             v-model:selectedKeys="selectedKeysMenu"
             :style="{ height: '100%', borderRight: 0 }"
         >
-          <a-menu-item :key="'/home'">
+          <a-menu-item :key="'home'">
             <span>
               <user-outlined/>
               <router-link to="/toolbox/home">首页</router-link>
             </span>
           </a-menu-item>
-          <a-menu-item :key="'/history'">
+          <a-menu-item :key="'history'">
             <span>
               <history-outlined/>
               <router-link to="/toolbox/history">历史记录</router-link>
             </span>
           </a-menu-item>
-          <a-menu-item :key="'/script'">
+          <a-menu-item :key="'script'">
             <span>
               <profile-outlined/>
               <router-link to="/toolbox/script">脚本管理</router-link>
             </span>
           </a-menu-item>
-          <a-menu-item :key="'/task-record'">
+          <a-menu-item :key="'task-record'">
             <span>
               <profile-outlined/>
               <router-link to="/toolbox/task-record">日程任务记录</router-link>
             </span>
           </a-menu-item>
-          <a-menu-item :key="'/task-management'">
+          <a-menu-item :key="'task-management'">
             <span>
               <profile-outlined/>
               <router-link to="/toolbox/task-management">日程任务管理</router-link>
+            </span>
+          </a-menu-item>
+          <a-menu-item v-for="item in bar" :key="item.path">
+            <span>
+              {{ item.icon }}
+              <router-link :to="item.path">{{ item.name }}</router-link>
             </span>
           </a-menu-item>
 <!--          <a-sub-menu key="sub1">-->
@@ -102,6 +108,10 @@ export default defineComponent({
       // selectedKeysMenu: ref([url[url.length - 1]]),
       selectedKeysMenu: ref([url[2]]),
     })
+    const bar = [
+      {id: 1, icon: '<user-outlined />', path: 'home', name: '首页'},
+      {id: 2, icon: '<history-outlined />', path: 'history', name: '历史记录' },
+    ]
 
     // const menuItem = ({item, key, keyPath}: any) => {
     //   state.selectedKeysMenu = keyPath;
@@ -114,17 +124,18 @@ export default defineComponent({
 
     watch(() => route.path, () => {
       const url = route.path.split('/');
-      state.selectedKeysMenu = ['/' + url[2]];
+      state.selectedKeysMenu = [url[2]];
     })
 
     onMounted(() => {
       getBar()
       // state.selectedKeysMenu = ['/' + url[url.length-1]];
-      state.selectedKeysMenu = ['/' + url[2]];
+      state.selectedKeysMenu = [url[2]];
     })
     return {
       ...toRefs(state),
       // menuItem
+      bar,
     }
   }
 })

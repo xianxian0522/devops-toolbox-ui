@@ -37,7 +37,15 @@
       />
     </a-form-item>
     <a-form-item label="服务器">
-      <CommonTree @treeChange="selectServers"/>
+      <a-select
+          v-model:value="formState.servers"
+          mode="multiple"
+          :filterOption="filterOption"
+          placeholder="Select a servers"
+          style="width: 100%">
+        <a-select-option v-for="option in serversList" :key="option.Id" :value="option.Id" :title="option.Ip + ' - ' + option.Name">{{ option.Ip }} - {{ option.Name }}</a-select-option>
+      </a-select>
+<!--      <CommonTree @treeChange="selectServers"/>-->
     </a-form-item>
     <a-form-item label="crontab">
       <a-input v-model:value="formState.scheduleTime" placeholder="input crontab" />
@@ -113,13 +121,21 @@ export default {
       const data = await systemInfo.queryPageAll('getScriptList')
       state.scriptList = data.list
     }
+    const getServers = async () => {
+      state.serversList = await systemInfo.queryServers()
+    }
     const selectServers = (value) => {
       formState.servers = value
+    }
+
+    const filterOption = (input, option) => {
+      return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
     }
 
     onMounted(() => {
       getScript()
       getUser()
+      getServers()
     })
 
     return {
@@ -128,6 +144,7 @@ export default {
       onSubmit,
       onCancel,
       selectServers,
+      filterOption,
     }
   }
 }

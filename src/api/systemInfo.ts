@@ -27,5 +27,6 @@ systemInfo.queryAllTasks = () => request.get(`${APITask}/getTasks`)
 systemInfo.queryPageTasks = (params: any) => request.get(`${APITask}/getTasksPage`, params)
 systemInfo.updateTask = (params?: any) => request.post(`${APITask}/updateTask`, params)
 systemInfo.addTask = (params?: any) => request.post(`${APITask}/setTask`, params)
+systemInfo.queryServers = () => request.get(`${APITask}/getServers`)
 
 export default systemInfo
