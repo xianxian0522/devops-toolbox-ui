@@ -30,5 +30,10 @@ systemInfo.addTask = (params?: any) => request.post(`${APITask}/setTask`, params
 systemInfo.queryServers = () => request.get(`${APITask}/getServers`)
 
 systemInfo.doCustomComplete = (params?: any) => request.post(`${APIJob}/DoCustomComplete`, params)
+systemInfo.getAllMasters = () => request.get(`${APIJob}/getAllMasters`)
+systemInfo.getSaltMaster = (masterId?: number) => request.get(`${APIJob}/${masterId}`)
+systemInfo.getMasterMinion = (masterId?: number) => request.get(`${APIJob}/minion/${masterId}`)
+systemInfo.getSelectMinion = (params?: any) => request.get(`${APIJob}/minion`, params)
+systemInfo.getSelectJobs = (params?: any) => request.get(`${APIJob}/jobs`, params)
 
 export default systemInfo
