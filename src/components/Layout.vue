@@ -60,8 +60,7 @@
           </a-menu-item>
           <a-menu-item v-for="item in bar" :key="item.path">
             <span>
-<!--              {{ item.icon }}-->
-<!--              <icon-font type="icon-facebook" />-->
+              <icon-font type="icon-history" />
               <router-link :to="'/toolbox/' + item.path">{{ item.name }}</router-link>
             </span>
           </a-menu-item>
@@ -98,21 +97,22 @@ import {
 } from '@ant-design/icons-vue';
 import systemInfo from "../api/systemInfo";
 
+const IconFont = createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_2585874_8ja1zp97nn5.js',
+});
+
 export default defineComponent({
   name: 'Layout',
   components: {
     UserOutlined,
     NotificationOutlined,
     HistoryOutlined,
-    ProfileOutlined
+    ProfileOutlined,
+    IconFont,
   },
   setup() {
     const route = useRoute()
     const url = route.path.split('/');
-
-    const IconFont = createFromIconfontCN({
-      // scriptUrl: ['icon-tuichu', 'icon-facebook'],
-    });
 
     const state = reactive({
       selectedKey: ref(['/']),
@@ -120,8 +120,11 @@ export default defineComponent({
       selectedKeysMenu: ref([url[2]]),
     })
     const bar = [
-      {id: 1, icon: '<user-outlined />', path: 'home', name: '首页'},
-      {id: 2, icon: '<history-outlined />', path: 'history', name: '历史记录' },
+      {id: 1, icon: 'icon-home', path: 'home', name: '首页'},
+      {id: 2, icon: 'icon-history', path: 'history', name: '历史记录' },
+      {id: 3, icon: 'icon-script', path: 'script', name: '脚本管理' },
+      {id: 4, icon: 'icon-task-record', path: 'task-record', name: '日程任务记录' },
+      {id: 5, icon: 'icon-task-management', path: 'task-management', name: '日程任务管理' },
     ]
 
     // const menuItem = ({item, key, keyPath}: any) => {
@@ -147,7 +150,6 @@ export default defineComponent({
       ...toRefs(state),
       // menuItem
       bar,
-      IconFont,
     }
   }
 })
