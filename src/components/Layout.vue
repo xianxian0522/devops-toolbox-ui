@@ -98,7 +98,7 @@ import {
 import systemInfo from "../api/systemInfo";
 
 const IconFont = createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_2585874_8ja1zp97nn5.js',
+  scriptUrl: '//at.alicdn.com/t/font_2585874_owb5u2js69j.js',
 });
 
 export default defineComponent({
@@ -125,6 +125,8 @@ export default defineComponent({
       {id: 3, icon: 'icon-script', path: 'script', name: '脚本管理' },
       {id: 4, icon: 'icon-task-record', path: 'task-record', name: '日程任务记录' },
       {id: 5, icon: 'icon-task-management', path: 'task-management', name: '日程任务管理' },
+      {id: 6, icon: 'icon-salt-function', path: 'salt-function', name: 'saltFunction'},
+      {id: 6, icon: 'icon-salt-api', path: 'salt-api', name: 'saltApi'},
     ]
 
     // const menuItem = ({item, key, keyPath}: any) => {
@@ -148,7 +150,6 @@ export default defineComponent({
     })
     return {
       ...toRefs(state),
-      // menuItem
       bar,
     }
   }

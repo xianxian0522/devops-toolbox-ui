@@ -52,6 +52,14 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('../views/TaskManagement.vue'),
             },
             {
+                path: 'salt-function',
+                component: () => import('../views/SaltFunction.vue'),
+            },
+            {
+                path: 'salt-api',
+                component: () => import('../views/SaltApi.vue'),
+            },
+            {
                 path: 'contact',
                 component: () =>
                     import(/* webpackChunkName: "About" */ '../views/Contact.vue')
