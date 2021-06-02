@@ -28,39 +28,39 @@
             v-model:selectedKeys="selectedKeysMenu"
             :style="{ height: '100%', borderRight: 0 }"
         >
-          <a-menu-item :key="'home'">
-            <span>
-              <user-outlined/>
-              <router-link to="/toolbox/home">首页</router-link>
-            </span>
-          </a-menu-item>
-          <a-menu-item :key="'history'">
-            <span>
-              <history-outlined/>
-              <router-link to="/toolbox/history">历史记录</router-link>
-            </span>
-          </a-menu-item>
-          <a-menu-item :key="'script'">
-            <span>
-              <profile-outlined/>
-              <router-link to="/toolbox/script">脚本管理</router-link>
-            </span>
-          </a-menu-item>
-          <a-menu-item :key="'task-record'">
-            <span>
-              <profile-outlined/>
-              <router-link to="/toolbox/task-record">日程任务记录</router-link>
-            </span>
-          </a-menu-item>
-          <a-menu-item :key="'task-management'">
-            <span>
-              <profile-outlined/>
-              <router-link to="/toolbox/task-management">日程任务管理</router-link>
-            </span>
-          </a-menu-item>
+<!--          <a-menu-item :key="'home'">-->
+<!--            <span>-->
+<!--              <user-outlined/>-->
+<!--              <router-link to="/toolbox/home">首页</router-link>-->
+<!--            </span>-->
+<!--          </a-menu-item>-->
+<!--          <a-menu-item :key="'history'">-->
+<!--            <span>-->
+<!--              <history-outlined/>-->
+<!--              <router-link to="/toolbox/history">历史记录</router-link>-->
+<!--            </span>-->
+<!--          </a-menu-item>-->
+<!--          <a-menu-item :key="'script'">-->
+<!--            <span>-->
+<!--              <profile-outlined/>-->
+<!--              <router-link to="/toolbox/script">脚本管理</router-link>-->
+<!--            </span>-->
+<!--          </a-menu-item>-->
+<!--          <a-menu-item :key="'task-record'">-->
+<!--            <span>-->
+<!--              <profile-outlined/>-->
+<!--              <router-link to="/toolbox/task-record">日程任务记录</router-link>-->
+<!--            </span>-->
+<!--          </a-menu-item>-->
+<!--          <a-menu-item :key="'task-management'">-->
+<!--            <span>-->
+<!--              <profile-outlined/>-->
+<!--              <router-link to="/toolbox/task-management">日程任务管理</router-link>-->
+<!--            </span>-->
+<!--          </a-menu-item>-->
           <a-menu-item v-for="item in bar" :key="item.path">
             <span>
-              <icon-font type="icon-history" />
+              <icon-font :type="item.icon" />
               <router-link :to="'/toolbox/' + item.path">{{ item.name }}</router-link>
             </span>
           </a-menu-item>
@@ -100,6 +100,12 @@ import systemInfo from "../api/systemInfo";
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2585874_owb5u2js69j.js',
 });
+export interface BarItem {
+  id: number;
+  icon: string;
+  path: string;
+  name: string;
+}
 
 export default defineComponent({
   name: 'Layout',
@@ -119,23 +125,22 @@ export default defineComponent({
       // selectedKeysMenu: ref([url[url.length - 1]]),
       selectedKeysMenu: ref([url[2]]),
     })
-    const bar = [
-      {id: 1, icon: 'icon-home', path: 'home', name: '首页'},
-      {id: 2, icon: 'icon-history', path: 'history', name: '历史记录' },
-      {id: 3, icon: 'icon-script', path: 'script', name: '脚本管理' },
-      {id: 4, icon: 'icon-task-record', path: 'task-record', name: '日程任务记录' },
-      {id: 5, icon: 'icon-task-management', path: 'task-management', name: '日程任务管理' },
-      {id: 6, icon: 'icon-salt-function', path: 'salt-function', name: 'saltFunction'},
-      {id: 6, icon: 'icon-salt-api', path: 'salt-api', name: 'saltApi'},
-    ]
+    const bar = ref<BarItem[]>([
+      // {id: 1, icon: 'icon-home', path: 'home', name: '首页'},
+      // {id: 2, icon: 'icon-history', path: 'history', name: '历史记录' },
+      // {id: 3, icon: 'icon-script', path: 'script', name: '脚本管理' },
+      // {id: 4, icon: 'icon-task-record', path: 'task-record', name: '日程任务记录' },
+      // {id: 5, icon: 'icon-task-management', path: 'task-management', name: '日程任务管理' },
+      // {id: 6, icon: 'icon-salt-function', path: 'salt-function', name: 'saltFunction'},
+      // {id: 6, icon: 'icon-salt-api', path: 'salt-api', name: 'saltApi'},
+    ])
 
     // const menuItem = ({item, key, keyPath}: any) => {
     //   state.selectedKeysMenu = keyPath;
     // }
 
     const getBar = async () => {
-      const data = await systemInfo.getBar()
-      console.log(data, ';;;;;')
+      bar.value = await systemInfo.getBar()
     }
 
     watch(() => route.path, () => {
