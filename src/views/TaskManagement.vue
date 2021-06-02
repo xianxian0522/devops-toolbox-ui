@@ -47,7 +47,7 @@
           :data-source="taskDataList"
           :loading="isResultLoading"
           :pagination="pagination"
-          :scroll="{ x: 2300}"
+          :scroll="{ x: 2500}"
           @change="paginationChange"
           :rowKey="(record, index) => index">
         <template #name="{ text }">
@@ -107,14 +107,15 @@ export default {
       {title: '名字', key: 'name', dataIndex: 'name', fixed: 'left', width: 120},
       {title: '脚本名', key: 'scriptName', dataIndex: 'scriptName'},
       {title: 'crontab', key: 'scheduleTime', dataIndex: 'scheduleTime'},
-      {title: '执行时间', key: 'execTime', dataIndex: 'execTime', slots: { customRender: 'time'}},
+      {title: '执行时间', key: 'execTime', dataIndex: 'execTime', slots: { customRender: 'time'}, width: 190},
       {title: '执行服务用户', key: 'user', dataIndex: 'user'},
       {title: '选中服务器', key: 'serverInfo', dataIndex: 'serverInfo'},
+      {title: '执行路径', key: 'cwd', dataIndex: 'cwd'},
       {title: '参数', key: 'tags', dataIndex: 'tags', slots: { customRender: 'tags' },},
-      {title: '创建时间', key: 'created_at', dataIndex: 'created_at', slots: { customRender: 'time'}},
-      {title: '修改时间', key: 'updated_at', dataIndex: 'updated_at', slots: { customRender: 'time'}},
+      {title: '创建时间', key: 'created_at', dataIndex: 'created_at', slots: { customRender: 'time'}, width: 190},
+      {title: '修改时间', key: 'updated_at', dataIndex: 'updated_at', slots: { customRender: 'time'}, width: 190},
       {title: '备注', key: 'comment', dataIndex: 'comment'},
-      {title: '状态', key: 'state', dataIndex: 'state', slots: { customRender: 'state'}},
+      {title: '状态', key: 'state', dataIndex: 'state', slots: { customRender: 'state'}, width: 80},
       {
         title: '操作', key: 'action', slots: { customRender: 'action' }, fixed: 'right', width: 120
       },

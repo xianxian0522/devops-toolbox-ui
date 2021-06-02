@@ -32,10 +32,11 @@
               v-model:value="user"
               show-search
               placeholder="Select a person"
-              style="width: 200px; margin-left: 10px;"
+              style="width: 200px; margin-left: 10px; margin-right: 10px;"
           >
             <a-select-option v-for="option in userData" :key="option" :value="option">{{option}}</a-select-option>
           </a-select>
+          <a-input style="width: 200px;" v-model:value="cwd" placeholder="执行路径"></a-input>
         </div>
       </div>
       <div class="home-command">
@@ -95,6 +96,7 @@ export default {
       command: '' as string,
       comment: '',
       user: '',
+      cwd: '',
     });
     const stateOut = reactive({
       isLoading: false,

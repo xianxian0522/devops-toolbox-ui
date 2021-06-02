@@ -18,6 +18,14 @@
         <a-select-option v-for="option in usersList" :key="option" :value="option">{{ option }}</a-select-option>
       </a-select>
     </a-form-item>
+    <a-form-item label="参数">
+      <a-select
+          v-model:value="formState.tags"
+          mode="tags"
+          style="width: 100%"
+          placeholder="脚本所需要的参数">
+      </a-select>
+    </a-form-item>
     <a-form-item label="脚本">
       <a-select
           v-model:value="formState.scriptId"
@@ -49,6 +57,9 @@
     </a-form-item>
     <a-form-item label="crontab">
       <a-input v-model:value="formState.scheduleTime" placeholder="input crontab" />
+    </a-form-item>
+    <a-form-item label="执行路径">
+      <a-input v-model:value="formState.cwd" placeholder="input cwd"></a-input>
     </a-form-item>
     <a-form-item label="备注">
       <a-input v-model:value="formState.comment" placeholder="input comment" />
@@ -84,6 +95,8 @@ export default {
       scheduleTime: props.data?.scheduleTime,
       servers: props.data?.servers,
       comment: props.data?.comment,
+      tags: props.data?.tags,
+      cwd: props.data?.cwd,
     })
     const state = reactive({
       usersList: [],

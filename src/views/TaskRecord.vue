@@ -74,6 +74,7 @@ export default {
       {title: '执行脚本概略', key: 'command', dataIndex: 'command'},
       {title: '执行用户', key: 'executor', dataIndex: 'executor'},
       {title: '服务器用户', key: 'serverUser', dataIndex: 'serverUser'},
+      {title: '执行路径', key: 'cwd', dataIndex: 'cwd'},
       {title: '执行完毕', key: 'done', dataIndex: 'done', slots: { customRender: 'done' },},
       {title: '备注', key: 'comment', dataIndex: 'comment'},
       {
