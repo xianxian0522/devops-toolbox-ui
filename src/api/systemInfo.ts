@@ -29,4 +29,6 @@ systemInfo.updateTask = (params?: any) => request.post(`${APITask}/updateTask`, 
 systemInfo.addTask = (params?: any) => request.post(`${APITask}/setTask`, params)
 systemInfo.queryServers = () => request.get(`${APITask}/getServers`)
 
+systemInfo.doCustomComplete = (params?: any) => request.post(`${APIJob}/DoCustomComplete`, params)
+
 export default systemInfo

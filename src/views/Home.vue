@@ -72,7 +72,7 @@ export interface TreeDataItem {
   disabled?: boolean;
   children?: TreeDataItem[];
 }
-interface OutItem {
+export interface OutItem {
   id: number;
   ip: string;
   pid: number;
