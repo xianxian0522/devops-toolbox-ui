@@ -13,7 +13,7 @@ pack_app(){
   version=$4
   name=$packageName-$version
   npm i
-  npm run build -prod
+  npm run build --prod
 
   echo "Packaging $srcDir"
   echo "当前目录" pwd
