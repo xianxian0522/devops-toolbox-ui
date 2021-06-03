@@ -17,8 +17,8 @@ pack_app(){
 
   echo "Packaging $srcDir"
   mkdir -p  $appName/
-  ls $srcDir/*.*
-  cp -a $srcDir/*.* $appName/
+  ls $srcDir/*
+  cp -a $srcDir/* $appName/
   set -e
   cd "$appName"
   tar -czvf ../"$name.tar.gz" *
