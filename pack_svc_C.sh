@@ -14,10 +14,11 @@ pack_app(){
   name=$packageName-$version
 
   yum remove -y nodejs
-  curl --silent --location https://rpm.nodesource.com/setup_14.x | sudo bash
   yum clean all
-  npm install -y nodejs
+  curl --silent --location https://rpm.nodesource.com/setup_14.x | sudo bash
   
+  npm install -y nodejs
+
   npm i
   npm run build --prod
 
