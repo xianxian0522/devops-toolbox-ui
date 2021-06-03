@@ -12,6 +12,7 @@ pack_app(){
   packageName=$3
   version=$4
   name=$packageName-$version
+  npm i
   npm run build -prod
 
   echo "Packaging $srcDir"
