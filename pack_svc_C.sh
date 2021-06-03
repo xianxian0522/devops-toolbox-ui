@@ -16,7 +16,7 @@ pack_app(){
   npm install -g n --force
   n 15.10.0
   echo "打印安装"
-  npm i
+  yarn install
   echo " 编译"
   npm run build --prod
 
