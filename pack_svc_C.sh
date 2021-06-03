@@ -54,6 +54,6 @@ pack_third(){
 }
 pack_app "$srcDir" "$appName" "$packageName" "$version"
 
-if [ -n "$thirdDir" ]; then
-  pack_third "$thirdDir" "$appName" "$packageName" "$version"
-fi
+#if [ -n "$thirdDir" ]; then
+#  pack_third "$thirdDir" "$appName" "$packageName" "$version"
+#fi
