@@ -60,9 +60,9 @@
         </div>
         <a-button type="primary" @click="getSelectJobs">查询</a-button>
       </div>
-      <pre style="margin-top: 10px">
-        <code v-html="JSON.stringify(dataOut, null, 4)"></code>
-      </pre>
+      <div style="margin-top: 10px; text-align: left">
+        <pre v-html="JSON.stringify(dataOut, null, 4)"></pre>
+      </div>
     </a-spin>
   </div>
 </template>
@@ -165,6 +165,7 @@ export default {
         return '<span class="' + cls + '">' + match + '</span>';
       })
       console.log(data)
+      return data
     }
 
     return {
@@ -206,9 +207,4 @@ export default {
     }
   }
 }
-.string { color: green; }
-.number { color: darkorange; }
-.boolean { color: blue; }
-.null { color: magenta; }
-.key { color: red; }
 </style>
