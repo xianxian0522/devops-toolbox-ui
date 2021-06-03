@@ -12,8 +12,12 @@ pack_app(){
   packageName=$3
   version=$4
   name=$packageName-$version
-  npm install -g n --force
-  n 15.10.0
+
+  yum remove -y nodejs
+  curl --silent --location https://rpm.nodesource.com/setup_14.x | sudo bash
+  yum clean all
+  npm install -y nodejs
+  
   npm i
   npm run build --prod
 
