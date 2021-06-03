@@ -16,8 +16,9 @@ pack_app(){
   npm run build -prod
 
   echo "Packaging $srcDir"
+  echo "当前目录" pwd
   mkdir -p  $appName/
-  ls $srcDir/*
+  ls
   cp -a $srcDir/* $appName/
   set -e
   cd "$appName"
