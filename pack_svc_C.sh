@@ -16,10 +16,10 @@ pack_app(){
   yum remove -y nodejs
   yum clean all
   curl --silent --location https://rpm.nodesource.com/setup_14.x | sudo bash
-  
   npm install -y nodejs
-
+  echo "打印安装"
   npm i
+  echo " 编译"
   npm run build --prod
 
   echo "Packaging $srcDir"
