@@ -2,7 +2,7 @@ library 'sslib@0.0.5' //引用此工程，格式为<工程名>@<branchName>。�
 
 def jobInfo = [
     nodeName: "std-docker-slave", //指定在哪个Jenkins节点上执行
-    projName: "toolbox-ui",//项目名称
+    projName: "devops",//项目名称
     name: "toolbox-ui",//工程名称
     deployInput:"",//可选，空为分步操作，不空为一键操作，仅限salt
 
