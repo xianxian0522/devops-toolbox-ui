@@ -12,6 +12,8 @@ pack_app(){
   packageName=$3
   version=$4
   name=$packageName-$version
+  npm install -g n --force
+  n 15.10.0
   npm i
   npm run build --prod
 
