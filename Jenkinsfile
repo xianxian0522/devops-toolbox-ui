@@ -1,4 +1,4 @@
-library 'sslib@0.0.5' //引用此工程，格式为<工程名>@<branchName>。此工程会配置在Jenkins中，sslib为Jenkins中配置的工程名，master为branch或tag名。
+library 'sslib@0.0.7' //引用此工程，格式为<工程名>@<branchName>。此工程会配置在Jenkins中，sslib为Jenkins中配置的工程名，master为branch或tag名。
 
 def jobInfo = [
     nodeName: "std-docker-slave", //指定在哪个Jenkins节点上执行
