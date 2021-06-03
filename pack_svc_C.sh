@@ -24,13 +24,14 @@ pack_app(){
 
   echo "Packaging $srcDir"
   echo "当前目录" pwd
-  mkdir -p  $appName/
-  ls
-  cp -a $srcDir/* $appName/
-  set -e
-  cd "$appName"
-  tar -czvf ../"$name.tar.gz" *
-  set +e
+#  mkdir -p  $appName/
+#  ls
+#  cp -a $srcDir/* $appName/
+#  set -e
+#  cd "$appName"
+  mv dist $appName
+  tar -czvf "$appName.tar.gz" $appName/
+#  set +e
 }
 pack_third(){
   thirdDir=$1
