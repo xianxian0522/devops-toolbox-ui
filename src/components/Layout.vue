@@ -2,23 +2,43 @@
   <a-layout class="layout">
     <a-layout-header class="header">
       <div class="logo" >logo</div>
-      <a-menu
-          theme="dark"
-          mode="horizontal"
-          v-model:selectedKeys="selectedKey"
-          :style="{ lineHeight: '58px' }"
-      >
-        <a-menu-item>
-          <a href="http://127.0.0.1:4200">业务拓扑</a>
-        </a-menu-item>
-        <a-menu-item key="/">
-          <router-link to="/">运维工具箱</router-link>
-        </a-menu-item>
-        <a-menu-item key="3">CI</a-menu-item>
-        <a-menu-item key="4">CD</a-menu-item>
-        <a-menu-item key="5">监控中心</a-menu-item>
-        <a-menu-item key="6">日志中心</a-menu-item>
-      </a-menu>
+      <div class="layout-header-menu">
+        <a-menu
+            theme="dark"
+            mode="horizontal"
+            v-model:selectedKeys="selectedKey"
+            :style="{ lineHeight: '58px' }"
+        >
+          <a-menu-item>
+            <a href="http://127.0.0.1:4200">业务拓扑</a>
+          </a-menu-item>
+          <a-menu-item key="/">
+            <router-link to="/">运维工具箱</router-link>
+          </a-menu-item>
+          <a-menu-item key="3">CI</a-menu-item>
+          <a-menu-item key="4">CD</a-menu-item>
+          <a-menu-item key="5">监控中心</a-menu-item>
+          <a-menu-item key="6">日志中心</a-menu-item>
+        </a-menu>
+        <section>
+          <a-avatar class="user-avatar">
+            <template #icon><UserOutlined /></template>
+          </a-avatar>
+          <a-dropdown>
+            <a class="ant-dropdown-link" @click.prevent>
+               {{ username }}
+              <DownOutlined />
+            </a>
+            <template #overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a @click="logout()">退出</a>
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
+        </section>
+      </div>
     </a-layout-header>
     <a-layout>
       <a-layout-sider width="200" style="background: #fff">
@@ -87,15 +107,17 @@
 
 <script lang="ts">
 import {defineComponent, ref, reactive, toRefs, onMounted, watch} from 'vue';
-import {onBeforeRouteUpdate, useRoute} from 'vue-router';
+import {onBeforeRouteUpdate, useRoute, useRouter} from 'vue-router';
 import {
   UserOutlined,
   NotificationOutlined,
   HistoryOutlined,
   ProfileOutlined,
+  DownOutlined,
   createFromIconfontCN,
 } from '@ant-design/icons-vue';
 import systemInfo from "../api/systemInfo";
+import jwt from 'jsonwebtoken'
 
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2585874_owb5u2js69j.js',
@@ -114,16 +136,19 @@ export default defineComponent({
     NotificationOutlined,
     HistoryOutlined,
     ProfileOutlined,
+    DownOutlined,
     IconFont,
   },
   setup() {
     const route = useRoute()
+    const router = useRouter()
     const url = route.path.split('/');
 
     const state = reactive({
       selectedKey: ref(['/']),
       // selectedKeysMenu: ref([url[url.length - 1]]),
       selectedKeysMenu: ref([url[2]]),
+      username: '用户名',
     })
     const bar = ref<BarItem[]>([
       // {id: 1, icon: 'icon-home', path: 'home', name: '首页'},
@@ -142,6 +167,10 @@ export default defineComponent({
     const getBar = async () => {
       bar.value = await systemInfo.getBar()
     }
+    const logout = () => {
+      localStorage.removeItem('token')
+      router.push('/login')
+    }
 
     watch(() => route.path, () => {
       const url = route.path.split('/');
@@ -151,11 +180,17 @@ export default defineComponent({
     onMounted(() => {
       getBar()
       // state.selectedKeysMenu = ['/' + url[url.length-1]];
-      state.selectedKeysMenu = [url[2]];
+      // state.selectedKeysMenu = [url[2]];
+      const token = localStorage.getItem('token')
+      if (token) {
+        // const userInfo = jwt.decode(token)
+        // console.log(jwt)
+      }
     })
     return {
       ...toRefs(state),
       bar,
+      logout,
     }
   }
 })
@@ -181,6 +216,19 @@ export default defineComponent({
   margin-right: 30px;
   text-align: left;
   font-weight: 500;
+}
+.layout-header-menu {
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  ul, section {
+    white-space: nowrap;
+  }
+  .user-avatar {
+    margin-right: 4px;
+  }
 }
 .common-content {
   background: #fff;
