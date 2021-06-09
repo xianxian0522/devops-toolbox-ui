@@ -8,7 +8,7 @@ const viteConfig: UserConfig = {
     open: true,
     https: false,
     ssr: false,
-    base: './',
+    // base: './',
     outDir: 'dist',
     alias: {
         '/@/': path.resolve(__dirname, 'src'),
