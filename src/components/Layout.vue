@@ -117,7 +117,7 @@ import {
   createFromIconfontCN,
 } from '@ant-design/icons-vue';
 import systemInfo from "../api/systemInfo";
-// import jwt from 'jsonwebtoken'
+import jwt from 'jwt-decode'
 
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2585874_owb5u2js69j.js',
@@ -183,8 +183,8 @@ export default defineComponent({
       // state.selectedKeysMenu = [url[2]];
       const token = localStorage.getItem('token')
       if (token) {
-        // const userInfo = jwt.decode(token)
-        // console.log(jwt)
+        const userInfo = jwt(token)
+        state.username = userInfo?.name || userInfo?.username
       }
     })
     return {
