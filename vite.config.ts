@@ -4,7 +4,7 @@ import {UserConfig} from 'vite';
 
 const viteConfig: UserConfig = {
     hostname: '127.0.0.1',
-    port: 4203,
+    port: 7003,
     open: true,
     https: false,
     ssr: false,
@@ -15,17 +15,18 @@ const viteConfig: UserConfig = {
     },
     proxy: {
         '/api/v1': {
-            target: 'http://devops-toolbox.dev.ops.sumscope.com:7003',
-            // target: 'http://172.16.69.122:8001',
+            // target: 'http://devops-toolbox.dev.ops.sumscope.com:7003',
+            target: 'http://172.16.97.194:7003',
             changeOrigin: true,
         },
         '/devops-toolbox/api/v1': {
-            target: 'http://devops-toolbox.dev.ops.sumscope.com:7003',
+            target: 'http://172.16.97.194:7003',
             // target: 'http://172.16.69.122:8001',
             changeOrigin: true,
         },
         '/job-actuator/api/v1': {
-            target: 'http://devops-toolbox.dev.ops.sumscope.com:7003',
+            // target: 'http://devops-toolbox.dev.ops.sumscope.com:7003',
+            target: 'http://172.16.97.194:7003',
             changeOrigin: true,
         },
         '/api/my/': {
