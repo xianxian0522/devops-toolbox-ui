@@ -10,8 +10,11 @@ const APIJob = `${APIBase}/jobs`;
 const APITask = `${APIBase}/task`;
 
 const APIBar = `${API}/commands/getBar`
+const ApiMenu = '/api/my/bar'
 
 const systemInfo: any = {};
+systemInfo.getMenuBar = () => request.get(ApiMenu)
+
 systemInfo.login = () => request.get(APILogin).catch(err => console.error(err))
 systemInfo.adminLogin = (params?: any) => request.post(APIAdmin, params)
 

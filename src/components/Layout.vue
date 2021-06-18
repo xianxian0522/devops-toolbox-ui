@@ -9,16 +9,16 @@
             v-model:selectedKeys="selectedKey"
             :style="{ lineHeight: '58px' }"
         >
-          <a-menu-item>
-            <a href="http://127.0.0.1:4200">业务拓扑</a>
+          <a-menu-item v-for="bar in menuBar" :key="bar.route">
+            <a :href="bar.path">{{ bar.name }}</a>
           </a-menu-item>
-          <a-menu-item key="/">
-            <router-link to="/">运维工具箱</router-link>
-          </a-menu-item>
-          <a-menu-item key="3">CI</a-menu-item>
-          <a-menu-item key="4">CD</a-menu-item>
-          <a-menu-item key="5">监控中心</a-menu-item>
-          <a-menu-item key="6">日志中心</a-menu-item>
+<!--          <a-menu-item key="/">-->
+<!--            <router-link to="/">运维工具箱</router-link>-->
+<!--          </a-menu-item>-->
+<!--          <a-menu-item key="3">CI</a-menu-item>-->
+<!--          <a-menu-item key="4">CD</a-menu-item>-->
+<!--          <a-menu-item key="5">监控中心</a-menu-item>-->
+<!--          <a-menu-item key="6">日志中心</a-menu-item>-->
         </a-menu>
         <section>
           <a-avatar class="user-avatar">
@@ -124,9 +124,10 @@ const IconFont = createFromIconfontCN({
 });
 export interface BarItem {
   id: number;
-  icon: string;
+  icon?: string;
   path: string;
   name: string;
+  route?: string;
 }
 
 export default defineComponent({
@@ -145,7 +146,7 @@ export default defineComponent({
     const url = route.path.split('/');
 
     const state = reactive({
-      selectedKey: ref(['/']),
+      selectedKey: ref(['/toolbox/home']),
       // selectedKeysMenu: ref([url[url.length - 1]]),
       selectedKeysMenu: ref([url[2]]),
       username: '用户名',
@@ -157,8 +158,9 @@ export default defineComponent({
       // {id: 4, icon: 'icon-task-record', path: 'task-record', name: '日程任务记录' },
       // {id: 5, icon: 'icon-task-management', path: 'task-management', name: '日程任务管理' },
       // {id: 6, icon: 'icon-salt-function', path: 'salt-function', name: 'saltFunction'},
-      // {id: 6, icon: 'icon-salt-api', path: 'salt-api', name: 'saltApi'},
+      // {id: 7, icon: 'icon-salt-api', path: 'salt-api', name: 'saltApi'},
     ])
+    const menuBar = ref<BarItem[]>([])
 
     // const menuItem = ({item, key, keyPath}: any) => {
     //   state.selectedKeysMenu = keyPath;
@@ -166,6 +168,9 @@ export default defineComponent({
 
     const getBar = async () => {
       bar.value = await systemInfo.getBar()
+    }
+    const getMenuBar = async () => {
+      menuBar.value = await systemInfo.getMenuBar()
     }
     const logout = () => {
       localStorage.removeItem('token')
@@ -179,6 +184,7 @@ export default defineComponent({
 
     onMounted(() => {
       getBar()
+      getMenuBar()
       // state.selectedKeysMenu = ['/' + url[url.length-1]];
       // state.selectedKeysMenu = [url[2]];
       const token = localStorage.getItem('token')
@@ -190,6 +196,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       bar,
+      menuBar,
       logout,
     }
   }
@@ -229,6 +236,9 @@ export default defineComponent({
   .user-avatar {
     margin-right: 4px;
   }
+}
+.layout-header-menu /deep/ .ant-menu-dark .ant-menu-item:hover {
+  background-color: #1890ff;
 }
 .common-content {
   background: #fff;
