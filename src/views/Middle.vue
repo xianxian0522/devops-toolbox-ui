@@ -13,10 +13,13 @@ export default {
 
     const login = async () => {
       const data = await systemInfo.login();
-      await localStorage.setItem('token', data.token);
-      await router.push('/toolbox/home');
+      if (data.token) {
+        await localStorage.setItem('token', data.token);
+        await router.push('/toolbox/home');
+      } else {
+        router.push('/login').then();
+      }
     }
-
     if (token === 'undefined' || !token) {
       login()
     } else {
