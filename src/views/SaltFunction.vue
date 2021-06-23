@@ -79,7 +79,7 @@ export default {
         const data = await systemInfo.doCustomComplete(value)
         stateOut.isLoading = false
         stateOut.isShowChild = true
-        stateOut.outData = data.out
+        stateOut.outData = data
       } catch (e) {
         console.error(e)
         stateOut.isLoading = false
