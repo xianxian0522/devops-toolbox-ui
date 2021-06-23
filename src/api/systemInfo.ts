@@ -10,7 +10,12 @@ const APIJob = `${APIBase}/jobs`;
 const APITask = `${APIBase}/task`;
 
 const APIBar = `${API}/commands/getBar`
-const ApiMenu = '/api/my/bar'
+let ApiMenu = '/api/my/bar'
+if (window.location.hostname.endsWith('dev.ops.sumscope.com')) {
+    ApiMenu = 'http://menu.dev.ops.sumscope.com:3000' + ApiMenu;
+} else if (window.location.hostname.endsWith('ops.sumscope.com')) {
+    ApiMenu = 'http://menu.ops.sumscope.com' + ApiMenu;
+}
 
 const systemInfo: any = {};
 systemInfo.getMenuBar = () => request.get(ApiMenu)
