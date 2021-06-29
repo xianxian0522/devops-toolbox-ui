@@ -68,7 +68,7 @@ export default {
     const getServers = async () => {
       serversList.value = await systemInfo.queryServers()
     }
-    const filterOption = (input, option) => {
+    const filterOption = (input: string, option: any) => {
       return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
     }
 

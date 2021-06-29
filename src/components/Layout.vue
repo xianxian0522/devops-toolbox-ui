@@ -189,7 +189,7 @@ export default defineComponent({
       // state.selectedKeysMenu = [url[2]];
       const token = localStorage.getItem('token')
       if (token) {
-        const userInfo = jwt(token)
+        const userInfo = jwt<{[key: string]: string}>(token)
         state.username = userInfo?.name || userInfo?.username
       }
     })
