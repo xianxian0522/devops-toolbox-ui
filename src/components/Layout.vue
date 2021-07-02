@@ -1,7 +1,10 @@
 <template>
   <a-layout class="layout">
     <a-layout-header class="header">
-      <div class="logo" >logo</div>
+      <div class="logo" >
+        <img src="http://www.sumscope.com/favicon.ico" alt="">
+        TOOLBOX
+      </div>
       <div class="layout-header-menu">
         <a-menu
             theme="dark"
@@ -216,13 +219,17 @@ export default defineComponent({
 }
 
 .logo {
-  min-width: 120px;
+  min-width: 130px;
   height: 58px;
   float: left;
   color: #fff;
   margin-right: 30px;
   text-align: left;
   font-weight: 500;
+  line-height: 58px;
+  img {
+    width: 45px;
+  }
 }
 .layout-header-menu {
   display: flex;
@@ -247,6 +254,7 @@ export default defineComponent({
 .layout /deep/ .ant-layout-header {
   height: 58px;
   display: flex;
+  padding: 0 40px;
 }
 .menu-sider {
   li {
