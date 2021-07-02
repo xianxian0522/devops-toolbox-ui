@@ -40,8 +40,8 @@
         </div>
       </div>
       <div class="home-command">
-        <a-textarea v-model:value="command" :readonly="scriptId !== 0" placeholder="脚本输入框" :rows="6" />
-        <a-textarea v-model:value="comment" :readonly="scriptId !== 0" placeholder="备注" :rows="6" />
+        <a-textarea v-model:value="command" :readonly="scriptId !== 0" :placeholder="scriptId === 0 ? commandHolder : '脚本输入框'" :rows="6" />
+        <a-textarea v-model:value="comment" :readonly="scriptId !== 0" :placeholder="scriptId === 0 ? commentHolder : '备注'" :rows="6" />
       </div>
       <div class="home-command-out">
         <Description v-if="isShowChild" :outData="outData"/>
@@ -97,6 +97,8 @@ export default {
       comment: '',
       user: '',
       cwd: '',
+      commandHolder: '',
+      commentHolder: '',
     });
     const stateOut = reactive({
       isLoading: false,
@@ -180,7 +182,7 @@ export default {
       }
     }
 
-    const selectIds = (value) => {
+    const selectIds = (value: number[]) => {
       state.ids = value
     }
 
@@ -206,8 +208,13 @@ export default {
     const queryContent = async () => {
       const data = await systemInfo.queryEditById(state.scriptId);
       if (data && data.command) {
-        state.command = data.command;
-        state.comment = data.comment;
+        if (state.scriptId === 0) {
+          state.commandHolder = data.command;
+          state.commentHolder = data.comment;
+        } else {
+          state.command = data.command;
+          state.comment = data.comment;
+        }
       }
     }
 
@@ -282,6 +289,9 @@ export default {
   margin-top: 20px;
   textarea:nth-child(1) {
     margin-right: 20px;
+  }
+  textarea:nth-child(2) {
+    width: 35%;
   }
 }
 .home-command-out {
