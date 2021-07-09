@@ -1,41 +1,41 @@
 <template>
   <div class="app-common-content" >
-    <a-breadcrumb separator=">" class="app-common-header">
-      <a-breadcrumb-item>devops</a-breadcrumb-item>
-      <a-breadcrumb-item>toolbox</a-breadcrumb-item>
-      <a-breadcrumb-item>日程任务记录</a-breadcrumb-item>
-    </a-breadcrumb>
-    <RecordCommon :formState="formState">
-      <template v-slot:button>
-        <a-button @click="refresh">搜索</a-button>
-      </template>
-    </RecordCommon>
+<!--    <a-breadcrumb separator=">" class="app-common-header">-->
+<!--      <a-breadcrumb-item>devops</a-breadcrumb-item>-->
+<!--      <a-breadcrumb-item>toolbox</a-breadcrumb-item>-->
+<!--      <a-breadcrumb-item>日程任务记录</a-breadcrumb-item>-->
+<!--    </a-breadcrumb>-->
+<!--    <RecordCommon :formState="formState">-->
+<!--      <template v-slot:button>-->
+<!--        <a-button @click="refresh">搜索</a-button>-->
+<!--      </template>-->
+<!--    </RecordCommon>-->
 
-    <div style="min-height: 100%;">
-      <a-table
-          :columns="columns"
-          :data-source="commandsData"
-          :loading="isResultLoading"
-          :pagination="pagination"
-          @change="paginationChange"
-          :scroll="{ x: 1300}"
-          :rowKey="(record, index) => index">
-        <template #name="{ text }">
-          <a> {{ text }}</a>
-        </template>
-        <template #done="{ text: done }">
-          <span> {{ done ? '是' : '否' }}</span>
-        </template>
-        <template #startTime="{ text: startTime }">
-          <span> {{ formatDateTime(startTime) }}</span>
-        </template>
-        <template #action="{ record }">
-          <span>
-            <router-link :to="{path: 'task-record/command', query: {commandId: record.id}}">详情</router-link>
-          </span>
-        </template>
-      </a-table>
-    </div>
+<!--    <div style="min-height: 100%;">-->
+<!--      <a-table-->
+<!--          :columns="columns"-->
+<!--          :data-source="commandsData"-->
+<!--          :loading="isResultLoading"-->
+<!--          :pagination="pagination"-->
+<!--          @change="paginationChange"-->
+<!--          :scroll="{ x: 1300}"-->
+<!--          :rowKey="(record, index) => index">-->
+<!--        <template #name="{ text }">-->
+<!--          <a> {{ text }}</a>-->
+<!--        </template>-->
+<!--        <template #done="{ text: done }">-->
+<!--          <span> {{ done ? '是' : '否' }}</span>-->
+<!--        </template>-->
+<!--        <template #startTime="{ text: startTime }">-->
+<!--          <span> {{ formatDateTime(startTime) }}</span>-->
+<!--        </template>-->
+<!--        <template #action="{ record }">-->
+<!--          <span>-->
+<!--            <router-link :to="{path: 'task-record/command', query: {commandId: record.id}}">详情</router-link>-->
+<!--          </span>-->
+<!--        </template>-->
+<!--      </a-table>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -49,7 +49,7 @@ import systemInfo from "../api/systemInfo";
 export default {
   name: "TaskRecord",
   components: {
-    RecordCommon,
+    // RecordCommon,
   },
   setup() {
     const formState: UnwrapRef<any> = reactive({
@@ -85,47 +85,47 @@ export default {
     const commandsData = ref<CommandItem[]>([]);
 
     const refresh = async () => {
-      isResultLoading.value = true
-      const value = {...formState, page: pagination.current, size: pagination.pageSize};
-      if (value.starttime) {
-        value.starttime = new Date(value.starttime).getTime();
-      }
-      if (value.endtime) {
-        value.endtime = new Date(value.endtime).getTime();
-      }
-      try {
-        const data = await systemInfo.queryPageAll('getCommandHistories', value);
-        commandsData.value = data.commands
-        pagination.total = data.total
-        isResultLoading.value = false
-      } catch (e) {
-        isResultLoading.value = false
-        console.error(e)
-      }
+      // isResultLoading.value = true
+      // const value = {...formState, page: pagination.current, size: pagination.pageSize};
+      // if (value.starttime) {
+      //   value.starttime = new Date(value.starttime).getTime();
+      // }
+      // if (value.endtime) {
+      //   value.endtime = new Date(value.endtime).getTime();
+      // }
+      // try {
+      //   const data = await systemInfo.queryPageAll('getCommandHistories', value);
+      //   commandsData.value = data.commands
+      //   pagination.total = data.total
+      //   isResultLoading.value = false
+      // } catch (e) {
+      //   isResultLoading.value = false
+      //   console.error(e)
+      // }
     }
     const formatDateTime = (value: string) => {
-      return moment(value).format('yyyy-MM-DD HH:mm:ss')
+      // return moment(value).format('yyyy-MM-DD HH:mm:ss')
     }
 
     const paginationChange = (value) => {
-      pagination.pageSize = value.pageSize
-      pagination.current = value.current
-      refresh()
+      // pagination.pageSize = value.pageSize
+      // pagination.current = value.current
+      // refresh()
     }
 
     onMounted(() => {
-      refresh()
+      // refresh()
     })
 
     return {
-      formState,
-      isResultLoading,
-      commandsData,
-      columns,
-      pagination,
-      refresh,
-      formatDateTime,
-      paginationChange,
+      // formState,
+      // isResultLoading,
+      // commandsData,
+      // columns,
+      // pagination,
+      // refresh,
+      // formatDateTime,
+      // paginationChange,
     }
   }
 }

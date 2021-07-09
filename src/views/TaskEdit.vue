@@ -1,87 +1,87 @@
 <template>
-  <a-form :model="formState" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">
-    <a-form-item label="任务名">
-      <a-input v-model:value="formState.name" placeholder="input name" />
-    </a-form-item>
-    <a-form-item label="状态">
-      <a-select v-model:value="formState.state" style="width: 100%;" placeholder="Select a state">
-        <a-select-option :value="1">启用</a-select-option>
-        <a-select-option :value="2">禁用</a-select-option>
-      </a-select>
-    </a-form-item>
-    <a-form-item label="执行用户">
-      <a-select
-          v-model:value="formState.user"
-          show-search
-          placeholder="Select a user"
-          style="width: 100%">
-        <a-select-option v-for="option in usersList" :key="option" :value="option">{{ option }}</a-select-option>
-      </a-select>
-    </a-form-item>
-    <a-form-item label="参数">
-      <a-select
-          v-model:value="formState.tags"
-          mode="tags"
-          style="width: 100%"
-          placeholder="脚本所需要的参数">
-      </a-select>
-    </a-form-item>
-    <a-form-item label="脚本">
-      <a-select
-          v-model:value="formState.scriptId"
-          show-search
-          placeholder="Select a script"
-          style="width: 100%">
-        <a-select-option v-for="option in scriptList" :key="option.id" :value="option.id">{{ option.filename }}</a-select-option>
-      </a-select>
-    </a-form-item>
-    <a-form-item label="执行时间">
-      <a-date-picker
-          v-model:value="formState.execTime"
-          show-time
-          type="date"
-          placeholder="Pick a date"
-          style="width: 100%"
-      />
-    </a-form-item>
-    <a-form-item label="服务器">
-      <a-select
-          v-model:value="formState.servers"
-          mode="multiple"
-          :filterOption="filterOption"
-          placeholder="Select a servers"
-          style="width: 100%">
-        <a-select-option v-for="option in serversList" :key="option.Id" :value="option.Id" :title="option.Ip + ' - ' + option.Name">{{ option.Ip }} - {{ option.Name }}</a-select-option>
-      </a-select>
-<!--      <CommonTree @treeChange="selectServers"/>-->
-    </a-form-item>
-    <a-form-item label="crontab">
-      <a-input v-model:value="formState.scheduleTime" placeholder="input crontab" />
-    </a-form-item>
-    <a-form-item label="执行路径">
-      <a-input v-model:value="formState.cwd" placeholder="input cwd"></a-input>
-    </a-form-item>
-    <a-form-item label="备注">
-      <a-input v-model:value="formState.comment" placeholder="input comment" />
-    </a-form-item>
-  </a-form>
-  <div class="btns" style="text-align: right">
-    <a-button @click="onCancel">取消</a-button>
-    <a-button @click="onSubmit">确定</a-button>
-  </div>
+<!--  <a-form :model="formState" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">-->
+<!--    <a-form-item label="任务名">-->
+<!--      <a-input v-model:value="formState.name" placeholder="input name" />-->
+<!--    </a-form-item>-->
+<!--    <a-form-item label="状态">-->
+<!--      <a-select v-model:value="formState.state" style="width: 100%;" placeholder="Select a state">-->
+<!--        <a-select-option :value="1">启用</a-select-option>-->
+<!--        <a-select-option :value="2">禁用</a-select-option>-->
+<!--      </a-select>-->
+<!--    </a-form-item>-->
+<!--    <a-form-item label="执行用户">-->
+<!--      <a-select-->
+<!--          v-model:value="formState.user"-->
+<!--          show-search-->
+<!--          placeholder="Select a user"-->
+<!--          style="width: 100%">-->
+<!--        <a-select-option v-for="option in usersList" :key="option" :value="option">{{ option }}</a-select-option>-->
+<!--      </a-select>-->
+<!--    </a-form-item>-->
+<!--    <a-form-item label="参数">-->
+<!--      <a-select-->
+<!--          v-model:value="formState.tags"-->
+<!--          mode="tags"-->
+<!--          style="width: 100%"-->
+<!--          placeholder="脚本所需要的参数">-->
+<!--      </a-select>-->
+<!--    </a-form-item>-->
+<!--    <a-form-item label="脚本">-->
+<!--      <a-select-->
+<!--          v-model:value="formState.scriptId"-->
+<!--          show-search-->
+<!--          placeholder="Select a script"-->
+<!--          style="width: 100%">-->
+<!--        <a-select-option v-for="option in scriptList" :key="option.id" :value="option.id">{{ option.filename }}</a-select-option>-->
+<!--      </a-select>-->
+<!--    </a-form-item>-->
+<!--    <a-form-item label="执行时间">-->
+<!--      <a-date-picker-->
+<!--          v-model:value="formState.execTime"-->
+<!--          show-time-->
+<!--          type="date"-->
+<!--          placeholder="Pick a date"-->
+<!--          style="width: 100%"-->
+<!--      />-->
+<!--    </a-form-item>-->
+<!--    <a-form-item label="服务器">-->
+<!--      <a-select-->
+<!--          v-model:value="formState.servers"-->
+<!--          mode="multiple"-->
+<!--          :filterOption="filterOption"-->
+<!--          placeholder="Select a servers"-->
+<!--          style="width: 100%">-->
+<!--        <a-select-option v-for="option in serversList" :key="option.Id" :value="option.Id" :title="option.Ip + ' - ' + option.Name">{{ option.Ip }} - {{ option.Name }}</a-select-option>-->
+<!--      </a-select>-->
+<!--&lt;!&ndash;      <CommonTree @treeChange="selectServers"/>&ndash;&gt;-->
+<!--    </a-form-item>-->
+<!--    <a-form-item label="crontab">-->
+<!--      <a-input v-model:value="formState.scheduleTime" placeholder="input crontab" />-->
+<!--    </a-form-item>-->
+<!--    <a-form-item label="执行路径">-->
+<!--      <a-input v-model:value="formState.cwd" placeholder="input cwd"></a-input>-->
+<!--    </a-form-item>-->
+<!--    <a-form-item label="备注">-->
+<!--      <a-input v-model:value="formState.comment" placeholder="input comment" />-->
+<!--    </a-form-item>-->
+<!--  </a-form>-->
+<!--  <div class="btns" style="text-align: right">-->
+<!--    <a-button @click="onCancel">取消</a-button>-->
+<!--    <a-button @click="onSubmit">确定</a-button>-->
+<!--  </div>-->
 </template>
 
 <script lang="ts">
 import {onMounted, reactive, toRefs} from "vue";
 import systemInfo from "../api/systemInfo";
-import CommonTree from '../components/CommonTree.vue'
+// import CommonTree from '../components/CommonTree.vue'
 import moment from "moment";
 import {message} from "ant-design-vue";
 
 export default {
   name: "TaskEdit",
   props: ['data', 'mode'],
-  components: {CommonTree, },
+  // components: {CommonTree, },
   emits: ['changeShowTask'],
   setup(props: any, {emit}: any) {
     console.log(props.data)
@@ -105,22 +105,22 @@ export default {
     })
 
     const onSubmit = async () => {
-      const value = {...formState}
-      if (value.execTime) {
-        value.execTime = moment(value.execTime).valueOf()
-      }
-      if (value.execTime && value.scheduleTime) {
-        return message.warning('执行时间和crontab只能填一个')
-      }
-      console.log(value)
-      try {
-        props.mode === 'edit' ? await systemInfo.updateTask(value) : await systemInfo.addTask(value)
-        message.success(props.mode === 'edit' ? '修改成功' : '新增成功')
-        emit('changeShowTask', true)
-      } catch (e) {
-        emit('changeShowTask', false)
-        console.error(e)
-      }
+      // const value = {...formState}
+      // if (value.execTime) {
+      //   value.execTime = moment(value.execTime).valueOf()
+      // }
+      // if (value.execTime && value.scheduleTime) {
+      //   return message.warning('执行时间和crontab只能填一个')
+      // }
+      // console.log(value)
+      // try {
+      //   props.mode === 'edit' ? await systemInfo.updateTask(value) : await systemInfo.addTask(value)
+      //   message.success(props.mode === 'edit' ? '修改成功' : '新增成功')
+      //   emit('changeShowTask', true)
+      // } catch (e) {
+      //   emit('changeShowTask', false)
+      //   console.error(e)
+      // }
     }
     const onCancel = () => {
       emit('changeShowTask', false)
@@ -146,18 +146,18 @@ export default {
     }
 
     onMounted(() => {
-      getScript()
-      getUser()
-      getServers()
+      // getScript()
+      // getUser()
+      // getServers()
     })
 
     return {
-      formState,
-      ...toRefs(state),
-      onSubmit,
-      onCancel,
-      selectServers,
-      filterOption,
+      // formState,
+      // ...toRefs(state),
+      // onSubmit,
+      // onCancel,
+      // selectServers,
+      // filterOption,
     }
   }
 }

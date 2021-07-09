@@ -1,43 +1,43 @@
 <template>
-  <div class="app-common-content" >
-    <a-spin :spinning="isLoading" tip="Loading..." size="large">
-      <a-breadcrumb separator=">" class="app-common-header">
-        <a-breadcrumb-item>devops</a-breadcrumb-item>
-        <a-breadcrumb-item>toolbox</a-breadcrumb-item>
-        <a-breadcrumb-item>Salt Function</a-breadcrumb-item>
-      </a-breadcrumb>
-      <div class="toolbox-search">
-        <a-form :model="formState" layout="inline" style="display: flex; align-items: center">
-          <a-form-item label="服务器">
-            <a-select
-                v-model:value="formState.ids"
-                mode="multiple"
-                :filterOption="filterOption"
-                placeholder="Select a servers"
-                style="width: 400px">
-              <a-select-option v-for="option in serversList" :key="option.Id" :value="option.Id" :title="option.Ip + ' - ' + option.Name">{{ option.Ip }} - {{ option.Name }}</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item label="参数">
-            <a-select
-                v-model:value="formState.args"
-                mode="tags"
-                style="width: 200px"
-                placeholder="脚本所需要的参数">
-            </a-select>
-          </a-form-item>
-          <a-button type="primary" @click="runFunction">运行</a-button>
-        </a-form>
-        <div class="salt-function">
-          <a-textarea v-model:value="formState.functionName" placeholder="Salt 函数" :rows="6" />
-          <a-textarea v-model:value="formState.comment" placeholder="备注" :rows="6" />
-        </div>
-      </div>
-      <div >
-        <Description v-if="isShowChild" :outData="outData"/>
-      </div>
-    </a-spin>
-  </div>
+<!--  <div class="app-common-content" >-->
+<!--    <a-spin :spinning="isLoading" tip="Loading..." size="large">-->
+<!--      <a-breadcrumb separator=">" class="app-common-header">-->
+<!--        <a-breadcrumb-item>devops</a-breadcrumb-item>-->
+<!--        <a-breadcrumb-item>toolbox</a-breadcrumb-item>-->
+<!--        <a-breadcrumb-item>Salt Function</a-breadcrumb-item>-->
+<!--      </a-breadcrumb>-->
+<!--      <div class="toolbox-search">-->
+<!--        <a-form :model="formState" layout="inline" style="display: flex; align-items: center">-->
+<!--          <a-form-item label="服务器">-->
+<!--            <a-select-->
+<!--                v-model:value="formState.ids"-->
+<!--                mode="multiple"-->
+<!--                :filterOption="filterOption"-->
+<!--                placeholder="Select a servers"-->
+<!--                style="width: 400px">-->
+<!--              <a-select-option v-for="option in serversList" :key="option.Id" :value="option.Id" :title="option.Ip + ' - ' + option.Name">{{ option.Ip }} - {{ option.Name }}</a-select-option>-->
+<!--            </a-select>-->
+<!--          </a-form-item>-->
+<!--          <a-form-item label="参数">-->
+<!--            <a-select-->
+<!--                v-model:value="formState.args"-->
+<!--                mode="tags"-->
+<!--                style="width: 200px"-->
+<!--                placeholder="脚本所需要的参数">-->
+<!--            </a-select>-->
+<!--          </a-form-item>-->
+<!--          <a-button type="primary" @click="runFunction">运行</a-button>-->
+<!--        </a-form>-->
+<!--        <div class="salt-function">-->
+<!--          <a-textarea v-model:value="formState.functionName" placeholder="Salt 函数" :rows="6" />-->
+<!--          <a-textarea v-model:value="formState.comment" placeholder="备注" :rows="6" />-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div >-->
+<!--        <Description v-if="isShowChild" :outData="outData"/>-->
+<!--      </div>-->
+<!--    </a-spin>-->
+<!--  </div>-->
 </template>
 
 <script lang="ts">
@@ -87,15 +87,15 @@ export default {
     }
 
     onMounted(() => {
-      getServers()
+      // getServers()
     })
 
     return {
-      formState,
-      serversList,
-      ...toRefs(stateOut),
-      filterOption,
-      runFunction,
+      // formState,
+      // serversList,
+      // ...toRefs(stateOut),
+      // filterOption,
+      // runFunction,
     }
   }
 }

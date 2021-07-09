@@ -1,93 +1,93 @@
 <template>
   <div class="app-common-content" >
-    <a-breadcrumb separator=">" class="app-common-header">
-      <a-breadcrumb-item>devops</a-breadcrumb-item>
-      <a-breadcrumb-item>toolbox</a-breadcrumb-item>
-      <a-breadcrumb-item>日程任务管理</a-breadcrumb-item>
-    </a-breadcrumb>
-    <div class="toolbox-search">
-      <a-form :model="formState" layout="inline">
-        <a-button @click="addTask">新增</a-button>
-        <a-button @click="refresh">搜索</a-button>
-<!--        <a-form-item label="脚本名">-->
-<!--          <a-input v-model:value="formState.fileName" placeholder="文件名" size="small"></a-input>-->
+<!--    <a-breadcrumb separator=">" class="app-common-header">-->
+<!--      <a-breadcrumb-item>devops</a-breadcrumb-item>-->
+<!--      <a-breadcrumb-item>toolbox</a-breadcrumb-item>-->
+<!--      <a-breadcrumb-item>日程任务管理</a-breadcrumb-item>-->
+<!--    </a-breadcrumb>-->
+<!--    <div class="toolbox-search">-->
+<!--      <a-form :model="formState" layout="inline">-->
+<!--        <a-button @click="addTask">新增</a-button>-->
+<!--        <a-button @click="refresh">搜索</a-button>-->
+<!--&lt;!&ndash;        <a-form-item label="脚本名">&ndash;&gt;-->
+<!--&lt;!&ndash;          <a-input v-model:value="formState.fileName" placeholder="文件名" size="small"></a-input>&ndash;&gt;-->
+<!--&lt;!&ndash;        </a-form-item>&ndash;&gt;-->
+<!--        <a-form-item label="名字">-->
+<!--          <a-input v-model:value="formState.name" placeholder="文件名" size="small"></a-input>-->
 <!--        </a-form-item>-->
-        <a-form-item label="名字">
-          <a-input v-model:value="formState.name" placeholder="文件名" size="small"></a-input>
-        </a-form-item>
-        <a-form-item label="状态">
-          <a-select
-              v-model:value="formState.state"
-              show-search
-              :allowClear="true"
-              placeholder="Select a state"
-              size="small"
-              style="width: 200px; margin-left: 10px;"
-          >
-            <a-select-option value="1"> 启用 </a-select-option>
-            <a-select-option value="2"> 禁用 </a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="开始时间">
-          <a-space direction="vertical">
-            <a-date-picker show-time v-model:value="formState.startTime" placeholder="开始时间" size="small" />
-          </a-space>
-        </a-form-item>
-        <a-form-item label="结束时间">
-          <a-space direction="vertical">
-            <a-date-picker show-time v-model:value="formState.endTime" placeholder="结束时间" size="small" />
-          </a-space>
-        </a-form-item>
-      </a-form>
-    </div>
+<!--        <a-form-item label="状态">-->
+<!--          <a-select-->
+<!--              v-model:value="formState.state"-->
+<!--              show-search-->
+<!--              :allowClear="true"-->
+<!--              placeholder="Select a state"-->
+<!--              size="small"-->
+<!--              style="width: 200px; margin-left: 10px;"-->
+<!--          >-->
+<!--            <a-select-option value="1"> 启用 </a-select-option>-->
+<!--            <a-select-option value="2"> 禁用 </a-select-option>-->
+<!--          </a-select>-->
+<!--        </a-form-item>-->
+<!--        <a-form-item label="开始时间">-->
+<!--          <a-space direction="vertical">-->
+<!--            <a-date-picker show-time v-model:value="formState.startTime" placeholder="开始时间" size="small" />-->
+<!--          </a-space>-->
+<!--        </a-form-item>-->
+<!--        <a-form-item label="结束时间">-->
+<!--          <a-space direction="vertical">-->
+<!--            <a-date-picker show-time v-model:value="formState.endTime" placeholder="结束时间" size="small" />-->
+<!--          </a-space>-->
+<!--        </a-form-item>-->
+<!--      </a-form>-->
+<!--    </div>-->
 
-    <div style="min-height: 100%;">
-      <a-table
-          :columns="columns"
-          :data-source="taskDataList"
-          :loading="isResultLoading"
-          :pagination="pagination"
-          :scroll="{ x: 2500}"
-          @change="paginationChange"
-          :rowKey="(record, index) => index">
-        <template #name="{ text }">
-          <span> {{ text }}</span>
-        </template>
-        <template #tags="{ text: tags }">
-          <span>
-            <a-tag v-for="tag in tags" :key="tag">{{ tag }}</a-tag>
-          </span>
-        </template>
-        <template #state="{ text: state }">
-          <span>{{ state === 1 ? '启用' : '禁用' }}</span>
-        </template>
-        <template #time="{ text }">
-          <span>{{ timeFormat(text) }}</span>
-        </template>
-        <template #action="{ record }">
-          <span>
-            <a-button type="link" @click="updateTask(record)">修改</a-button>
-          </span>
-        </template>
-      </a-table>
-    </div>
+<!--    <div style="min-height: 100%;">-->
+<!--      <a-table-->
+<!--          :columns="columns"-->
+<!--          :data-source="taskDataList"-->
+<!--          :loading="isResultLoading"-->
+<!--          :pagination="pagination"-->
+<!--          :scroll="{ x: 2500}"-->
+<!--          @change="paginationChange"-->
+<!--          :rowKey="(record, index) => index">-->
+<!--        <template #name="{ text }">-->
+<!--          <span> {{ text }}</span>-->
+<!--        </template>-->
+<!--        <template #tags="{ text: tags }">-->
+<!--          <span>-->
+<!--            <a-tag v-for="tag in tags" :key="tag">{{ tag }}</a-tag>-->
+<!--          </span>-->
+<!--        </template>-->
+<!--        <template #state="{ text: state }">-->
+<!--          <span>{{ state === 1 ? '启用' : '禁用' }}</span>-->
+<!--        </template>-->
+<!--        <template #time="{ text }">-->
+<!--          <span>{{ timeFormat(text) }}</span>-->
+<!--        </template>-->
+<!--        <template #action="{ record }">-->
+<!--          <span>-->
+<!--            <a-button type="link" @click="updateTask(record)">修改</a-button>-->
+<!--          </span>-->
+<!--        </template>-->
+<!--      </a-table>-->
+<!--    </div>-->
 
-    <a-modal v-model:visible="showTask" :title="taskData?.id ? '修改任务管理' : '新增任务管理'" :footer="null" :width="750">
-      <TaskEdit v-if="showTask" :mode="mode" :data="taskData" @changeShowTask="changeShowTask" />
-    </a-modal>
+<!--    <a-modal v-model:visible="showTask" :title="taskData?.id ? '修改任务管理' : '新增任务管理'" :footer="null" :width="750">-->
+<!--      <TaskEdit v-if="showTask" :mode="mode" :data="taskData" @changeShowTask="changeShowTask" />-->
+<!--    </a-modal>-->
   </div>
 </template>
 
 <script lang="ts">
 import {onMounted, reactive, ref, watch} from "vue";
 import moment from "moment";
-import TaskEdit from './TaskEdit.vue'
+// import TaskEdit from './TaskEdit.vue'
 import {Modal} from "ant-design-vue";
 import systemInfo from "../api/systemInfo";
 
 export default {
   name: "TaskManagement",
-  components: { TaskEdit },
+  // components: { TaskEdit },
   setup() {
     const formState = reactive({
       // fileName: '',
@@ -127,26 +127,26 @@ export default {
     const mode = ref()
 
     const refresh = async () => {
-      isResultLoading.value = true
-      const value = {...formState}
-      value.page = pagination.current
-      value.size = pagination.pageSize
-      if (value.startTime) {
-        value.startTime = moment(value.startTime).valueOf()
-      }
-      if (value.endTime) {
-        value.endTime = moment(value.endTime).valueOf()
-      }
-      try {
-        const data = await systemInfo.queryPageTasks(value)
-        taskDataList.value = data.task
-        pagination.total = data.total
-        isResultLoading.value = false
-        console.log(';;;;', data)
-      } catch (e) {
-        isResultLoading.value = false
-        console.error(e)
-      }
+      // isResultLoading.value = true
+      // const value = {...formState}
+      // value.page = pagination.current
+      // value.size = pagination.pageSize
+      // if (value.startTime) {
+      //   value.startTime = moment(value.startTime).valueOf()
+      // }
+      // if (value.endTime) {
+      //   value.endTime = moment(value.endTime).valueOf()
+      // }
+      // try {
+      //   const data = await systemInfo.queryPageTasks(value)
+      //   taskDataList.value = data.task
+      //   pagination.total = data.total
+      //   isResultLoading.value = false
+      //   console.log(';;;;', data)
+      // } catch (e) {
+      //   isResultLoading.value = false
+      //   console.error(e)
+      // }
     }
     const timeFormat = (value) => {
       return moment(value).format('YYYY-MM-DD HH:mm:ss')
@@ -174,24 +174,24 @@ export default {
       refresh()
     }
     onMounted(() => {
-      refresh()
+      // refresh()
     })
 
     return {
-      isResultLoading,
-      taskDataList,
-      columns,
-      formState,
-      pagination,
-      showTask,
-      taskData,
-      mode,
-      refresh,
-      addTask,
-      updateTask,
-      changeShowTask,
-      paginationChange,
-      timeFormat,
+      // isResultLoading,
+      // taskDataList,
+      // columns,
+      // formState,
+      // pagination,
+      // showTask,
+      // taskData,
+      // mode,
+      // refresh,
+      // addTask,
+      // updateTask,
+      // changeShowTask,
+      // paginationChange,
+      // timeFormat,
     }
   }
 }
