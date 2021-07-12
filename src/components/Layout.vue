@@ -137,9 +137,9 @@ export default defineComponent({
   name: 'Layout',
   components: {
     UserOutlined,
-    NotificationOutlined,
-    HistoryOutlined,
-    ProfileOutlined,
+    // NotificationOutlined,
+    // HistoryOutlined,
+    // ProfileOutlined,
     DownOutlined,
     IconFont,
   },
@@ -170,10 +170,10 @@ export default defineComponent({
     // }
 
     const getBar = async () => {
-      bar.value = await systemInfo.getBar()
+      // bar.value = await systemInfo.getBar()
     }
     const getMenuBar = async () => {
-      menuBar.value = await systemInfo.getMenuBar()
+      // menuBar.value = await systemInfo.getMenuBar()
     }
     const logout = () => {
       localStorage.removeItem('token')

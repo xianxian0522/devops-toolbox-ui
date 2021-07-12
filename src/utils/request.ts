@@ -14,7 +14,7 @@ service.interceptors.request.use(config => {
     if (token) {
         config.headers.Authorization = 'Bearer ' + token; //如果token 存在，就带上token
     } else {
-        config.headers['token'] = ''; //return
+        router.push('/login').then()
     }
     return config;
 }, error => {
@@ -45,15 +45,15 @@ service.interceptors.response.use(response => {
 })
 
 export default {
-    get(url: string, params = {}) {
-        return new Promise((resolve, reject) => {
+    get<T>(url: string, params = {}) {
+        return new Promise<T>((resolve, reject) => {
             service.get(url, {params})
                 .then(res => resolve(res.data))
                 .catch(err => reject(err))
         })
     },
-    post: function (url: string, params = {}) {
-        return new Promise((resolve, reject) => {
+    post<T>(url: string, params = {}) {
+        return new Promise<T>((resolve, reject) => {
             service.post(url, params)
                 .then(res => resolve(res.data))
                 .catch(err => reject(err))

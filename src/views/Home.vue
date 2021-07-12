@@ -83,7 +83,7 @@ export interface OutItem {
 
 export default {
   name: "Home",
-  components: { Description, CommonTree },
+  // components: { Description, CommonTree },
   setup() {
     const value = ref<string[]>([]);
     const treeData = ref<TreeDataItem[]>([]);
@@ -117,66 +117,66 @@ export default {
 
     const getServers = async () => {
       try {
-        const data = await systemInfo.queryPageAll('getServers');
-        if (data && data.Biz) {
-          data.Biz.map((biz: any, index: number) => {
-            // console.log(treeData, biz);
-            treeData.value.push({
-              value: biz.Name,
-              title: biz.Name,
-              key: biz.Name,
-              disabled: true,
-              children: [],
-            });
-            if ((biz.Apps && biz.Apps.length > 0) || (biz.Hosts && biz.Hosts.length > 0)) {
-              (treeData.value[index].children as TreeDataItem[]).push({
-                value: '主机-' + index + '-' + biz.Name,
-                title: '主机',
-                key: '主机-' + index + '-' + biz.Name,
-                disabled: true,
-                children: (biz.Hosts.map((h: any) => ({
-                  value: h.Name + '-' + h.Id,
-                  title: h.Ip,
-                  key: h.Name + '-' + h.Id,
-                  disabled: false,
-                }))),
-              })
-              if (biz.Apps[0].Hosts && biz.Apps[0].Hosts.length > 0) {
-                (treeData.value[index].children as TreeDataItem[]).push({
-                  value: '应用-' + index + '-' + biz.Name,
-                  title: '应用',
-                  key: '应用-' + index + '-' + biz.Name,
-                  disabled: true,
-                  children: (biz.Apps.map((a: any) => ({
-                    value: a.Name,
-                    title: a.Name,
-                    key: a.Name,
-                    disabled: true,
-                    children: (a.Hosts.map((h: any) => ({
-                      value: a.Name + '-' + h.HostName + '-' + h.Id,
-                      title: (Object.keys(h).filter(id => id !== 'Id').map(key => `${key}:${h[key]}`).join(',')),
-                      key: a.Name + '-' + h.HostName + '-' + h.Id,
-                      disabled: false,
-                    })))
-                  }))),
-                })
-              } else {
-                (treeData.value[index].children as TreeDataItem[]).push({
-                  value: '应用-' + index + '-' + biz.Name,
-                  title: '应用',
-                  key: '应用-' + index + '-' + biz.Name,
-                  disabled: true,
-                  children: (biz.Apps.map((a: any) => ({
-                    value: a.Name,
-                    title: a.Name,
-                    key: a.Name,
-                    disabled: true,
-                  }))),
-                });
-              }
-            }
-          });
-        }
+        // const data = await systemInfo.queryPageAll('getServers');
+        // if (data && data.Biz) {
+        //   data.Biz.map((biz: any, index: number) => {
+        //     // console.log(treeData, biz);
+        //     treeData.value.push({
+        //       value: biz.Name,
+        //       title: biz.Name,
+        //       key: biz.Name,
+        //       disabled: true,
+        //       children: [],
+        //     });
+        //     if ((biz.Apps && biz.Apps.length > 0) || (biz.Hosts && biz.Hosts.length > 0)) {
+        //       (treeData.value[index].children as TreeDataItem[]).push({
+        //         value: '主机-' + index + '-' + biz.Name,
+        //         title: '主机',
+        //         key: '主机-' + index + '-' + biz.Name,
+        //         disabled: true,
+        //         children: (biz.Hosts.map((h: any) => ({
+        //           value: h.Name + '-' + h.Id,
+        //           title: h.Ip,
+        //           key: h.Name + '-' + h.Id,
+        //           disabled: false,
+        //         }))),
+        //       })
+        //       if (biz.Apps[0].Hosts && biz.Apps[0].Hosts.length > 0) {
+        //         (treeData.value[index].children as TreeDataItem[]).push({
+        //           value: '应用-' + index + '-' + biz.Name,
+        //           title: '应用',
+        //           key: '应用-' + index + '-' + biz.Name,
+        //           disabled: true,
+        //           children: (biz.Apps.map((a: any) => ({
+        //             value: a.Name,
+        //             title: a.Name,
+        //             key: a.Name,
+        //             disabled: true,
+        //             children: (a.Hosts.map((h: any) => ({
+        //               value: a.Name + '-' + h.HostName + '-' + h.Id,
+        //               title: (Object.keys(h).filter(id => id !== 'Id').map(key => `${key}:${h[key]}`).join(',')),
+        //               key: a.Name + '-' + h.HostName + '-' + h.Id,
+        //               disabled: false,
+        //             })))
+        //           }))),
+        //         })
+        //       } else {
+        //         (treeData.value[index].children as TreeDataItem[]).push({
+        //           value: '应用-' + index + '-' + biz.Name,
+        //           title: '应用',
+        //           key: '应用-' + index + '-' + biz.Name,
+        //           disabled: true,
+        //           children: (biz.Apps.map((a: any) => ({
+        //             value: a.Name,
+        //             title: a.Name,
+        //             key: a.Name,
+        //             disabled: true,
+        //           }))),
+        //         });
+        //       }
+        //     }
+        //   });
+        // }
       } catch (e) {
         console.error(e)
       }
@@ -189,50 +189,50 @@ export default {
     const execScript = async () => {
       stateOut.isLoading = true;
       const res = await systemInfo.execCommandScript('execScript', state);
-      if (res && res.id) {
-        await getCurrentOutById(res.id)
-      } else {
-        stateOut.isLoading = false;
-      }
+      // if (res && res.id) {
+      //   await getCurrentOutById(res.id)
+      // } else {
+      //   stateOut.isLoading = false;
+      // }
     }
     const execCommand = async () => {
       stateOut.isLoading = true;
       const res = await systemInfo.execCommandScript('execCommand', state);
-      if (res && res.id) {
-        await getCurrentOutById(res.id);
-      } else {
-        stateOut.isLoading = false;
-      }
+      // if (res && res.id) {
+      //   await getCurrentOutById(res.id);
+      // } else {
+      //   stateOut.isLoading = false;
+      // }
     }
 
     const queryContent = async () => {
       const data = await systemInfo.queryEditById(state.scriptId);
-      if (data && data.command) {
-        if (state.scriptId === 0) {
-          state.commandHolder = data.command;
-          state.commentHolder = data.comment;
-        } else {
-          state.command = data.command;
-          state.comment = data.comment;
-        }
-      }
+      // if (data && data.command) {
+      //   if (state.scriptId === 0) {
+      //     state.commandHolder = data.command;
+      //     state.commentHolder = data.comment;
+      //   } else {
+      //     state.command = data.command;
+      //     state.comment = data.comment;
+      //   }
+      // }
     }
 
     const getCurrentOutById = async (outId: number) => {
       const data = await systemInfo.queryPageAll('getCurrentOut', { outId });
-      if (data?.out?.length === 0) {
-        timer.value = await setTimeout( () => getCurrentOutById(outId), 2000);
-      } else {
-        stateOut.isLoading = false;
-        stateOut.outData = data.out;
-        stateOut.isShowChild = true;
-      }
+      // if (data?.out?.length === 0) {
+      //   timer.value = await setTimeout( () => getCurrentOutById(outId), 2000);
+      // } else {
+      //   stateOut.isLoading = false;
+      //   stateOut.outData = data.out;
+      //   stateOut.isShowChild = true;
+      // }
     }
 
     const getServerUser = async () => {
       const data = await systemInfo.queryPageAll('getServerUser');
-      userData.value = data.content
-      state.user = userData.value?.[0]
+      // userData.value = data.content
+      // state.user = userData.value?.[0]
     }
 
     onMounted(() => {

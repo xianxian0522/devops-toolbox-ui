@@ -1,5 +1,5 @@
 <template>
-<!--  <div class="app-common-content" >-->
+  <div class="app-common-content" >
 <!--    <a-spin :spinning="isLoading" tip="Loading..." size="large">-->
 <!--      <a-breadcrumb separator=">" class="app-common-header">-->
 <!--        <a-breadcrumb-item>devops</a-breadcrumb-item>-->
@@ -37,7 +37,7 @@
 <!--        <Description v-if="isShowChild" :outData="outData"/>-->
 <!--      </div>-->
 <!--    </a-spin>-->
-<!--  </div>-->
+  </div>
 </template>
 
 <script lang="ts">
@@ -49,7 +49,7 @@ import Description from '../components/Description.vue'
 export default {
   name: "SaltFunction",
   components: {
-    Description,
+    // Description,
   },
   setup() {
     const formState = reactive({
@@ -66,7 +66,7 @@ export default {
     });
 
     const getServers = async () => {
-      serversList.value = await systemInfo.queryServers()
+      // serversList.value = await systemInfo.queryServers()
     }
     const filterOption = (input: string, option: any) => {
       return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -79,7 +79,7 @@ export default {
         const data = await systemInfo.doCustomComplete(value)
         stateOut.isLoading = false
         stateOut.isShowChild = true
-        stateOut.outData = data
+        // stateOut.outData = data
       } catch (e) {
         console.error(e)
         stateOut.isLoading = false

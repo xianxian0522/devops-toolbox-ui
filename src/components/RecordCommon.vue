@@ -37,16 +37,25 @@
 <script lang="ts">
 
 import systemInfo from "../api/systemInfo";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 
 export default {
   name: "RecordCommon",
-  props: ['formState'],
+  props: {
+    form: Object,
+  },
   setup() {
+    const formState = reactive({
+      done: false,
+      fileName: '',
+      starttime: '',
+      endtime: '',
+      serverUser: '',
+    })
     const userData = ref<string[]>([])
     const getServerUser = async () => {
       const data = await systemInfo.queryPageAll('getServerUser');
-      userData.value = data.content
+      // userData.value = data.content
     }
 
     onMounted(() => {
@@ -54,6 +63,7 @@ export default {
     })
 
     return {
+      formState,
       userData,
     }
   },

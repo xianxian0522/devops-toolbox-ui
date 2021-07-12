@@ -12,12 +12,16 @@ export default {
     const token = localStorage.getItem('token');
 
     const login = async () => {
-      const data = await systemInfo.login();
-      if (data.token) {
-        await localStorage.setItem('token', data.token);
-        await router.push('/toolbox/home');
-      } else {
-        router.push('/login').then();
+      try {
+        const data = await systemInfo.login();
+        if (data && data?.token) {
+          await localStorage.setItem('token', data.token);
+          await router.push('/toolbox/home');
+        } else {
+          router.push('/login').then();
+        }
+      } catch (e) {
+        console.error(e)
       }
     }
     if (token === 'undefined' || !token) {

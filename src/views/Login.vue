@@ -9,7 +9,6 @@
 </template>
 
 <script lang="ts">
-import { onMounted } from 'vue'
 import systemInfo from "../api/systemInfo";
 import {useRoute, useRouter} from "vue-router";
 
@@ -26,17 +25,18 @@ export default {
   setup() {
     const router = useRouter()
     const login = async () => {
-      const data = await systemInfo.login();
-      if (data && data.url) {
-        window.location.href = data.url;
+      try {
+        const data = await systemInfo.login();
+        if (data && data.url) {
+          window.location.href = data.url;
+        }
+      } catch (e) {
+        console.error(e)
       }
     }
     const adminLogin = () => {
       router.push('/admin-login')
     }
-
-    onMounted(async () => {
-    })
 
     return { login, adminLogin }
   },

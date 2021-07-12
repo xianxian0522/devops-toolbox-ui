@@ -75,10 +75,10 @@ export default {
   name: "SaltApi",
   setup() {
     const saltMaster = reactive({
-      masterId: '',
+      masterId: 0,
     })
     const masterMinion = reactive({
-      masterId: '',
+      masterId: 0,
     })
     const selectMinion = reactive({
       masterId: '',
