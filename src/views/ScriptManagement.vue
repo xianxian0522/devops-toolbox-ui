@@ -8,7 +8,7 @@
     <div class="toolbox-search">
       <a-form :model="formState" layout="inline">
         <a-button @click="refresh">搜索</a-button>
-<!--        <a-button @click="showCreateScript">添加</a-button>-->
+        <a-button><router-link :to="{path: 'script/edit', query: {isEdit: true}}">添加</router-link></a-button>
         <a-form-item label="文件名">
           <a-input v-model:value="formState.name" placeholder="文件名" size="small"></a-input>
         </a-form-item>
@@ -24,12 +24,18 @@
           @change="handleTableChange"
       >
         <template #name="{ text }">{{ text }}</template>
-        <template #detail="{ record }">{{record.id}}
-<!--          <a-button type="link" @click="showEditScript(record.id, true)">详情</a-button>-->
+        <template #detail="{ record }">
+          <a-button type="link" >
+            <router-link :to="{path: 'script/edit', query: {scriptId: record.id}}">详情</router-link>
+          </a-button>
         </template>
         <template #action="{ record }">
-          <router-link :to="{path: '/toolbox/home', query: {scriptId: record.id}}">脚本</router-link>
-<!--          <a-button type="link" @click="showEditScript(record.id, false)">编辑</a-button>-->
+          <a-button type="link">
+            <router-link :to="{path: '/toolbox/home', query: {scriptId: record.id}}">脚本</router-link>
+          </a-button>
+          <a-button type="link">
+            <router-link :to="{path: 'script/edit', query: {isEdit: true, scriptId: record.id}}">编辑</router-link>
+          </a-button>
         </template>
       </a-table>
     </div>
@@ -82,7 +88,7 @@ export default {
       {title: '文件名', key: 'filename', dataIndex: 'filename',},
       {title: '备注', key: 'comment', dataIndex: 'comment'},
       {title: '详细', key: 'detail', dataIndex: 'detail', slots: { customRender: 'detail' },},
-      {title: '操作', key: 'action', dataIndex: 'action', fixed: 'right', width: 120, slots: { customRender: 'action' },},
+      {title: '操作', key: 'action', dataIndex: 'action', align: 'center', fixed: 'right', width: 160, slots: { customRender: 'action' },},
     ]
     const formState = reactive({
       name: '',

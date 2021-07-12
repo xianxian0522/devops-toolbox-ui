@@ -90,4 +90,5 @@ export interface ScriptResponse {
   filename: string;
   id: number;
   updateTime: string;
+  script: string;
 }

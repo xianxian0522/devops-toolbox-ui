@@ -5,7 +5,7 @@ import {
   Exec,
   HistoryResponse,
   HomeTooltip,
-  LoginResponse, ScriptManager,
+  LoginResponse, ScriptManager, ScriptResponse,
   Servers,
   ServersUser
 } from "@/utils/response";
@@ -40,8 +40,11 @@ export default {
   queryHomeEditById: (id: number) => request.get<HomeTooltip>(`${APICommands}/${id}`),
   queryCommandHistory: (params: any) => request.get<HistoryResponse>(`${APICommands}/getCommandHistories`, params),
   queryScriptManager: (params: any) => request.get<ScriptManager>(`${APICommands}/getManagerList`, params),
+  queryScriptDetail: (sId: number) => request.get<ScriptResponse>(`${APICommands}/getScriptDetail`, {id: sId}),
   execCommand: (params: any) => request.post<Exec>(`${APICommands}/execCommand`, params),
   execScript: (params: any) => request.post<Exec>(`${APICommands}/execScript`, params),
+  updateScript: (params: any) => request.post(`${APICommands}/updateScript`, params),
+  addScript: (params: any) => request.post(`${APICommands}/saveScript`, params),
 
   execCommandScript: (urlString: string, params?: any) => request.post(`${APICommands}/${urlString}`, params).catch(err => console.error(err)),
   queryAllTasks: () => request.get(`${APITask}/getTasks`),
