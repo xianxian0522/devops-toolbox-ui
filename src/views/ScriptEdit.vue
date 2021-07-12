@@ -25,15 +25,17 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, reactive, ref} from 'vue'
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import CommonBreadcrumb from "@/components/CommonBreadcrumb.vue";
 import systemInfo from "@/api/systemInfo";
+import {message} from "ant-design-vue";
 
 export default defineComponent({
   name: 'ScriptEdit',
   components: {CommonBreadcrumb},
   setup() {
     const route = useRoute()
+    const router = useRouter()
     const isEdit = ref(route.query.isEdit)
     const scriptId = ref(0)
 
@@ -61,7 +63,8 @@ export default defineComponent({
         const value = {...scriptValue}
         scriptId.value ? await systemInfo.updateScript(value)
           : await systemInfo.addScript(value)
-        console.log(';;;;')
+        message.success(scriptId.value ? '修改成功' : '新增成功')
+        router.push('/toolbox/script').then()
       } catch (e) {
         console.error(e)
       }
