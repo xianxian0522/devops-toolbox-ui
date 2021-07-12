@@ -5,14 +5,14 @@ import {
   Avatar,
   Breadcrumb,
   Button,
-  ConfigProvider,
+  ConfigProvider, Descriptions,
   Dropdown,
   Form,
   Input,
   Layout,
   Menu,
   Select,
-  Spin
+  Spin, TreeSelect
 } from "ant-design-vue";
 
 
@@ -30,6 +30,8 @@ app.use(Dropdown)
 app.use(Spin)
 app.use(Select)
 app.use(Breadcrumb)
+app.use(TreeSelect)
+app.use(Descriptions)
 
 
 app.mount('#app')

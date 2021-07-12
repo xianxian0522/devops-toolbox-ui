@@ -7,7 +7,7 @@
         <template v-slot:three>首页</template>
       </CommonBreadcrumb>
       <div class="home-select">
-<!--        <CommonTree @treeChange="selectIds" />-->
+        <CommonTree @treeChange="selectIds" />
         <div class="btns">
           <a-select
               v-model:value="scriptParams"
@@ -32,29 +32,21 @@
         <a-textarea v-model:value="command" :readonly="scriptId !== 0" :placeholder="scriptId === 0 ? commandHolder : '脚本输入框'" :rows="6" />
         <a-textarea v-model:value="comment" :readonly="scriptId !== 0" :placeholder="scriptId === 0 ? commentHolder : '备注'" :rows="6" />
       </div>
-<!--      <div class="home-command-out">-->
-<!--        <Description v-if="isShowChild" :outData="outData"/>-->
-<!--&lt;!&ndash;        <a-descriptions :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in outData">&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-descriptions-item label="id">{{ out.id }}</a-descriptions-item>&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-descriptions-item label="Ip" :span="2">{{ out.ip }}</a-descriptions-item>&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-descriptions-item label="pid">{{ out.pid }}</a-descriptions-item>&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-descriptions-item label="stderr" :span="2">{{ out.stderr }}</a-descriptions-item>&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-descriptions-item label="retcode">{{ out.retcode }}</a-descriptions-item>&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-descriptions-item label="stdout">{{ out.stdout }}</a-descriptions-item>&ndash;&gt;-->
-<!--&lt;!&ndash;        </a-descriptions>&ndash;&gt;-->
-<!--      </div>-->
+      <div class="home-command-out">
+        <Description v-if="isShowChild" :outData="outData"/>
+      </div>
     </a-spin>
   </div>
 </template>
 
 <script lang="ts">
-import {onMounted, reactive, ref, watch, toRefs, getCurrentInstance, provide, onBeforeUnmount, UnwrapRef} from 'vue';
+import {onMounted, reactive, ref, watch, toRefs, onBeforeUnmount, UnwrapRef} from 'vue';
 import systemInfo from "../api/systemInfo";
 import {useRoute} from "vue-router";
 import Description from '../components/Description.vue';
 import CommonTree from '../components/CommonTree.vue'
 import CommonBreadcrumb from "@/components/CommonBreadcrumb.vue";
-import {OutResponse, TreeDataItem} from "@/utils/response";
+import {OutResponse} from "@/utils/response";
 
 export interface StateOut {
   isLoading: boolean;
@@ -76,12 +68,11 @@ export interface StateArg {
 export default {
   name: "Home",
   components: {
-    // Description, CommonTree,
+    Description,
+    CommonTree,
     CommonBreadcrumb,
   },
   setup() {
-    const value = ref<string[]>([]);
-    const treeData = ref<TreeDataItem[]>([]);
     const scriptParams = ref<string[]>([]);
     const userData = ref<string[]>([])
     const state: UnwrapRef<StateArg> = reactive({
@@ -107,152 +98,80 @@ export default {
       state.scriptId = parseInt(route.query.scriptId as string, 10);
     }
 
-    const getServers = async () => {
-      try {
-        // const data = await systemInfo.queryPageAll('getServers');
-        // if (data && data.Biz) {
-        //   data.Biz.map((biz: any, index: number) => {
-        //     // console.log(treeData, biz);
-        //     treeData.value.push({
-        //       value: biz.Name,
-        //       title: biz.Name,
-        //       key: biz.Name,
-        //       disabled: true,
-        //       children: [],
-        //     });
-        //     if ((biz.Apps && biz.Apps.length > 0) || (biz.Hosts && biz.Hosts.length > 0)) {
-        //       (treeData.value[index].children as TreeDataItem[]).push({
-        //         value: '主机-' + index + '-' + biz.Name,
-        //         title: '主机',
-        //         key: '主机-' + index + '-' + biz.Name,
-        //         disabled: true,
-        //         children: (biz.Hosts.map((h: any) => ({
-        //           value: h.Name + '-' + h.Id,
-        //           title: h.Ip,
-        //           key: h.Name + '-' + h.Id,
-        //           disabled: false,
-        //         }))),
-        //       })
-        //       if (biz.Apps[0].Hosts && biz.Apps[0].Hosts.length > 0) {
-        //         (treeData.value[index].children as TreeDataItem[]).push({
-        //           value: '应用-' + index + '-' + biz.Name,
-        //           title: '应用',
-        //           key: '应用-' + index + '-' + biz.Name,
-        //           disabled: true,
-        //           children: (biz.Apps.map((a: any) => ({
-        //             value: a.Name,
-        //             title: a.Name,
-        //             key: a.Name,
-        //             disabled: true,
-        //             children: (a.Hosts.map((h: any) => ({
-        //               value: a.Name + '-' + h.HostName + '-' + h.Id,
-        //               title: (Object.keys(h).filter(id => id !== 'Id').map(key => `${key}:${h[key]}`).join(',')),
-        //               key: a.Name + '-' + h.HostName + '-' + h.Id,
-        //               disabled: false,
-        //             })))
-        //           }))),
-        //         })
-        //       } else {
-        //         (treeData.value[index].children as TreeDataItem[]).push({
-        //           value: '应用-' + index + '-' + biz.Name,
-        //           title: '应用',
-        //           key: '应用-' + index + '-' + biz.Name,
-        //           disabled: true,
-        //           children: (biz.Apps.map((a: any) => ({
-        //             value: a.Name,
-        //             title: a.Name,
-        //             key: a.Name,
-        //             disabled: true,
-        //           }))),
-        //         });
-        //       }
-        //     }
-        //   });
-        // }
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
     const selectIds = (value: number[]) => {
       state.ids = value
     }
 
     const execScript = async () => {
-      stateOut.isLoading = true;
-      const res = await systemInfo.execCommandScript('execScript', state);
-      // if (res && res.id) {
-      //   await getCurrentOutById(res.id)
-      // } else {
-      //   stateOut.isLoading = false;
-      // }
+      try {
+        stateOut.isLoading = true;
+        const value = {...state}
+        const res = await systemInfo.execScript(value)
+        await getCurrentOutById(res.id)
+      } catch (e) {
+        stateOut.isLoading = false;
+        console.error(e)
+      }
     }
     const execCommand = async () => {
-      stateOut.isLoading = true;
-      const res = await systemInfo.execCommandScript('execCommand', state);
-      // if (res && res.id) {
-      //   await getCurrentOutById(res.id);
-      // } else {
-      //   stateOut.isLoading = false;
-      // }
+      try {
+        stateOut.isLoading = true;
+        const value = {...state}
+        const res = await systemInfo.execCommand(value)
+        await getCurrentOutById(res.id);
+      } catch (e) {
+        stateOut.isLoading = false;
+        console.error(e)
+      }
     }
 
     const queryContent = async () => {
       const data = await systemInfo.queryHomeEditById(state.scriptId);
-      // if (data && data.command) {
-      //   if (state.scriptId === 0) {
-      //     state.commandHolder = data.command;
-      //     state.commentHolder = data.comment;
-      //   } else {
-      //     state.command = data.command;
-      //     state.comment = data.comment;
-      //   }
-      // }
+      if (state.scriptId === 0) {
+        state.commandHolder = data.command;
+        state.commentHolder = data.comment;
+      } else {
+        state.command = data.command;
+        state.comment = data.comment;
+      }
     }
 
     const getCurrentOutById = async (outId: number) => {
-      const data = await systemInfo.queryPageAll('getCurrentOut', { outId });
-      // if (data?.out?.length === 0) {
-      //   timer.value = await setTimeout( () => getCurrentOutById(outId), 2000);
-      // } else {
-      //   stateOut.isLoading = false;
-      //   stateOut.outData = data.out;
-      //   stateOut.isShowChild = true;
-      // }
+      try {
+        const data = await systemInfo.queryCurrentOutById(outId)
+        if (data?.out?.length === 0) {
+          timer.value = await setTimeout( () => getCurrentOutById(outId), 2000);
+        } else {
+          stateOut.isLoading = false;
+          stateOut.outData = data?.out || [];
+          stateOut.isShowChild = true;
+        }
+      } catch (e) {
+        stateOut.isLoading = false
+        console.error(e)
+      }
     }
 
     const getServerUser = async () => {
-      const data = await systemInfo.queryPageAll('getServerUser');
-      // userData.value = data.content
-      // state.user = userData.value?.[0]
+      const data = await systemInfo.queryServersUser()
+
+      userData.value = data.content
+      state.user = userData.value?.[0]
     }
 
     onMounted(() => {
-      // getServers();
-      // queryContent();
-      // getServerUser();
+      queryContent();
+      getServerUser();
     })
     onBeforeUnmount(() => {
       clearTimeout(timer.value)
     })
 
-    // watch(value, () => {
-    //   if (value.value.length > 0) {
-    //     state.ids = value.value.map(v => {
-    //       const arr = v.split('-');
-    //       return parseInt(arr[arr.length - 1], 10);
-    //     });
-    //   } else {
-    //     state.ids = [];
-    //   }
-    // });
     watch(scriptParams, () => {
       state.args = scriptParams.value;
     });
 
     return {
-      // // value,
-      // // treeData,
       scriptParams,
       userData,
       ...toRefs(state),
