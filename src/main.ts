@@ -4,8 +4,8 @@ import router from './router';
 import {
   Avatar,
   Breadcrumb,
-  Button,
-  ConfigProvider, Descriptions,
+  Button, Checkbox,
+  ConfigProvider, DatePicker, Descriptions,
   Dropdown,
   Form,
   Input,
@@ -32,6 +32,8 @@ app.use(Select)
 app.use(Breadcrumb)
 app.use(TreeSelect)
 app.use(Descriptions)
+app.use(DatePicker)
+app.use(Checkbox)
 
 
 app.mount('#app')

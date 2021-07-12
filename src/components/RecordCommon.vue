@@ -10,14 +10,10 @@
         <a-input v-model:value="formState.fileName" placeholder="文件名" size="small"></a-input>
       </a-form-item>
       <a-form-item label="开始时间">
-        <a-space direction="vertical">
-          <a-date-picker show-time v-model:value="formState.starttime" placeholder="开始时间" size="small" />
-        </a-space>
+        <a-date-picker show-time v-model:value="formState.starttime" placeholder="开始时间" size="small" />
       </a-form-item>
       <a-form-item label="结束时间">
-        <a-space direction="vertical">
-          <a-date-picker show-time v-model:value="formState.endtime" placeholder="结束时间" size="small" />
-        </a-space>
+        <a-date-picker show-time v-model:value="formState.endtime" placeholder="结束时间" size="small" />
       </a-form-item>
       <a-form-item label="执行用户">
         <a-select
@@ -44,18 +40,18 @@ export default {
   props: {
     form: Object,
   },
-  setup() {
+  setup(props: any) {
     const formState = reactive({
-      done: false,
-      fileName: '',
-      starttime: '',
-      endtime: '',
-      serverUser: '',
+      done: props.form?.done,
+      fileName: props.form?.fileName,
+      starttime: props.form?.starttime,
+      endtime: props.form?.endtime,
+      serverUser: props.form?.serverUser,
     })
     const userData = ref<string[]>([])
     const getServerUser = async () => {
-      const data = await systemInfo.queryPageAll('getServerUser');
-      // userData.value = data.content
+      const data = await systemInfo.queryServersUser()
+      userData.value = data.content
     }
 
     onMounted(() => {

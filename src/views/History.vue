@@ -1,15 +1,15 @@
 <template>
   <div class="app-common-content" @scroll="mousewheel">
-<!--    <a-breadcrumb separator=">" class="app-common-header">-->
-<!--      <a-breadcrumb-item>devops</a-breadcrumb-item>-->
-<!--      <a-breadcrumb-item>toolbox</a-breadcrumb-item>-->
-<!--      <a-breadcrumb-item>历史记录</a-breadcrumb-item>-->
-<!--    </a-breadcrumb>-->
-<!--    <RecordCommon :formState="formState">-->
-<!--      <template v-slot:button>-->
-<!--        <a-button @click="refresh">搜索</a-button>-->
-<!--      </template>-->
-<!--    </RecordCommon>-->
+    <CommonBreadcrumb >
+      <template v-slot:first>devops</template>
+      <template v-slot:second>toolbox</template>
+      <template v-slot:three>历史记录</template>
+    </CommonBreadcrumb>
+    <RecordCommon :form="formState">
+      <template v-slot:button>
+        <a-button @click="refresh">搜索</a-button>
+      </template>
+    </RecordCommon>
 <!--&lt;!&ndash;    <div class="toolbox-search">&ndash;&gt;-->
 <!--&lt;!&ndash;      <a-form :model="formState" layout="inline">&ndash;&gt;-->
 <!--&lt;!&ndash;        <a-button @click="refresh">搜索</a-button>&ndash;&gt;-->
@@ -61,11 +61,11 @@
 <script lang="ts">
 import {UnwrapRef, reactive, onMounted, watch, ref, computed, watchEffect} from 'vue';
 import systemInfo from "../api/systemInfo";
-import _ from 'lodash';
-import {debounce} from '../utils/debounce';
+import * as _ from 'lodash';
 import {message} from "ant-design-vue";
 import moment from "moment";
 import RecordCommon from "../components/RecordCommon.vue";
+import CommonBreadcrumb from "@/components/CommonBreadcrumb.vue";
 
 export interface CommandItem {
   command: string;
@@ -82,13 +82,14 @@ export default {
   name: "History",
   components: {
     RecordCommon,
+    CommonBreadcrumb,
   },
   setup() {
     const formState: UnwrapRef<any> = reactive({
       done: true,
       fileName: '',
-      starttime: null,
-      endtime: null,
+      starttime: '',
+      endtime: '',
       serverUser: '',
     });
     const state = reactive({
@@ -144,7 +145,7 @@ export default {
       // }
       // state.page ++ ;
     }
-    const mousewheel = debounce(scrollFn, 200)
+    const mousewheel = _.debounce(scrollFn, 200)
 
     const formatDateTime = (value: string) => {
       return moment(value).format('yyyy-MM-DD HH:mm:ss')
@@ -157,12 +158,12 @@ export default {
     })
 
     return {
-      // formState,
+      formState,
       // columns,
       // commandsData,
       // isResultLoading,
-      // mousewheel,
-      // refresh,
+      mousewheel,
+      refresh,
       // formatDateTime,
     }
   },
