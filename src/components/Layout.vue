@@ -15,13 +15,6 @@
           <a-menu-item v-for="bar in menuBar" :key="bar.route">
             <a :href="bar.path">{{ bar.name }}</a>
           </a-menu-item>
-<!--          <a-menu-item key="/">-->
-<!--            <router-link to="/">运维工具箱</router-link>-->
-<!--          </a-menu-item>-->
-<!--          <a-menu-item key="3">CI</a-menu-item>-->
-<!--          <a-menu-item key="4">CD</a-menu-item>-->
-<!--          <a-menu-item key="5">监控中心</a-menu-item>-->
-<!--          <a-menu-item key="6">日志中心</a-menu-item>-->
         </a-menu>
         <section>
           <a-avatar class="user-avatar">
@@ -51,54 +44,12 @@
             v-model:selectedKeys="selectedKeysMenu"
             :style="{ height: '100%', borderRight: 0 }"
         >
-<!--          <a-menu-item :key="'home'">-->
-<!--            <span>-->
-<!--              <user-outlined/>-->
-<!--              <router-link to="/toolbox/home">首页</router-link>-->
-<!--            </span>-->
-<!--          </a-menu-item>-->
-<!--          <a-menu-item :key="'history'">-->
-<!--            <span>-->
-<!--              <history-outlined/>-->
-<!--              <router-link to="/toolbox/history">历史记录</router-link>-->
-<!--            </span>-->
-<!--          </a-menu-item>-->
-<!--          <a-menu-item :key="'script'">-->
-<!--            <span>-->
-<!--              <profile-outlined/>-->
-<!--              <router-link to="/toolbox/script">脚本管理</router-link>-->
-<!--            </span>-->
-<!--          </a-menu-item>-->
-<!--          <a-menu-item :key="'task-record'">-->
-<!--            <span>-->
-<!--              <profile-outlined/>-->
-<!--              <router-link to="/toolbox/task-record">日程任务记录</router-link>-->
-<!--            </span>-->
-<!--          </a-menu-item>-->
-<!--          <a-menu-item :key="'task-management'">-->
-<!--            <span>-->
-<!--              <profile-outlined/>-->
-<!--              <router-link to="/toolbox/task-management">日程任务管理</router-link>-->
-<!--            </span>-->
-<!--          </a-menu-item>-->
           <a-menu-item v-for="item in bar" :key="item.path">
             <span>
               <icon-font :type="item.icon" />
               <router-link :to="'/toolbox/' + item.path">{{ item.name }}</router-link>
             </span>
           </a-menu-item>
-<!--          <a-sub-menu key="sub1">-->
-<!--            <template #title>-->
-<!--              <span>-->
-<!--                <user-outlined />-->
-<!--                subnav 1-->
-<!--              </span>-->
-<!--            </template>-->
-<!--            <a-menu-item key="1">option1</a-menu-item>-->
-<!--            <a-menu-item key="2">option2</a-menu-item>-->
-<!--            <a-menu-item key="3">option3</a-menu-item>-->
-<!--            <a-menu-item key="4">option4</a-menu-item>-->
-<!--          </a-sub-menu>-->
         </a-menu>
       </a-layout-sider>
       <a-layout-content class="common-content">
@@ -121,25 +72,16 @@ import {
 } from '@ant-design/icons-vue';
 import systemInfo from "../api/systemInfo";
 import jwt from 'jwt-decode'
+import {BarItem} from "@/utils/response";
 
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2585874_owb5u2js69j.js',
 });
-export interface BarItem {
-  id: number;
-  icon?: string;
-  path: string;
-  name: string;
-  route?: string;
-}
 
 export default defineComponent({
   name: 'Layout',
   components: {
     UserOutlined,
-    // NotificationOutlined,
-    // HistoryOutlined,
-    // ProfileOutlined,
     DownOutlined,
     IconFont,
   },
@@ -154,15 +96,7 @@ export default defineComponent({
       selectedKeysMenu: ref([url[2]]),
       username: '用户名',
     })
-    const bar = ref<BarItem[]>([
-      // {id: 1, icon: 'icon-home', path: 'home', name: '首页'},
-      // {id: 2, icon: 'icon-history', path: 'history', name: '历史记录' },
-      // {id: 3, icon: 'icon-script', path: 'script', name: '脚本管理' },
-      // {id: 4, icon: 'icon-task-record', path: 'task-record', name: '日程任务记录' },
-      // {id: 5, icon: 'icon-task-management', path: 'task-management', name: '日程任务管理' },
-      // {id: 6, icon: 'icon-salt-function', path: 'salt-function', name: 'saltFunction'},
-      // {id: 7, icon: 'icon-salt-api', path: 'salt-api', name: 'saltApi'},
-    ])
+    const bar = ref<BarItem[]>([])
     const menuBar = ref<BarItem[]>([])
 
     // const menuItem = ({item, key, keyPath}: any) => {
@@ -170,10 +104,10 @@ export default defineComponent({
     // }
 
     const getBar = async () => {
-      // bar.value = await systemInfo.getBar()
+      bar.value = await systemInfo.getBar()
     }
     const getMenuBar = async () => {
-      // menuBar.value = await systemInfo.getMenuBar()
+      menuBar.value = await systemInfo.getMenuBar()
     }
     const logout = () => {
       localStorage.removeItem('token')
@@ -188,8 +122,7 @@ export default defineComponent({
     onMounted(() => {
       getBar()
       getMenuBar()
-      // state.selectedKeysMenu = ['/' + url[url.length-1]];
-      // state.selectedKeysMenu = [url[2]];
+
       const token = localStorage.getItem('token')
       if (token) {
         const userInfo = jwt<{[key: string]: string}>(token)
@@ -250,6 +183,10 @@ export default defineComponent({
 .common-content {
   background: #fff;
   border-left: 1px solid #DCDEE5;
+  padding: 20px;
+  height: inherit;
+  // 超过的高度滚动
+  overflow: scroll;
 }
 .layout /deep/ .ant-layout-header {
   height: 58px;
@@ -271,6 +208,7 @@ export default defineComponent({
   }
   a {
     color: rgba(0, 0, 0, 0.85);
+    margin-left: 10px;
   }
   .ant-menu-item-selected a, a:hover {
     color: #1890ff;

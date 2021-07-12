@@ -1,5 +1,5 @@
 import request from "../utils/request";
-import {LoginResponse} from "@/utils/response";
+import {BarItem, CurrentOut, Exec, HomeTooltip, LoginResponse, Servers, ServersUser} from "@/utils/response";
 
 const APILogin = '/api/v1/sso/login';
 const APIAdmin = '/devops-toolbox/api/v1/auth/check';
@@ -19,14 +19,20 @@ if (window.location.hostname.endsWith('dev.ops.sumscope.com')) {
 }
 
 export default {
-  getMenuBar: () => request.get(ApiMenu),
+  getMenuBar: () => request.get<BarItem[]>(ApiMenu),
   login: () => request.get<LoginResponse>(APILogin),
   adminLogin: (params?: any) => request.post(APIAdmin, params),
-  getBar: () => request.get(APIBar).catch(err => console.error(err)),
+  getBar: () => request.get<BarItem[]>(APIBar),
 
   queryPageAll: (urlString: string, params?: any) => request.get(`${APICommands}/${urlString}`, params).catch(err => console.error(err)),
+  queryCurrentOutById: (outId: number) => request.get<CurrentOut>(`${APICommands}/getCurrentOut`, {outId: outId}),
+  queryCommandServers: () => request.get<Servers>(`${APICommands}/getServers`),
+  queryServersUser: () => request.get<ServersUser>(`${APICommands}/getServerUser`),
+  queryHomeEditById: (id: number) => request.get<HomeTooltip>(`${APICommands}/${id}`),
+  execCommand: (params: any) => request.post<Exec>(`${APICommands}/execCommand`, params),
+  execScript: (params: any) => request.post<Exec>(`${APICommands}/execScript`, params),
+
   execCommandScript: (urlString: string, params?: any) => request.post(`${APICommands}/${urlString}`, params).catch(err => console.error(err)),
-  queryEditById: (id: number) => request.get(`${APICommands}/${id}`).catch(err => console.error(err)),
   queryAllTasks: () => request.get(`${APITask}/getTasks`),
   queryPageTasks: (params: any) => request.get(`${APITask}/getTasksPage`, params),
   updateTask: (params?: any) => request.post(`${APITask}/updateTask`, params),

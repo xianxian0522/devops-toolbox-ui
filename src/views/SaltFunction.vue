@@ -43,8 +43,8 @@
 <script lang="ts">
 import systemInfo from "../api/systemInfo";
 import {onMounted, reactive, ref, toRefs} from "vue";
-import {OutItem} from "../views/Home.vue";
 import Description from '../components/Description.vue'
+import {OutResponse} from "@/utils/response";
 
 export default {
   name: "SaltFunction",
@@ -62,7 +62,7 @@ export default {
     const stateOut = reactive({
       isLoading: false,
       isShowChild: false,
-      outData: [] as OutItem[],
+      outData: [] as OutResponse[],
     });
 
     const getServers = async () => {

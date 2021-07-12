@@ -59,26 +59,28 @@
 </template>
 
 <script lang="ts">
-import {onMounted, reactive, ref, watch, toRefs, getCurrentInstance, provide, onBeforeUnmount} from 'vue';
+import {onMounted, reactive, ref, watch, toRefs, getCurrentInstance, provide, onBeforeUnmount, UnwrapRef} from 'vue';
 import systemInfo from "../api/systemInfo";
 import {useRoute} from "vue-router";
 import Description from '../components/Description.vue';
 import CommonTree from '../components/CommonTree.vue'
+import {OutResponse, TreeDataItem} from "@/utils/response";
 
-export interface TreeDataItem {
-  value: string;
-  key: string;
-  title?: string;
-  disabled?: boolean;
-  children?: TreeDataItem[];
+export interface StateOut {
+  isLoading: boolean;
+  isShowChild: boolean;
+  outData: OutResponse[];
 }
-export interface OutItem {
-  id: number;
-  ip: string;
-  pid: number;
-  stderr: string;
-  retcode: number;
-  stdout: number;
+export interface StateArg {
+  ids: number[];
+  args: string[];
+  scriptId: number;
+  command: string;
+  comment: string;
+  user: string;
+  cwd: string;
+  commandHolder: string;
+  commentHolder: string;
 }
 
 export default {
@@ -89,27 +91,24 @@ export default {
     const treeData = ref<TreeDataItem[]>([]);
     const valueParams = ref<string[]>([]);
     const userData = ref<string[]>([])
-    const state = reactive({
-      ids: [] as number[],
-      args: [] as string[],
-      scriptId: 0 as number,
-      command: '' as string,
+    const state: UnwrapRef<StateArg> = reactive({
+      ids: [],
+      args: [],
+      scriptId: 0,
+      command: '',
       comment: '',
       user: '',
       cwd: '',
       commandHolder: '',
       commentHolder: '',
     });
-    const stateOut = reactive({
+    const stateOut: UnwrapRef<StateOut> = reactive({
       isLoading: false,
       isShowChild: false,
-      outData: [] as OutItem[],
+      outData: [],
     });
     const timer = ref()
-    // provide('outData', stateOut.outData);
 
-    // const proxy = getCurrentInstance()?.proxy
-    // console.log(proxy?.$root?.$route)
     const route = useRoute()
     if (route.query && route.query.scriptId) {
       state.scriptId = parseInt(route.query.scriptId as string, 10);
@@ -206,7 +205,7 @@ export default {
     }
 
     const queryContent = async () => {
-      const data = await systemInfo.queryEditById(state.scriptId);
+      const data = await systemInfo.queryHomeEditById(state.scriptId);
       // if (data && data.command) {
       //   if (state.scriptId === 0) {
       //     state.commandHolder = data.command;
