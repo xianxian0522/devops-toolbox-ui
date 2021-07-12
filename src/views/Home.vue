@@ -1,48 +1,37 @@
 <template>
   <div class="app-common-content">
-<!--    <a-spin :spinning="isLoading" tip="Loading..." size="large">-->
-<!--      <a-breadcrumb separator=">" class="app-common-header">-->
-<!--        <a-breadcrumb-item>devops</a-breadcrumb-item>-->
-<!--        <a-breadcrumb-item>toolbox</a-breadcrumb-item>-->
-<!--        <a-breadcrumb-item>首页</a-breadcrumb-item>-->
-<!--      </a-breadcrumb>-->
-<!--      <div class="home-select">-->
+    <a-spin :spinning="isLoading" tip="Loading..." size="large">
+      <CommonBreadcrumb >
+        <template v-slot:first>devops</template>
+        <template v-slot:second>toolbox</template>
+        <template v-slot:three>首页</template>
+      </CommonBreadcrumb>
+      <div class="home-select">
 <!--        <CommonTree @treeChange="selectIds" />-->
-<!--&lt;!&ndash;        <a-tree-select&ndash;&gt;-->
-<!--&lt;!&ndash;            v-model:value="value"&ndash;&gt;-->
-<!--&lt;!&ndash;            :treeData="treeData"&ndash;&gt;-->
-<!--&lt;!&ndash;            show-search&ndash;&gt;-->
-<!--&lt;!&ndash;            multiple&ndash;&gt;-->
-<!--&lt;!&ndash;            style="width: 100%"&ndash;&gt;-->
-<!--&lt;!&ndash;            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"&ndash;&gt;-->
-<!--&lt;!&ndash;            placeholder="请选择服务器"&ndash;&gt;-->
-<!--&lt;!&ndash;            allow-clear&ndash;&gt;-->
-<!--&lt;!&ndash;            tree-default-expand-all>&ndash;&gt;-->
-<!--&lt;!&ndash;        </a-tree-select>&ndash;&gt;-->
-<!--        <div class="btns">-->
-<!--          <a-select-->
-<!--              v-model:value="valueParams"-->
-<!--              mode="tags"-->
-<!--              style="width: 400px"-->
-<!--              placeholder="脚本所需要的参数">-->
-<!--          </a-select>-->
-<!--          <a-button type="primary" :disabled="scriptId === 0" @click="execScript">执行脚本</a-button>-->
-<!--          <a-button type="primary" :disabled="scriptId !== 0" @click="execCommand">执行命令</a-button>-->
-<!--          <a-select-->
-<!--              v-model:value="user"-->
-<!--              show-search-->
-<!--              placeholder="Select a person"-->
-<!--              style="width: 200px; margin-left: 10px; margin-right: 10px;"-->
-<!--          >-->
-<!--            <a-select-option v-for="option in userData" :key="option" :value="option">{{option}}</a-select-option>-->
-<!--          </a-select>-->
-<!--          <a-input style="width: 200px;" v-model:value="cwd" placeholder="执行路径"></a-input>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="home-command">-->
-<!--        <a-textarea v-model:value="command" :readonly="scriptId !== 0" :placeholder="scriptId === 0 ? commandHolder : '脚本输入框'" :rows="6" />-->
-<!--        <a-textarea v-model:value="comment" :readonly="scriptId !== 0" :placeholder="scriptId === 0 ? commentHolder : '备注'" :rows="6" />-->
-<!--      </div>-->
+        <div class="btns">
+          <a-select
+              v-model:value="scriptParams"
+              mode="tags"
+              style="width: 400px"
+              placeholder="脚本所需要的参数">
+          </a-select>
+          <a-button type="primary" :disabled="scriptId === 0" @click="execScript">执行脚本</a-button>
+          <a-button type="primary" :disabled="scriptId !== 0" @click="execCommand">执行命令</a-button>
+          <a-select
+              v-model:value="user"
+              show-search
+              placeholder="Select a person"
+              style="width: 200px; margin-left: 10px; margin-right: 10px;"
+          >
+            <a-select-option v-for="option in userData" :key="option" :value="option">{{option}}</a-select-option>
+          </a-select>
+          <a-input style="width: 200px;" v-model:value="cwd" placeholder="执行路径"></a-input>
+        </div>
+      </div>
+      <div class="home-command">
+        <a-textarea v-model:value="command" :readonly="scriptId !== 0" :placeholder="scriptId === 0 ? commandHolder : '脚本输入框'" :rows="6" />
+        <a-textarea v-model:value="comment" :readonly="scriptId !== 0" :placeholder="scriptId === 0 ? commentHolder : '备注'" :rows="6" />
+      </div>
 <!--      <div class="home-command-out">-->
 <!--        <Description v-if="isShowChild" :outData="outData"/>-->
 <!--&lt;!&ndash;        <a-descriptions :title="index === 0 ? '执行命令的输出' : ''" bordered v-for="(out, index) in outData">&ndash;&gt;-->
@@ -54,7 +43,7 @@
 <!--&lt;!&ndash;          <a-descriptions-item label="stdout">{{ out.stdout }}</a-descriptions-item>&ndash;&gt;-->
 <!--&lt;!&ndash;        </a-descriptions>&ndash;&gt;-->
 <!--      </div>-->
-<!--    </a-spin>-->
+    </a-spin>
   </div>
 </template>
 
@@ -64,6 +53,7 @@ import systemInfo from "../api/systemInfo";
 import {useRoute} from "vue-router";
 import Description from '../components/Description.vue';
 import CommonTree from '../components/CommonTree.vue'
+import CommonBreadcrumb from "@/components/CommonBreadcrumb.vue";
 import {OutResponse, TreeDataItem} from "@/utils/response";
 
 export interface StateOut {
@@ -85,11 +75,14 @@ export interface StateArg {
 
 export default {
   name: "Home",
-  // components: { Description, CommonTree },
+  components: {
+    // Description, CommonTree,
+    CommonBreadcrumb,
+  },
   setup() {
     const value = ref<string[]>([]);
     const treeData = ref<TreeDataItem[]>([]);
-    const valueParams = ref<string[]>([]);
+    const scriptParams = ref<string[]>([]);
     const userData = ref<string[]>([])
     const state: UnwrapRef<StateArg> = reactive({
       ids: [],
@@ -253,20 +246,20 @@ export default {
     //     state.ids = [];
     //   }
     // });
-    watch(valueParams, () => {
-      state.args = valueParams.value;
+    watch(scriptParams, () => {
+      state.args = scriptParams.value;
     });
 
     return {
       // // value,
       // // treeData,
-      // valueParams,
-      // userData,
-      // ...toRefs(state),
-      // ...toRefs(stateOut),
-      // execCommand,
-      // execScript,
-      // selectIds,
+      scriptParams,
+      userData,
+      ...toRefs(state),
+      ...toRefs(stateOut),
+      execCommand,
+      execScript,
+      selectIds,
     };
   },
 }

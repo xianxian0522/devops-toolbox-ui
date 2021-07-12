@@ -64,9 +64,6 @@ import {defineComponent, ref, reactive, toRefs, onMounted, watch} from 'vue';
 import {onBeforeRouteUpdate, useRoute, useRouter} from 'vue-router';
 import {
   UserOutlined,
-  NotificationOutlined,
-  HistoryOutlined,
-  ProfileOutlined,
   DownOutlined,
   createFromIconfontCN,
 } from '@ant-design/icons-vue';
@@ -183,7 +180,7 @@ export default defineComponent({
 .common-content {
   background: #fff;
   border-left: 1px solid #DCDEE5;
-  padding: 20px;
+  padding: 0 20px;
   height: inherit;
   // 超过的高度滚动
   overflow: scroll;
