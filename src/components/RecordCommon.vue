@@ -1,7 +1,7 @@
 <template>
   <div class="toolbox-search">
     <a-form :model="formState" layout="inline">
-<!--      <a-button @click="refresh">搜索</a-button>-->
+      <a-button @click="refresh">搜索</a-button>
       <slot name="button"></slot>
       <a-form-item label="是否完成">
         <a-checkbox v-model:checked="formState.done"></a-checkbox>
@@ -33,20 +33,19 @@
 <script lang="ts">
 
 import systemInfo from "../api/systemInfo";
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
+import * as _ from "lodash";
 
 export default {
   name: "RecordCommon",
-  props: {
-    form: Object,
-  },
-  setup(props: any) {
+  emits: ['updateForm'],
+  setup(props: any, content: any) {
     const formState = reactive({
-      done: props.form?.done,
-      fileName: props.form?.fileName,
-      starttime: props.form?.starttime,
-      endtime: props.form?.endtime,
-      serverUser: props.form?.serverUser,
+      done: true,
+      fileName: '',
+      starttime: '',
+      endtime: '',
+      serverUser: '',
     })
     const userData = ref<string[]>([])
     const getServerUser = async () => {
@@ -54,18 +53,26 @@ export default {
       userData.value = data.content
     }
 
+    const refresh = () => {
+      content.emit('updateForm', formState)
+    }
+
+    watch(formState, _.debounce(refresh, 300))
+
     onMounted(() => {
       getServerUser()
+      refresh()
     })
 
     return {
       formState,
       userData,
+      refresh,
     }
   },
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+@import "index.less";
 </style>

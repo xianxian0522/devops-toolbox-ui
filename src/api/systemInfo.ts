@@ -1,5 +1,14 @@
 import request from "../utils/request";
-import {BarItem, CurrentOut, Exec, HomeTooltip, LoginResponse, Servers, ServersUser} from "@/utils/response";
+import {
+  BarItem,
+  CurrentOut,
+  Exec,
+  HistoryResponse,
+  HomeTooltip,
+  LoginResponse,
+  Servers,
+  ServersUser
+} from "@/utils/response";
 
 const APILogin = '/api/v1/sso/login';
 const APIAdmin = '/devops-toolbox/api/v1/auth/check';
@@ -29,6 +38,7 @@ export default {
   queryCommandServers: () => request.get<Servers>(`${APICommands}/getServers`),
   queryServersUser: () => request.get<ServersUser>(`${APICommands}/getServerUser`),
   queryHomeEditById: (id: number) => request.get<HomeTooltip>(`${APICommands}/${id}`),
+  queryCommandHistory: (params: any) => request.get<HistoryResponse>(`${APICommands}/getCommandHistories`, params),
   execCommand: (params: any) => request.post<Exec>(`${APICommands}/execCommand`, params),
   execScript: (params: any) => request.post<Exec>(`${APICommands}/execScript`, params),
 

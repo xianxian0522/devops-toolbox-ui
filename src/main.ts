@@ -12,7 +12,7 @@ import {
   Layout,
   Menu,
   Select,
-  Spin, TreeSelect
+  Spin, Table, TreeSelect
 } from "ant-design-vue";
 
 
@@ -34,6 +34,7 @@ app.use(TreeSelect)
 app.use(Descriptions)
 app.use(DatePicker)
 app.use(Checkbox)
+app.use(Table)
 
 
 app.mount('#app')

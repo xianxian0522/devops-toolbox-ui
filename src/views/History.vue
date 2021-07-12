@@ -5,61 +5,40 @@
       <template v-slot:second>toolbox</template>
       <template v-slot:three>历史记录</template>
     </CommonBreadcrumb>
-    <RecordCommon :form="formState">
-      <template v-slot:button>
-        <a-button @click="refresh">搜索</a-button>
-      </template>
+    <RecordCommon @updateForm="updateForm">
+<!--      <template v-slot:button>-->
+<!--        <a-button @click="refresh">搜索</a-button>-->
+<!--      </template>-->
     </RecordCommon>
-<!--&lt;!&ndash;    <div class="toolbox-search">&ndash;&gt;-->
-<!--&lt;!&ndash;      <a-form :model="formState" layout="inline">&ndash;&gt;-->
-<!--&lt;!&ndash;        <a-button @click="refresh">搜索</a-button>&ndash;&gt;-->
-<!--&lt;!&ndash;        <a-form-item label="是否完成">&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-checkbox v-model:checked="formState.done"></a-checkbox>&ndash;&gt;-->
-<!--&lt;!&ndash;        </a-form-item>&ndash;&gt;-->
-<!--&lt;!&ndash;        <a-form-item label="文件名">&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-input v-model:value="formState.fileName" placeholder="文件名" size="small"></a-input>&ndash;&gt;-->
-<!--&lt;!&ndash;        </a-form-item>&ndash;&gt;-->
-<!--&lt;!&ndash;        <a-form-item label="开始时间">&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-space direction="vertical">&ndash;&gt;-->
-<!--&lt;!&ndash;            <a-date-picker show-time v-model:value="formState.starttime" placeholder="开始时间" size="small" />&ndash;&gt;-->
-<!--&lt;!&ndash;          </a-space>&ndash;&gt;-->
-<!--&lt;!&ndash;        </a-form-item>&ndash;&gt;-->
-<!--&lt;!&ndash;        <a-form-item label="结束时间">&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-space direction="vertical">&ndash;&gt;-->
-<!--&lt;!&ndash;            <a-date-picker show-time v-model:value="formState.endtime" placeholder="结束时间" size="small" />&ndash;&gt;-->
-<!--&lt;!&ndash;          </a-space>&ndash;&gt;-->
-<!--&lt;!&ndash;        </a-form-item>&ndash;&gt;-->
-<!--&lt;!&ndash;      </a-form>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--    <div style="min-height: 100%;">-->
-<!--      <a-table-->
-<!--          :columns="columns"-->
-<!--          :data-source="commandsData"-->
-<!--          :loading="isResultLoading"-->
-<!--          :pagination="false"-->
-<!--          :scroll="{ x: 1300}"-->
-<!--          :rowKey="(record, index) => index">-->
-<!--        <template #name="{ text }">-->
-<!--          <a> {{ text }}</a>-->
-<!--        </template>-->
-<!--        <template #done="{ text: done }">-->
-<!--          <span> {{ done ? '是' : '否' }}</span>-->
-<!--        </template>-->
-<!--        <template #startTime="{ text: startTime }">-->
-<!--          <span> {{ formatDateTime(startTime) }}</span>-->
-<!--        </template>-->
-<!--        <template #action="{ record }">-->
-<!--          <span>-->
-<!--            <router-link :to="{path: 'history/command', query: {commandId: record.id}}">详情</router-link>-->
-<!--          </span>-->
-<!--        </template>-->
-<!--      </a-table>-->
-<!--    </div>-->
+    <div style="min-height: 100%;">
+      <a-table
+          :columns="columns"
+          :data-source="commandsData"
+          :loading="isResultLoading"
+          :pagination="false"
+          :scroll="{ x: 1300}"
+          :rowKey="(record, index) => index">
+        <template #name="{ text }">
+          <a> {{ text }}</a>
+        </template>
+        <template #done="{ text: done }">
+          <span> {{ done ? '是' : '否' }}</span>
+        </template>
+        <template #startTime="{ text: startTime }">
+          <span> {{ formatDateTime(startTime) }}</span>
+        </template>
+        <template #action="{ record }">
+          <span>
+            <router-link :to="{path: 'history/command', query: {commandId: record.id}}">详情</router-link>
+          </span>
+        </template>
+      </a-table>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import {UnwrapRef, reactive, onMounted, watch, ref, computed, watchEffect} from 'vue';
+import {UnwrapRef, reactive, onMounted, watch, ref, computed, watchEffect, toRefs} from 'vue';
 import systemInfo from "../api/systemInfo";
 import * as _ from 'lodash';
 import {message} from "ant-design-vue";
@@ -85,14 +64,8 @@ export default {
     CommonBreadcrumb,
   },
   setup() {
-    const formState: UnwrapRef<any> = reactive({
-      done: true,
-      fileName: '',
-      starttime: '',
-      endtime: '',
-      serverUser: '',
-    });
-    const state = reactive({
+    const formState = ref()
+    const statePagination = reactive({
       page: 1,
       size: 10,
     })
@@ -114,36 +87,37 @@ export default {
     const isResultLoading = ref(false);
     const commandsData = ref<CommandItem[]>([]);
 
-    const refresh = async (e?: any) => {
-      // isResultLoading.value = true;
-      // if (e === formState) {
-      //   commandsData.value = [];
-      //   state.page = 1;
-      // }
-      // const value = {...formState, ...state};
-      // if (value.starttime) {
-      //   value.starttime = new Date(value.starttime).getTime();
-      // }
-      // if (value.endtime) {
-      //   value.endtime = new Date(value.endtime).getTime();
-      // }
-      // const data = await systemInfo.queryPageAll('getCommandHistories', value);
-      // isResultLoading.value = false;
-      // if (data && data.commands) {
-      //   commandsData.value = commandsData.value.concat(data.commands);
-      //   // state.page = parseInt(data.page, 10);
-      //   // state.size = parseInt(data.size, 10);
-      //   total.value = data.total;
-      // }
+    const refresh = async (formChange: boolean) => {
+      isResultLoading.value = true;
+      const value = {...formState.value, ...statePagination};
+      if (value.starttime) {
+        value.starttime = moment(value.starttime).valueOf()
+      }
+      if (value.endtime) {
+        value.endtime = moment(value.endtime).valueOf()
+      }
+      
+      const data = await systemInfo.queryCommandHistory(value)
+      isResultLoading.value = false;
+      total.value = data.total;
+      if (formChange) {
+        commandsData.value = data.commands
+      } else {
+        commandsData.value = commandsData.value.concat(data.commands);
+      }
     };
-    const formStateHandle = _.throttle(refresh, 1000);
-    const stateHandle = _.throttle(refresh, 1000);
+    const updateForm = (value: any) => {
+      formState.value = value
+      statePagination.page = 1
+      refresh(true)
+    }
 
-    const scrollFn = async () => {
-      // if (state.page * state.size >= total.value) {
-      //   return message.info('没有更多数据了')
-      // }
-      // state.page ++ ;
+    const scrollFn = () => {
+      if (statePagination.page * statePagination.size >= total.value) {
+        return message.info('没有更多数据了')
+      }
+      statePagination.page ++ ;
+      refresh(false)
     }
     const mousewheel = _.debounce(scrollFn, 200)
 
@@ -151,20 +125,13 @@ export default {
       return moment(value).format('yyyy-MM-DD HH:mm:ss')
     }
 
-    onMounted(() => {
-      // refresh();
-      // watch(formState, formStateHandle);
-      // watch(state, stateHandle)
-    })
-
     return {
-      formState,
-      // columns,
-      // commandsData,
-      // isResultLoading,
+      columns,
+      commandsData,
+      isResultLoading,
       mousewheel,
-      refresh,
-      // formatDateTime,
+      formatDateTime,
+      updateForm,
     }
   },
 }

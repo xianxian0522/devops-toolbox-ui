@@ -62,3 +62,22 @@ export interface OutResponse {
   stderr?: string;
   stdout?: string;
 }
+export interface HistoryResponse {
+  commands: Command[];
+  page: string;
+  size: string;
+  total: number;
+}
+export interface Command {
+  command: string;
+  comment: string;
+  cwd: string;
+  description: string;
+  done: boolean;
+  executor: string;
+  fileName: string;
+  id: number;
+  serverUser: string;
+  startTime: string;
+  updateTime: string;
+}
