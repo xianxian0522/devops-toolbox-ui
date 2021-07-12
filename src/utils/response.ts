@@ -92,3 +92,13 @@ export interface ScriptResponse {
   updateTime: string;
   script: string;
 }
+export interface CommandDetail {
+  command: string;
+  out: OutResponse[];
+  serverInfo: ServerInfo[];
+}
+export interface ServerInfo {
+  Id: number;
+  Name: string;
+  Ip: string;
+}

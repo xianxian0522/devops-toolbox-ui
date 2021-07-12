@@ -1,6 +1,6 @@
 import request from "../utils/request";
 import {
-  BarItem,
+  BarItem, CommandDetail,
   CurrentOut,
   Exec,
   HistoryResponse,
@@ -39,6 +39,7 @@ export default {
   queryServersUser: () => request.get<ServersUser>(`${APICommands}/getServerUser`),
   queryHomeEditById: (id: number) => request.get<HomeTooltip>(`${APICommands}/${id}`),
   queryCommandHistory: (params: any) => request.get<HistoryResponse>(`${APICommands}/getCommandHistories`, params),
+  queryCommandDetail: (cId: number) => request.get<CommandDetail>(`${APICommands}/getDetail`, {queryId: cId}),
   queryScriptManager: (params: any) => request.get<ScriptManager>(`${APICommands}/getManagerList`, params),
   queryScriptDetail: (sId: number) => request.get<ScriptResponse>(`${APICommands}/getScriptDetail`, {id: sId}),
   execCommand: (params: any) => request.post<Exec>(`${APICommands}/execCommand`, params),
