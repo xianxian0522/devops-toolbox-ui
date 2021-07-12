@@ -1,15 +1,12 @@
 <template>
   <div class="app-common-content" >
-<!--    <a-breadcrumb separator=">" class="app-common-header">-->
-<!--      <a-breadcrumb-item>devops</a-breadcrumb-item>-->
-<!--      <a-breadcrumb-item>toolbox</a-breadcrumb-item>-->
-<!--      <a-breadcrumb-item>日程任务记录</a-breadcrumb-item>-->
-<!--    </a-breadcrumb>-->
-<!--    <RecordCommon :formState="formState">-->
-<!--      <template v-slot:button>-->
-<!--        <a-button @click="refresh">搜索</a-button>-->
-<!--      </template>-->
-<!--    </RecordCommon>-->
+    <CommonBreadcrumb >
+      <template v-slot:first>devops</template>
+      <template v-slot:second>toolbox</template>
+      <template v-slot:three>日程任务记录</template>
+    </CommonBreadcrumb>
+    <RecordCommon @updateForm="updateForm">
+    </RecordCommon>
 
 <!--    <div style="min-height: 100%;">-->
 <!--      <a-table-->
@@ -42,6 +39,7 @@
 <script lang="ts">
 import {onMounted, reactive, ref, UnwrapRef, watch} from "vue";
 import RecordCommon from "../components/RecordCommon.vue";
+import CommonBreadcrumb from "@/components/CommonBreadcrumb.vue";
 import {CommandItem} from "./History.vue";
 import moment from "moment";
 import systemInfo from "../api/systemInfo";
@@ -49,17 +47,19 @@ import systemInfo from "../api/systemInfo";
 export default {
   name: "TaskRecord",
   components: {
-    // RecordCommon,
+    RecordCommon,
+    CommonBreadcrumb,
   },
   setup() {
-    const formState: UnwrapRef<any> = reactive({
-      done: true,
-      fileName: '',
-      starttime: null,
-      endtime: null,
-      serverUser: '',
-      historyType: 2,
-    })
+    // const formState: UnwrapRef<any> = reactive({
+    //   done: true,
+    //   fileName: '',
+    //   starttime: null,
+    //   endtime: null,
+    //   serverUser: '',
+    //   historyType: 2,
+    // })
+    const formState = ref()
     const pagination = reactive({
       current: 1,
       pageSize: 10,
@@ -84,9 +84,13 @@ export default {
     const isResultLoading = ref(false);
     const commandsData = ref<CommandItem[]>([]);
 
+    const updateForm = (value: any) => {
+      formState.value = value
+    }
+
     const refresh = async () => {
-      // isResultLoading.value = true
-      // const value = {...formState, page: pagination.current, size: pagination.pageSize};
+      isResultLoading.value = true
+      const value = {...formState, historyType: 2, page: pagination.current, size: pagination.pageSize};
       // if (value.starttime) {
       //   value.starttime = new Date(value.starttime).getTime();
       // }
@@ -126,6 +130,7 @@ export default {
       // refresh,
       // formatDateTime,
       // paginationChange,
+      updateForm,
     }
   }
 }
