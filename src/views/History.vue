@@ -96,7 +96,7 @@ export default {
       if (value.endtime) {
         value.endtime = moment(value.endtime).valueOf()
       }
-      
+
       const data = await systemInfo.queryCommandHistory(value)
       isResultLoading.value = false;
       total.value = data.total;

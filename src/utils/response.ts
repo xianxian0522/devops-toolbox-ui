@@ -81,3 +81,13 @@ export interface Command {
   startTime: string;
   updateTime: string;
 }
+export interface ScriptManager {
+  list: ScriptResponse[];
+  total: number;
+}
+export interface ScriptResponse {
+  comment: string;
+  filename: string;
+  id: number;
+  updateTime: string;
+}
