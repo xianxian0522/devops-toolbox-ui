@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
 import { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
-import {store} from "../store";
+// import {store} from "../store";
 
 
 const x = 3;
@@ -85,7 +85,7 @@ export default defineComponent({
   data() {
     return {
       msg: 'vite 联系我们!',
-      count: store.state.count,
+      // count: store.state.count,
     }
   },
   setup() {

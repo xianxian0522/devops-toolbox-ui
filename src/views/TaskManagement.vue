@@ -148,7 +148,7 @@ export default {
       //   console.error(e)
       // }
     }
-    const timeFormat = (value) => {
+    const timeFormat = (value: string) => {
       return moment(value).format('YYYY-MM-DD HH:mm:ss')
     }
     const addTask = () => {
@@ -156,19 +156,19 @@ export default {
       taskData.value = {}
       mode.value = 'created'
     }
-    const updateTask = (el) => {
+    const updateTask = (el: any) => {
       console.log(el, '[[[[')
       showTask.value = true
       taskData.value = el
       mode.value = 'edit'
     }
-    const changeShowTask = (value) => {
+    const changeShowTask = (value: any) => {
       showTask.value = false
       if (value) {
         refresh()
       }
     }
-    const paginationChange = (value) => {
+    const paginationChange = (value: any) => {
       pagination.pageSize = value.pageSize
       pagination.current = value.current
       refresh()

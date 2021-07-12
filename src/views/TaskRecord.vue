@@ -107,7 +107,7 @@ export default {
       // return moment(value).format('yyyy-MM-DD HH:mm:ss')
     }
 
-    const paginationChange = (value) => {
+    const paginationChange = (value: any) => {
       // pagination.pageSize = value.pageSize
       // pagination.current = value.current
       // refresh()
