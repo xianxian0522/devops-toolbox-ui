@@ -8,31 +8,31 @@
     <RecordCommon @updateForm="updateForm">
     </RecordCommon>
 
-<!--    <div style="min-height: 100%;">-->
-<!--      <a-table-->
-<!--          :columns="columns"-->
-<!--          :data-source="commandsData"-->
-<!--          :loading="isResultLoading"-->
-<!--          :pagination="pagination"-->
-<!--          @change="paginationChange"-->
-<!--          :scroll="{ x: 1300}"-->
-<!--          :rowKey="(record, index) => index">-->
-<!--        <template #name="{ text }">-->
-<!--          <a> {{ text }}</a>-->
-<!--        </template>-->
-<!--        <template #done="{ text: done }">-->
-<!--          <span> {{ done ? '是' : '否' }}</span>-->
-<!--        </template>-->
-<!--        <template #startTime="{ text: startTime }">-->
-<!--          <span> {{ formatDateTime(startTime) }}</span>-->
-<!--        </template>-->
-<!--        <template #action="{ record }">-->
-<!--          <span>-->
-<!--            <router-link :to="{path: 'task-record/command', query: {commandId: record.id}}">详情</router-link>-->
-<!--          </span>-->
-<!--        </template>-->
-<!--      </a-table>-->
-<!--    </div>-->
+    <div style="min-height: 100%;">
+      <a-table
+          :columns="columns"
+          :data-source="commandsData"
+          :loading="isResultLoading"
+          :pagination="pagination"
+          @change="paginationChange"
+          :scroll="{ x: 1300}"
+          :rowKey="(record, index) => index">
+        <template #name="{ text }">
+          <a> {{ text }}</a>
+        </template>
+        <template #done="{ text: done }">
+          <span> {{ done ? '是' : '否' }}</span>
+        </template>
+        <template #startTime="{ text: startTime }">
+          <span> {{ formatDateTime(startTime) }}</span>
+        </template>
+        <template #action="{ record }">
+          <span>
+            <router-link :to="{path: 'task-record/command', query: {commandId: record.id}}">详情</router-link>
+          </span>
+        </template>
+      </a-table>
+    </div>
   </div>
 </template>
 
@@ -40,9 +40,10 @@
 import {onMounted, reactive, ref, UnwrapRef, watch} from "vue";
 import RecordCommon from "../components/RecordCommon.vue";
 import CommonBreadcrumb from "@/components/CommonBreadcrumb.vue";
-import {CommandItem} from "./History.vue";
 import moment from "moment";
 import systemInfo from "../api/systemInfo";
+import {TableState} from "ant-design-vue/es/table/interface";
+import {Command, SearchForm} from "@/utils/response";
 
 export default {
   name: "TaskRecord",
@@ -51,15 +52,7 @@ export default {
     CommonBreadcrumb,
   },
   setup() {
-    // const formState: UnwrapRef<any> = reactive({
-    //   done: true,
-    //   fileName: '',
-    //   starttime: null,
-    //   endtime: null,
-    //   serverUser: '',
-    //   historyType: 2,
-    // })
-    const formState = ref()
+    const formState = ref<SearchForm>()
     const pagination = reactive({
       current: 1,
       pageSize: 10,
@@ -82,54 +75,50 @@ export default {
       },
     ];
     const isResultLoading = ref(false);
-    const commandsData = ref<CommandItem[]>([]);
+    const commandsData = ref<Command[]>([]);
 
-    const updateForm = (value: any) => {
+    const updateForm = (value: SearchForm) => {
+      console.log(value)
       formState.value = value
+      refresh()
     }
 
     const refresh = async () => {
       isResultLoading.value = true
-      const value = {...formState, historyType: 2, page: pagination.current, size: pagination.pageSize};
-      // if (value.starttime) {
-      //   value.starttime = new Date(value.starttime).getTime();
-      // }
-      // if (value.endtime) {
-      //   value.endtime = new Date(value.endtime).getTime();
-      // }
-      // try {
-      //   const data = await systemInfo.queryPageAll('getCommandHistories', value);
-      //   commandsData.value = data.commands
-      //   pagination.total = data.total
-      //   isResultLoading.value = false
-      // } catch (e) {
-      //   isResultLoading.value = false
-      //   console.error(e)
-      // }
+      const value = {...formState.value, historyType: 2, page: pagination.current, size: pagination.pageSize};
+      if (value.starttime) {
+        value.starttime = moment(value.starttime).valueOf()
+      }
+      if (value.endtime) {
+        value.endtime = moment(value.endtime).valueOf()
+      }
+      try {
+        const data = await systemInfo.queryCommandHistory(value)
+        commandsData.value = data.commands
+        pagination.total = data.total
+        isResultLoading.value = false
+      } catch (e) {
+        isResultLoading.value = false
+        console.error(e)
+      }
     }
     const formatDateTime = (value: string) => {
-      // return moment(value).format('yyyy-MM-DD HH:mm:ss')
+      return moment(value).format('yyyy-MM-DD HH:mm:ss')
     }
 
-    const paginationChange = (value: any) => {
-      // pagination.pageSize = value.pageSize
-      // pagination.current = value.current
-      // refresh()
+    const paginationChange = (value: TableState['pagination']) => {
+      pagination.pageSize = value?.pageSize as number
+      pagination.current = value?.current as number
+      refresh()
     }
-
-    onMounted(() => {
-      // refresh()
-    })
 
     return {
-      // formState,
-      // isResultLoading,
-      // commandsData,
-      // columns,
-      // pagination,
-      // refresh,
-      // formatDateTime,
-      // paginationChange,
+      isResultLoading,
+      commandsData,
+      columns,
+      pagination,
+      formatDateTime,
+      paginationChange,
       updateForm,
     }
   }

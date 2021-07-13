@@ -102,3 +102,10 @@ export interface ServerInfo {
   Name: string;
   Ip: string;
 }
+export interface SearchForm {
+  done: boolean
+  endtime: string | number;
+  fileName: string;
+  serverUser: string;
+  starttime: string | number;
+}

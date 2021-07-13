@@ -45,17 +45,7 @@ import {message} from "ant-design-vue";
 import moment from "moment";
 import RecordCommon from "../components/RecordCommon.vue";
 import CommonBreadcrumb from "@/components/CommonBreadcrumb.vue";
-
-export interface CommandItem {
-  command: string;
-  comment: string;
-  description: string;
-  done: boolean
-  fileName: string;
-  id: number;
-  startTime: string;
-  updateTime: string;
-}
+import {Command, SearchForm} from "@/utils/response";
 
 export default {
   name: "History",
@@ -64,7 +54,7 @@ export default {
     CommonBreadcrumb,
   },
   setup() {
-    const formState = ref()
+    const formState = ref<SearchForm>()
     const statePagination = reactive({
       page: 1,
       size: 10,
@@ -85,7 +75,7 @@ export default {
       },
     ];
     const isResultLoading = ref(false);
-    const commandsData = ref<CommandItem[]>([]);
+    const commandsData = ref<Command[]>([]);
 
     const refresh = async (formChange: boolean) => {
       isResultLoading.value = true;
@@ -106,7 +96,7 @@ export default {
         commandsData.value = commandsData.value.concat(data.commands);
       }
     };
-    const updateForm = (value: any) => {
+    const updateForm = (value: SearchForm) => {
       formState.value = value
       statePagination.page = 1
       refresh(true)
