@@ -102,16 +102,19 @@ export interface Tasks {
   total: number;
 }
 export interface TaskResponse {
+  comment: string;
   created_at: string;
   cwd: string;
   execTime: string;
   id: number;
   name: string;
+  scheduleTime: string;
   scriptId: number;
   scriptName: string;
   serverInfo: string;
   servers: number[];
   state: number;
+  tags: string[];
   updated_at: string;
   user: string;
   username: string;

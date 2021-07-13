@@ -6,63 +6,63 @@
         <template v-slot:second>toolbox</template>
         <template v-slot:three>Salt Api</template>
       </CommonBreadcrumb>
-<!--      <div class="salt-api">-->
-<!--        <span>所有Salt Master 基础信息</span>-->
-<!--        <a-button type="primary" @click="getAllMasters">查询</a-button>-->
-<!--      </div>-->
-<!--      <div class="salt-api">-->
-<!--        <div class="salt-api-select">-->
-<!--          <span>Salt Master 信息</span>-->
-<!--          <a-form :model="saltMaster" layout="inline">-->
-<!--            <a-form-item label="MasterID">-->
-<!--              <a-input v-model:value="saltMaster.masterId" size="small" style="width: 200px;" placeholder="input MasterID"></a-input>-->
-<!--            </a-form-item>-->
-<!--          </a-form>-->
-<!--        </div>-->
-<!--        <a-button type="primary" @click="getSaltMaster">查询</a-button>-->
-<!--      </div>-->
-<!--      <div class="salt-api">-->
-<!--        <div class="salt-api-select">-->
-<!--          <span>Master的所有Minion 信息</span>-->
-<!--          <a-form :model="masterMinion" layout="inline">-->
-<!--            <a-form-item label="MasterID">-->
-<!--              <a-input v-model:value="masterMinion.masterId" size="small" style="width: 200px;" placeholder="input MasterID"></a-input>-->
-<!--            </a-form-item>-->
-<!--          </a-form>-->
-<!--        </div>-->
-<!--        <a-button type="primary" @click="getMasterMinion">查询</a-button>-->
-<!--      </div>-->
-<!--      <div class="salt-api">-->
-<!--        <div class="salt-api-select">-->
-<!--          <span>选中Salt Minion信息</span>-->
-<!--          <a-form :model="selectMinion" layout="inline">-->
-<!--            <a-form-item label="MasterID">-->
-<!--              <a-input v-model:value="selectMinion.masterId" size="small" style="width: 200px;" placeholder="input MasterID"></a-input>-->
-<!--            </a-form-item>-->
-<!--            <a-form-item label="MinionID">-->
-<!--              <a-input v-model:value="selectMinion.minionId" size="small" style="width: 200px;" placeholder="input MinionID"></a-input>-->
-<!--            </a-form-item>-->
-<!--          </a-form>-->
-<!--        </div>-->
-<!--        <a-button type="primary" @click="getSelectMinion">查询</a-button>-->
-<!--      </div>-->
-<!--      <div class="salt-api">-->
-<!--        <div class="salt-api-select">-->
-<!--          <span>选中Job信息</span>-->
-<!--          <a-form :model="selectJob" layout="inline">-->
-<!--            <a-form-item label="MasterID">-->
-<!--              <a-input v-model:value="selectJob.masterId" size="small" style="width: 200px;" placeholder="input MasterID"></a-input>-->
-<!--            </a-form-item>-->
-<!--            <a-form-item label="jobID">-->
-<!--              <a-input v-model:value="selectJob.jobId" size="small" style="width: 200px;" placeholder="input jobID"></a-input>-->
-<!--            </a-form-item>-->
-<!--          </a-form>-->
-<!--        </div>-->
-<!--        <a-button type="primary" @click="getSelectJobs">查询</a-button>-->
-<!--      </div>-->
-<!--      <div style="margin-top: 10px; text-align: left">-->
-<!--        <pre v-html="JSON.stringify(dataOut, null, 4)"></pre>-->
-<!--      </div>-->
+      <div class="salt-api">
+        <span>所有Salt Master 基础信息</span>
+        <a-button type="primary" @click="getAllMasters">查询</a-button>
+      </div>
+      <div class="salt-api">
+        <div class="salt-api-select">
+          <span>Salt Master 信息</span>
+          <a-form :model="saltMaster" layout="inline">
+            <a-form-item label="MasterID">
+              <a-input v-model:value="saltMaster.masterId" size="small" style="width: 200px;" placeholder="input MasterID"></a-input>
+            </a-form-item>
+          </a-form>
+        </div>
+        <a-button type="primary" @click="getSaltMaster">查询</a-button>
+      </div>
+      <div class="salt-api">
+        <div class="salt-api-select">
+          <span>Master的所有Minion 信息</span>
+          <a-form :model="masterMinion" layout="inline">
+            <a-form-item label="MasterID">
+              <a-input v-model:value="masterMinion.masterId" size="small" style="width: 200px;" placeholder="input MasterID"></a-input>
+            </a-form-item>
+          </a-form>
+        </div>
+        <a-button type="primary" @click="getMasterMinion">查询</a-button>
+      </div>
+      <div class="salt-api">
+        <div class="salt-api-select">
+          <span>选中Salt Minion信息</span>
+          <a-form :model="selectMinion" layout="inline">
+            <a-form-item label="MasterID">
+              <a-input v-model:value="selectMinion.masterId" size="small" style="width: 200px;" placeholder="input MasterID"></a-input>
+            </a-form-item>
+            <a-form-item label="MinionID">
+              <a-input v-model:value="selectMinion.minionId" size="small" style="width: 200px;" placeholder="input MinionID"></a-input>
+            </a-form-item>
+          </a-form>
+        </div>
+        <a-button type="primary" @click="getSelectMinion">查询</a-button>
+      </div>
+      <div class="salt-api">
+        <div class="salt-api-select">
+          <span>选中Job信息</span>
+          <a-form :model="selectJob" layout="inline">
+            <a-form-item label="MasterID">
+              <a-input v-model:value="selectJob.masterId" size="small" style="width: 200px;" placeholder="input MasterID"></a-input>
+            </a-form-item>
+            <a-form-item label="jobID">
+              <a-input v-model:value="selectJob.jobId" size="small" style="width: 200px;" placeholder="input jobID"></a-input>
+            </a-form-item>
+          </a-form>
+        </div>
+        <a-button type="primary" @click="getSelectJobs">查询</a-button>
+      </div>
+      <div style="margin-top: 10px; text-align: left">
+        <pre v-html="JSON.stringify(dataOut, null, 4)"></pre>
+      </div>
     </a-spin>
   </div>
 </template>
@@ -79,10 +79,10 @@ export default {
   },
   setup() {
     const saltMaster = reactive({
-      masterId: 0,
+      masterId: undefined,
     })
     const masterMinion = reactive({
-      masterId: 0,
+      masterId: undefined,
     })
     const selectMinion = reactive({
       masterId: '',
@@ -186,6 +186,9 @@ export default {
     input:not(:last-of-type) {
       margin-right: 10px;
     }
+  }
+  form {
+    flex: 1;
   }
 }
 </style>
