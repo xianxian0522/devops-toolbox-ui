@@ -115,7 +115,12 @@ export interface TaskResponse {
   updated_at: string;
   user: string;
   username: string;
-
+}
+export interface SaltResponse {
+  Id: number;
+  Method: string;
+  SkipVerify: boolean;
+  Url: string;
 }
 export interface ServerInfo {
   Id: number;

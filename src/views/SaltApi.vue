@@ -1,11 +1,11 @@
 <template>
   <div class="app-common-content" >
-<!--    <a-spin :spinning="isLoading" tip="Loading..." size="large">-->
-<!--      <a-breadcrumb separator=">" class="app-common-header">-->
-<!--        <a-breadcrumb-item>devops</a-breadcrumb-item>-->
-<!--        <a-breadcrumb-item>toolbox</a-breadcrumb-item>-->
-<!--        <a-breadcrumb-item>Salt Api</a-breadcrumb-item>-->
-<!--      </a-breadcrumb>-->
+    <a-spin :spinning="isLoading" tip="Loading..." size="large">
+      <CommonBreadcrumb >
+        <template v-slot:first>devops</template>
+        <template v-slot:second>toolbox</template>
+        <template v-slot:three>Salt Api</template>
+      </CommonBreadcrumb>
 <!--      <div class="salt-api">-->
 <!--        <span>所有Salt Master 基础信息</span>-->
 <!--        <a-button type="primary" @click="getAllMasters">查询</a-button>-->
@@ -63,16 +63,20 @@
 <!--      <div style="margin-top: 10px; text-align: left">-->
 <!--        <pre v-html="JSON.stringify(dataOut, null, 4)"></pre>-->
 <!--      </div>-->
-<!--    </a-spin>-->
+    </a-spin>
   </div>
 </template>
 
 <script lang="ts">
 import {reactive, ref, toRefs} from "vue";
 import systemInfo from "../api/systemInfo";
+import CommonBreadcrumb from "@/components/CommonBreadcrumb.vue";
 
 export default {
   name: "SaltApi",
+  components: {
+    CommonBreadcrumb,
+  },
   setup() {
     const saltMaster = reactive({
       masterId: 0,
@@ -147,17 +151,17 @@ export default {
     }
 
     return {
-      // isLoading,
-      // dataOut,
-      // selectJob,
-      // selectMinion,
-      // masterMinion,
-      // saltMaster,
-      // getAllMasters,
-      // getSaltMaster,
-      // getMasterMinion,
-      // getSelectMinion,
-      // getSelectJobs,
+      isLoading,
+      dataOut,
+      selectJob,
+      selectMinion,
+      masterMinion,
+      saltMaster,
+      getAllMasters,
+      getSaltMaster,
+      getMasterMinion,
+      getSelectMinion,
+      getSelectJobs,
     }
   }
 }

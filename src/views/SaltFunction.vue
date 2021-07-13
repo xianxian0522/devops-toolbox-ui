@@ -76,9 +76,9 @@ export default {
     }
 
     const runFunction = async () => {
+      stateOut.isLoading = true
+      const value = {...formState}
       try {
-        stateOut.isLoading = true
-        const value = {...formState}
         const data = await systemInfo.doCustomComplete(value)
         stateOut.isLoading = false
         stateOut.isShowChild = true

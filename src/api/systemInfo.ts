@@ -5,7 +5,7 @@ import {
   Exec,
   HistoryResponse,
   HomeTooltip,
-  LoginResponse, OutResponse, ScriptManager, ScriptResponse, ServerInfo,
+  LoginResponse, OutResponse, SaltResponse, ScriptManager, ScriptResponse, ServerInfo,
   Servers,
   ServersUser, Tasks
 } from "@/utils/response";
