@@ -5,7 +5,7 @@ import {
   Exec,
   HistoryResponse,
   HomeTooltip,
-  LoginResponse, OutResponse, SaltResponse, ScriptManager, ScriptResponse, ServerInfo,
+  LoginResponse, OutResponse, ScriptManager, ScriptResponse, ServerInfo,
   Servers,
   ServersUser, TaskResponse, Tasks
 } from "@/utils/response";
@@ -33,7 +33,6 @@ export default {
   adminLogin: (params?: any) => request.post(APIAdmin, params),
   getBar: () => request.get<BarItem[]>(APIBar),
 
-  queryPageAll: (urlString: string, params?: any) => request.get(`${APICommands}/${urlString}`, params).catch(err => console.error(err)),
   queryCurrentOutById: (outId: number) => request.get<CurrentOut>(`${APICommands}/getCurrentOut`, {outId: outId}),
   queryCommandServers: () => request.get<Servers>(`${APICommands}/getServers`),
   queryServersUser: () => request.get<ServersUser>(`${APICommands}/getServerUser`),
@@ -51,7 +50,6 @@ export default {
   queryPageTasks: (params: any) => request.get<Tasks>(`${APITask}/getTasksPage`, params),
   queryServers: () => request.get<ServerInfo[]>(`${APITask}/getServers`),
   queryTaskById: (id: number) => request.get<TaskResponse>(`${APITask}/${id}`),
-  execCommandScript: (urlString: string, params?: any) => request.post(`${APICommands}/${urlString}`, params).catch(err => console.error(err)),
   queryAllTasks: () => request.get(`${APITask}/getTasks`),
   updateTask: (params?: any) => request.post(`${APITask}/updateTask`, params),
   addTask: (params?: any) => request.post(`${APITask}/setTask`, params),

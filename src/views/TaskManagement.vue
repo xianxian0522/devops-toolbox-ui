@@ -64,26 +64,20 @@
         </template>
         <template #action="{ record }">
           <span>
-            <a-button type="link" @click="updateTask(record)">
+            <a-button type="link" >
               <router-link :to="{path: 'task-management/edit', query: {taskId: record.id}}">修改</router-link>
             </a-button>
           </span>
         </template>
       </a-table>
     </div>
-
-<!--    <a-modal v-model:visible="showTask" :title="taskData?.id ? '修改任务管理' : '新增任务管理'" :footer="null" :width="750">-->
-<!--      <TaskEdit v-if="showTask" :mode="mode" :data="taskData" @changeShowTask="changeShowTask" />-->
-<!--    </a-modal>-->
   </div>
 </template>
 
 <script lang="ts">
 import {onMounted, reactive, ref, watch} from "vue";
 import moment from "moment";
-import TaskEdit from './TaskEdit.vue'
 import CommonBreadcrumb from "@/components/CommonBreadcrumb.vue";
-import {Modal} from "ant-design-vue";
 import systemInfo from "../api/systemInfo";
 import {TableState} from "ant-design-vue/es/table/interface";
 import {TaskResponse} from "@/utils/response";
@@ -92,7 +86,6 @@ import * as _ from "lodash";
 export default {
   name: "TaskManagement",
   components: {
-    // TaskEdit,
     CommonBreadcrumb,
   },
   setup() {
@@ -129,9 +122,6 @@ export default {
     ];
     const isResultLoading = ref(false);
     const taskDataList = ref<TaskResponse[]>([]);
-    const showTask = ref(false);
-    const taskData = ref()
-    const mode = ref()
 
     const refresh = async () => {
       isResultLoading.value = true
@@ -149,7 +139,6 @@ export default {
         taskDataList.value = data.task
         pagination.total = data.total
         isResultLoading.value = false
-        console.log(';;;;', data)
       } catch (e) {
         isResultLoading.value = false
         console.error(e)
@@ -158,23 +147,7 @@ export default {
     const timeFormat = (value: string) => {
       return moment(value).format('YYYY-MM-DD HH:mm:ss')
     }
-    const addTask = () => {
-      showTask.value = true
-      taskData.value = {}
-      mode.value = 'created'
-    }
-    const updateTask = (el: TaskResponse) => {
-      console.log(el, '[[[[')
-      showTask.value = true
-      taskData.value = el
-      mode.value = 'edit'
-    }
-    const changeShowTask = (value: any) => {
-      showTask.value = false
-      if (value) {
-        refresh()
-      }
-    }
+
     const paginationChange = (value: TableState['pagination']) => {
       pagination.pageSize = value?.pageSize as number
       pagination.current = value?.current as number
@@ -191,13 +164,7 @@ export default {
       columns,
       formState,
       pagination,
-      // showTask,
-      // taskData,
-      // mode,
       refresh,
-      // addTask,
-      updateTask,
-      // changeShowTask,
       paginationChange,
       timeFormat,
     }

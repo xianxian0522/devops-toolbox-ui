@@ -183,7 +183,6 @@ export default {
       if (value.execTime && value.scheduleTime) {
         return message.warning('执行时间和crontab只能填一个')
       }
-      console.log(value)
       try {
         taskId.value ? await systemInfo.updateTask(value) : await systemInfo.addTask(value)
         message.success(taskId.value ? '修改成功' : '新增成功')
