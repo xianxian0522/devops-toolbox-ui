@@ -5,9 +5,9 @@ import {
   Exec,
   HistoryResponse,
   HomeTooltip,
-  LoginResponse, ScriptManager, ScriptResponse,
+  LoginResponse, ScriptManager, ScriptResponse, ServerInfo,
   Servers,
-  ServersUser
+  ServersUser, Tasks
 } from "@/utils/response";
 
 const APILogin = '/api/v1/sso/login';
@@ -42,17 +42,18 @@ export default {
   queryCommandDetail: (cId: number) => request.get<CommandDetail>(`${APICommands}/getDetail`, {queryId: cId}),
   queryScriptManager: (params: any) => request.get<ScriptManager>(`${APICommands}/getManagerList`, params),
   queryScriptDetail: (sId: number) => request.get<ScriptResponse>(`${APICommands}/getScriptDetail`, {id: sId}),
+  queryScriptList: () => request.get<ScriptManager>(`${APICommands}/getScriptList`),
   execCommand: (params: any) => request.post<Exec>(`${APICommands}/execCommand`, params),
   execScript: (params: any) => request.post<Exec>(`${APICommands}/execScript`, params),
   updateScript: (params: any) => request.post(`${APICommands}/updateScript`, params),
   addScript: (params: any) => request.post(`${APICommands}/saveScript`, params),
 
+  queryPageTasks: (params: any) => request.get<Tasks>(`${APITask}/getTasksPage`, params),
+  queryServers: () => request.get<ServerInfo[]>(`${APITask}/getServers`),
   execCommandScript: (urlString: string, params?: any) => request.post(`${APICommands}/${urlString}`, params).catch(err => console.error(err)),
   queryAllTasks: () => request.get(`${APITask}/getTasks`),
-  queryPageTasks: (params: any) => request.get(`${APITask}/getTasksPage`, params),
   updateTask: (params?: any) => request.post(`${APITask}/updateTask`, params),
   addTask: (params?: any) => request.post(`${APITask}/setTask`, params),
-  queryServers: () => request.get(`${APITask}/getServers`),
 
   doCustomComplete: (params?: any) => request.post(`${APIJob}/DoCustomComplete`, params),
   getAllMasters: () => request.get(`${APIJob}/getAllMasters`),

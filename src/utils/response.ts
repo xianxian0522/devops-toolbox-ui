@@ -97,6 +97,26 @@ export interface CommandDetail {
   out: OutResponse[];
   serverInfo: ServerInfo[];
 }
+export interface Tasks {
+  task: TaskResponse[];
+  total: number;
+}
+export interface TaskResponse {
+  created_at: string;
+  cwd: string;
+  execTime: string;
+  id: number;
+  name: string;
+  scriptId: number;
+  scriptName: string;
+  serverInfo: string;
+  servers: number[];
+  state: number;
+  updated_at: string;
+  user: string;
+  username: string;
+
+}
 export interface ServerInfo {
   Id: number;
   Name: string;

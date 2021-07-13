@@ -78,7 +78,6 @@ export default {
     const commandsData = ref<Command[]>([]);
 
     const updateForm = (value: SearchForm) => {
-      console.log(value)
       formState.value = value
       refresh()
     }
