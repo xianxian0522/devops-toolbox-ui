@@ -5,7 +5,7 @@ import {
   Exec,
   HistoryResponse,
   HomeTooltip,
-  LoginResponse, ScriptManager, ScriptResponse, ServerInfo,
+  LoginResponse, OutResponse, ScriptManager, ScriptResponse, ServerInfo,
   Servers,
   ServersUser, Tasks
 } from "@/utils/response";
@@ -55,7 +55,7 @@ export default {
   updateTask: (params?: any) => request.post(`${APITask}/updateTask`, params),
   addTask: (params?: any) => request.post(`${APITask}/setTask`, params),
 
-  doCustomComplete: (params?: any) => request.post(`${APIJob}/DoCustomComplete`, params),
+  doCustomComplete: (params?: any) => request.post<OutResponse[]>(`${APIJob}/DoCustomComplete`, params),
   getAllMasters: () => request.get(`${APIJob}/getAllMasters`),
   getSaltMaster: (masterId?: number) => request.get(`${APIJob}/${masterId}`),
   getMasterMinion: (masterId?: number) => request.get(`${APIJob}/minion/${masterId}`),
