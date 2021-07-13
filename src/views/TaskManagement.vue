@@ -65,7 +65,7 @@
         <template #action="{ record }">
           <span>
             <a-button type="link" @click="updateTask(record)">
-              <router-link :to="{path: 'task-management/edit', query: {task: record}}">修改</router-link>
+              <router-link :to="{path: 'task-management/edit', query: {taskId: record.id}}">修改</router-link>
             </a-button>
           </span>
         </template>

@@ -4,13 +4,13 @@ import router from './router';
 import {
   Avatar,
   Breadcrumb,
-  Button, Checkbox,
+  Button, Checkbox, Col, Collapse,
   ConfigProvider, DatePicker, Descriptions,
   Dropdown,
   Form,
   Input,
   Layout,
-  Menu,
+  Menu, Row,
   Select,
   Spin, Table, Tag, TreeSelect
 } from "ant-design-vue";
@@ -36,6 +36,8 @@ app.use(DatePicker)
 app.use(Checkbox)
 app.use(Table)
 app.use(Tag)
-
+app.use(Collapse)
+app.use(Row)
+app.use(Col)
 
 app.mount('#app')
