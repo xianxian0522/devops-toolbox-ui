@@ -1,4 +1,5 @@
 <template>
+  <div>
 <!--  <a-form :model="formState" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">-->
 <!--    <a-form-item label="任务名">-->
 <!--      <a-input v-model:value="formState.name" placeholder="input name" />-->
@@ -69,6 +70,7 @@
 <!--    <a-button @click="onCancel">取消</a-button>-->
 <!--    <a-button @click="onSubmit">确定</a-button>-->
 <!--  </div>-->
+  </div>
 </template>
 
 <script lang="ts">
@@ -77,26 +79,27 @@ import systemInfo from "../api/systemInfo";
 // import CommonTree from '../components/CommonTree.vue'
 import moment from "moment";
 import {message} from "ant-design-vue";
+import {useRoute} from "vue-router";
 
 export default {
   name: "TaskEdit",
-  props: ['data', 'mode'],
   // components: {CommonTree, },
   emits: ['changeShowTask'],
-  setup(props: any, {emit}: any) {
-    console.log(props.data)
+  setup() {
+    const route = useRoute()
+    console.log(route.query.task)
     const formState = reactive({
-      id: props.data?.id,
-      name: props.data?.name,
-      state: props.data?.state,
-      scriptId: props.data?.scriptId,
-      user: props.data?.user,
-      execTime: props.data?.execTime ? moment(props.data?.execTime) : null,
-      scheduleTime: props.data?.scheduleTime,
-      servers: props.data?.servers,
-      comment: props.data?.comment,
-      tags: props.data?.tags,
-      cwd: props.data?.cwd,
+      // id: props.data?.id,
+      // name: props.data?.name,
+      // state: props.data?.state,
+      // scriptId: props.data?.scriptId,
+      // user: props.data?.user,
+      // execTime: props.data?.execTime ? moment(props.data?.execTime) : null,
+      // scheduleTime: props.data?.scheduleTime,
+      // servers: props.data?.servers,
+      // comment: props.data?.comment,
+      // tags: props.data?.tags,
+      // cwd: props.data?.cwd,
     })
     const state = reactive({
       usersList: [],
@@ -123,25 +126,25 @@ export default {
       // }
     }
     const onCancel = () => {
-      emit('changeShowTask', false)
+      // emit('changeShowTask', false)
     }
 
     const getUser = async () => {
-      const data = await systemInfo.queryPageAll('getServerUser')
-      state.usersList = data.content
+      // const data = await systemInfo.queryPageAll('getServerUser')
+      // state.usersList = data.content
     }
     const getScript = async () => {
-      const data = await systemInfo.queryPageAll('getScriptList')
-      state.scriptList = data.list
+      // const data = await systemInfo.queryPageAll('getScriptList')
+      // state.scriptList = data.list
     }
     const getServers = async () => {
-      state.serversList = await systemInfo.queryServers()
+      // state.serversList = await systemInfo.queryServers()
     }
-    const selectServers = (value) => {
-      formState.servers = value
-    }
+    // const selectServers = (value) => {
+    //   formState.servers = value
+    // }
 
-    const filterOption = (input, option) => {
+    const filterOption = (input: string, option: any) => {
       return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
     }
 

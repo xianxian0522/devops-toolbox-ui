@@ -56,6 +56,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/TaskManagement.vue'),
       },
       {
+        path: 'task-management/edit',
+        component: () => import('../views/TaskEdit.vue'),
+      },
+      {
         path: 'salt-function',
         component: () => import('../views/SaltFunction.vue'),
       },
