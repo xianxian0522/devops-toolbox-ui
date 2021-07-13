@@ -87,6 +87,7 @@ import {Modal} from "ant-design-vue";
 import systemInfo from "../api/systemInfo";
 import {TableState} from "ant-design-vue/es/table/interface";
 import {TaskResponse} from "@/utils/response";
+import * as _ from "lodash";
 
 export default {
   name: "TaskManagement",
@@ -182,6 +183,7 @@ export default {
     onMounted(() => {
       refresh()
     })
+    watch(formState, _.debounce(refresh, 300))
 
     return {
       isResultLoading,
