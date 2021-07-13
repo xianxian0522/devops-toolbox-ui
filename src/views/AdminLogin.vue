@@ -6,7 +6,7 @@
         <a-input v-model:value="formState.username" />
       </a-form-item>
       <a-form-item label="密码">
-        <a-input v-model:value="formState.password" />
+        <a-input v-model:value="formState.password" type="password" />
       </a-form-item>
     </a-form>
     <a-button class="login-btn" size="large" type="primary" @click="adminLogin">登录</a-button>
@@ -14,7 +14,7 @@
 </div>
 </template>
 
-<script>
+<script lang="ts">
 import {reactive} from "vue";
 import systemInfo from "../api/systemInfo";
 import router from "../router";
