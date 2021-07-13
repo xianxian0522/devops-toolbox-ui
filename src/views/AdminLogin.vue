@@ -17,11 +17,12 @@
 <script lang="ts">
 import {reactive} from "vue";
 import systemInfo from "../api/systemInfo";
-import router from "../router";
+import {useRouter} from "vue-router";
 
 export default {
   name: "AdminLogin",
   setup() {
+    const router = useRouter()
     const formState = reactive({
       username: '',
       password: '',
