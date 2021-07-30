@@ -13,6 +13,7 @@ pack_app(){
   version=$4
   name=$packageName-$version
 
+  npm config set registry=http://172.16.97.41:9000/repository/npm/
 #  echo "打印安装"
   npm i
 #  echo " 编译"
