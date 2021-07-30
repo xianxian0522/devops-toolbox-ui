@@ -124,7 +124,7 @@ export default defineComponent({
       // const token = localStorage.getItem('token')
       // if (token) {
       //   const userInfo = jwt<{[key: string]: string}>(token)
-      //   state.username = userInfo?.name || userInfo?.username
+      //   state.username = userInfo?.username || userInfo?.name
       // }
     })
     return {
