@@ -30,7 +30,7 @@ if (window.location.hostname.endsWith('dev.ops.sumscope.com')) {
 export default {
   getMenuBar: () => request.get<BarItem[]>(ApiMenu),
   login: () => request.get<LoginResponse>(APILogin),
-  adminLogin: (params?: any) => request.post(APIAdmin, params),
+  adminLogin: (params?: any) => request.post<string>(APIAdmin, params),
   getBar: () => request.get<BarItem[]>(APIBar),
 
   queryCurrentOutById: (outId: number) => request.get<CurrentOut>(`${APICommands}/getCurrentOut`, {outId: outId}),

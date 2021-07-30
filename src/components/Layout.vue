@@ -1,41 +1,42 @@
 <template>
   <a-layout class="layout">
-    <a-layout-header class="header">
-      <div class="logo" >
-        <img src="http://www.sumscope.com/favicon.ico" alt="">
-        TOOLBOX
-      </div>
-      <div class="layout-header-menu">
-        <a-menu
-            theme="dark"
-            mode="horizontal"
-            v-model:selectedKeys="selectedKey"
-            :style="{ lineHeight: '58px' }"
-        >
-          <a-menu-item v-for="bar in menuBar" :key="bar.route">
-            <a :href="bar.path">{{ bar.name }}</a>
-          </a-menu-item>
-        </a-menu>
-      </div>
-      <section class="header-right">
-        <a-avatar class="user-avatar">
-          <template #icon><UserOutlined /></template>
-        </a-avatar>
-        <a-dropdown>
-          <a class="ant-dropdown-link" @click.prevent>
-            {{ username }}
-            <DownOutlined />
-          </a>
-          <template #overlay>
-            <a-menu>
-              <a-menu-item>
-                <a @click="logout()">退出</a>
-              </a-menu-item>
-            </a-menu>
-          </template>
-        </a-dropdown>
-      </section>
-    </a-layout-header>
+<!--    <a-layout-header class="header">-->
+<!--      <div class="logo" >-->
+<!--        <img src="http://www.sumscope.com/favicon.ico" alt="">-->
+<!--        TOOLBOX-->
+<!--      </div>-->
+<!--      <div class="layout-header-menu">-->
+<!--        <a-menu-->
+<!--            theme="dark"-->
+<!--            mode="horizontal"-->
+<!--            v-model:selectedKeys="selectedKey"-->
+<!--            :style="{ lineHeight: '58px' }"-->
+<!--        >-->
+<!--          <a-menu-item v-for="bar in menuBar" :key="bar.route">-->
+<!--            <a :href="bar.path">{{ bar.name }}</a>-->
+<!--          </a-menu-item>-->
+<!--        </a-menu>-->
+<!--      </div>-->
+<!--      <section class="header-right">-->
+<!--        <a-avatar class="user-avatar">-->
+<!--          <template #icon><UserOutlined /></template>-->
+<!--        </a-avatar>-->
+<!--        <a-dropdown>-->
+<!--          <a class="ant-dropdown-link" @click.prevent>-->
+<!--            {{ username }}-->
+<!--            <DownOutlined />-->
+<!--          </a>-->
+<!--          <template #overlay>-->
+<!--            <a-menu>-->
+<!--              <a-menu-item>-->
+<!--                <a @click="logout()">退出</a>-->
+<!--              </a-menu-item>-->
+<!--            </a-menu>-->
+<!--          </template>-->
+<!--        </a-dropdown>-->
+<!--      </section>-->
+<!--    </a-layout-header>-->
+    <HeaderComponent :logoTitle="'TOOLBOX'" :menuSelect="'/toolbox/home'"/>
     <a-layout>
       <a-layout-sider width="200" style="background: #fff">
         <a-menu
@@ -78,8 +79,8 @@ const IconFont = createFromIconfontCN({
 export default defineComponent({
   name: 'Layout',
   components: {
-    UserOutlined,
-    DownOutlined,
+    // UserOutlined,
+    // DownOutlined,
     IconFont,
   },
   setup() {
@@ -94,7 +95,7 @@ export default defineComponent({
       username: '用户名',
     })
     const bar = ref<BarItem[]>([])
-    const menuBar = ref<BarItem[]>([])
+    // const menuBar = ref<BarItem[]>([])
 
     // const menuItem = ({item, key, keyPath}: any) => {
     //   state.selectedKeysMenu = keyPath;
@@ -103,13 +104,13 @@ export default defineComponent({
     const getBar = async () => {
       bar.value = await systemInfo.getBar()
     }
-    const getMenuBar = async () => {
-      menuBar.value = await systemInfo.getMenuBar()
-    }
-    const logout = () => {
-      localStorage.removeItem('token')
-      router.push('/login')
-    }
+    // const getMenuBar = async () => {
+    //   menuBar.value = await systemInfo.getMenuBar()
+    // }
+    // const logout = () => {
+    //   localStorage.removeItem('token')
+    //   router.push('/login')
+    // }
 
     watch(() => route.path, () => {
       const url = route.path.split('/');
@@ -118,19 +119,19 @@ export default defineComponent({
 
     onMounted(() => {
       getBar()
-      getMenuBar()
+      // getMenuBar()
 
-      const token = localStorage.getItem('token')
-      if (token) {
-        const userInfo = jwt<{[key: string]: string}>(token)
-        state.username = userInfo?.name || userInfo?.username
-      }
+      // const token = localStorage.getItem('token')
+      // if (token) {
+      //   const userInfo = jwt<{[key: string]: string}>(token)
+      //   state.username = userInfo?.name || userInfo?.username
+      // }
     })
     return {
       ...toRefs(state),
       bar,
-      menuBar,
-      logout,
+      // menuBar,
+      // logout,
     }
   }
 })
