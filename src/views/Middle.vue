@@ -5,6 +5,7 @@
 <script lang="ts">
 import router from "../router";
 import systemInfo from "../api/systemInfo";
+import tokenRepositories from "@/composable/tokenRepositories";
 
 export default {
   name: "Middle",
@@ -15,8 +16,7 @@ export default {
       try {
         const data = await systemInfo.login();
         if (data && data?.token) {
-          await localStorage.setItem('token', data.token);
-          await router.push('/toolbox/home');
+          tokenRepositories(data.token)
         } else {
           router.push('/login').then();
         }

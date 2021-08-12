@@ -11,6 +11,7 @@
 <script lang="ts">
 import systemInfo from "../api/systemInfo";
 import {useRoute, useRouter} from "vue-router";
+import tokenRepositories from "@/composable/tokenRepositories";
 
 export default {
   name: 'Login',
@@ -29,6 +30,9 @@ export default {
         const data = await systemInfo.login();
         if (data && data.url) {
           window.location.href = data.url;
+        }
+        if (data && data.token) {
+          tokenRepositories(data.token)
         }
       } catch (e) {
         console.error(e)
